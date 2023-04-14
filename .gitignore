@@ -1,0 +1,22 @@
+
+# editor/IDE settings
+*.vscode
+
+# output, test and data files
+/data
+
+# build files and other files
+/target
+.ant_targets
+**/.DS_Store
+*.class
+*.jar
+*.csv
+*.pdf
+
+# others
+TODO.txt
+
+
+# not ignore input test files
+!/docs
