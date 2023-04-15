@@ -14,15 +14,22 @@ First assignment for the discipline  ```Tópicos Especiais em Informática IV (E
 
 ## How to run the project
 
-To run this project, you need to have the [JDK version 11](https://www.oracle.com/br/java/technologies/javase/jdk11-archive-downloads.html) or higher installed and the libraries: [Apache Kafka](https://kafka.apache.org/), [Apache Ant](https://ant.apache.org/) and [Apache Maven](https://maven.apache.org/index.html).  
+To run this project, you need to have the [JDK version 11](https://www.oracle.com/br/java/technologies/javase/jdk11-archive-downloads.html) or higher installed and these libraries: [Apache Kafka](https://kafka.apache.org/) and [Apache Maven](https://maven.apache.org/index.html).  
 
 After installing the JDK, you can run the project by typing the following commands in the terminal:  
 ```sh
-# create project
+# create Maven project
 $ mvn archetype:generate -DgroupId=app -DartifactId=Flight_Manager_System -DarchetypeVersion=1.4 -DinteractiveMode=false
-# run project
+# install/reinstall dependencies
 $ mvn install
-$ mvn clean compile exec:java
+# recompile project
+$ mvn clean compile
+# run project
+$ mvn exec:java
+# run tests
+$ mvn test
+# create JAR file
+$ mvn package
 ```
 
 ---
@@ -45,32 +52,49 @@ $ kafka-consumer-groups.sh --bootstrap-server=localhost:9092 -—describe --grou
 
 #### TODO
 
-* [x] Create a Maven `pom.xml` file
-* [ ] Create a documentation for the project in PDF format
-* [ ] Implement _KafkaAdminClient_, _KafkaProducer_ and _KafkaConsumer_ classes for integration
-* [ ] Implement _FlightManager_, _GeneralControl_, _Reporter_ and _FlightTracker_ classes for domain
-* [ ] Implement _MySQLClient_ and _RedisClient_ classes for infra
-* [ ] Implement **Control Tower Service**
-	- _GeneralControl_ class
-		- _KafkaConsumer_ class
-		- _KafkaProducer_ class
-	- _Reporter_ class
-		- _KafkaProducer_ class
-	- _FlightTracker_ class
-		- _HttpClient_ class
-* [ ] Implement **Flight Status Manager Service**
-	- _FlightManager_ class
-		- _Airport_ class
-			- _Gate_ class
-		- _Flight_ class
-			- _Airplane_ class
-	- _KafkaConsumer_ class
-	- _KafkaProducer_ class
-	- _MySQLClient_ class
-	- _RedisClient_ class
-* [ ] Implement **Flight Status Panel Service**
-	- _PanelSync_ class
-		- _HttpClient_ class
-* [ ] Implement **Client Subscriptions Service**
-	- _Subscription_ class
-		- _KafkaConsumer_ class
+- `docs`: documentação de execução, arquitetura e funcionamento
+	* [ ] README: execução
+	* [ ] Figma: arquitetura
+	* [ ] LaTeX: funcionamento
+- **Flight Manager**
+	- `domain`: entidades de ação e registro
+		- `entities`: entidades de ação e registro
+			* [ ] _FlightManager_ [ação]
+				* [ ] _Airport_ [ação]
+					* [ ] _Gate_ [registro]
+				* [ ] _Flight_ [ação]
+					* [ ] _Airplane_ [registro]
+		- `enums`: valores reservados
+	- `app`: lógica de operations, services e strategies
+	- `infra`:
+		- `database`: armazenamento de registros
+			* [ ] MySQLClient
+				- Flights
+				- Gates
+		- `integration`: serviços de comunicação
+			- `queue`: messageria
+				* [ ] KafkaAdminClient
+					- KafkaConsumers
+					- KafkaProducers
+				* HttpClient
+					* [ ] _OpenSkyClient_
+			- `cache`: armazenamento temporário de registros e consultas
+				* [ ] _RedisClient_
+	- `interface`: endpoints HTTP para consulta aos registros
+- **Control Tower**
+	* [ ] _Reporter_
+		* Producer
+			* [ ] _KafkaProducer_
+	* [ ] _FlightTracker_
+		* [ ] _Cron_
+		* HttpClient
+			* [ ] _OpenSkyClient_
+- **Flight-Status Panel**
+	* [ ] _PanelSync_
+		* [ ] _Cron_
+	* HttpClient
+		* [ ] _FlightManagerClient_
+- **Client Subscriptions**
+	* [ ] _Subscription_
+	* Consumer
+		* [ ] _KafkaConsumer_
