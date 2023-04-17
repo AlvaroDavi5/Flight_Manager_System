@@ -15,17 +15,24 @@ First assignment for the discipline  ```Tópicos Especiais em Informática IV (E
 ## How to run the project
 
 To run this project, you need to have the [JDK version 11](https://www.oracle.com/br/java/technologies/javase/jdk11-archive-downloads.html) or higher installed and these libraries: [Apache Kafka](https://kafka.apache.org/) and [Apache Maven](https://maven.apache.org/index.html).  
-
-After installing the JDK, you can run the project by typing the following commands in the terminal:  
+This project has created using:   
 ```sh
 # create Maven project
 $ mvn archetype:generate -DgroupId=app -DartifactId=Flight_Manager_System -DarchetypeVersion=1.4 -DinteractiveMode=false
-# install/reinstall dependencies
+```
+
+After installing the JDK, you can run the project by typing the following commands in terminal:  
+```sh
+# load dotenv file
+$ cp ./envs/.env.development.local ./.env && source .env
+# install dependencies
 $ mvn install
+# reinstall dependencies
+$ mvn dependency:purge-local-repository
 # recompile project
 $ mvn clean compile
 # run project
-$ mvn exec:java
+$ mvn exec:java -Dexec.args="arg1 arg2"
 # run tests
 $ mvn test
 # create JAR file
@@ -39,7 +46,8 @@ $ mvn package
 $ zookeeper-server-start configs/zookeeper.properties # start Zookeeper server manager
 $ kafka-server-start configs/server.properties # start Kafka server
 $ kafka-topics --bootstrap-server=localhost:9092 --create --topic=topic01 --partitions=3 --replication-factor=1 # create Kafka topic
-$ kafka-console-producer --bootstrap-server=localhost:9092 --topic=topic01 # create Kafka producer
+$ kafka-console-producer --bootstrap-server=localhost:9092 --topic=topic01 --property="parse.key=true" --property="key.separator=:" # create Kafka producer
+
 $ kafka-console-consumer --bootstrap-server=localhost:9092 --topic=topic01 --group=G1 # create Kafka consumer (with group)
 
 $ kafka-topics --bootstrap-server=localhost:9092 --list # list topics
@@ -53,7 +61,7 @@ $ kafka-consumer-groups.sh --bootstrap-server=localhost:9092 -—describe --grou
 #### TODO
 
 - `docs`: documentação de execução, arquitetura e funcionamento
-	* [ ] README: execução
+	* [x] README: execução
 	* [ ] Figma: arquitetura
 	* [ ] LaTeX: funcionamento
 - **Flight Manager**
@@ -73,7 +81,7 @@ $ kafka-consumer-groups.sh --bootstrap-server=localhost:9092 -—describe --grou
 				- Gates
 		- `integration`: serviços de comunicação
 			- `queue`: messageria
-				* [ ] KafkaAdminClient
+				* [x] KafkaAdminClient
 					- KafkaConsumers
 					- KafkaProducers
 				* HttpClient

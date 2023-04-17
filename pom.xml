@@ -18,14 +18,13 @@
 	</properties>
 
 	<dependencies>
-		<!-- Apache Kafka Clients -->
+		<!-- Apache Kafka -->
 		<dependency>
 			<groupId>org.apache.kafka</groupId>
 			<artifactId>kafka-clients</artifactId>
 			<version>3.4.0</version>
 			<scope>compile</scope>
 		</dependency>
-		<!-- Apache Kafka Streams -->
 		<dependency>
 			<groupId>org.apache.kafka</groupId>
 			<artifactId>kafka-streams</artifactId>
@@ -37,7 +36,7 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-simple</artifactId>
 			<version>1.7.25</version>
-			<scope>test</scope>
+			<scope>compile</scope>
 		</dependency>
 		<!-- Junit Tests -->
 		<dependency>

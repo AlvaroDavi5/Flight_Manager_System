@@ -14,9 +14,12 @@
 *.csv
 *.pdf
 
+# dotenv files
+.env*
+
 # others
 TODO.txt
 
 
 # not ignore input test files
-!/docs
+!/envs/.env.development.local
