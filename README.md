@@ -67,6 +67,7 @@ $ kafka-consumer-groups.sh --bootstrap-server=localhost:9092 -—describe --grou
 - **Flight Manager**
 	- `domain`: entidades de ação e registro
 		- `entities`: entidades de ação e registro
+			* [x] _App_ [ação]
 			* [ ] _FlightManager_ [ação]
 				* [ ] _Airport_ [ação]
 					* [ ] _Gate_ [registro]
@@ -79,6 +80,8 @@ $ kafka-consumer-groups.sh --bootstrap-server=localhost:9092 -—describe --grou
 			* [ ] MySQLClient
 				- Flights
 				- Gates
+		- `cache`: armazenamento temporário de registros e consultas
+			* [ ] _RedisClient_
 		- `integration`: serviços de comunicação
 			- `queue`: messageria
 				* [x] KafkaAdminClient
@@ -86,8 +89,6 @@ $ kafka-consumer-groups.sh --bootstrap-server=localhost:9092 -—describe --grou
 					- KafkaProducers
 				* HttpClient
 					* [ ] _OpenSkyClient_
-			- `cache`: armazenamento temporário de registros e consultas
-				* [ ] _RedisClient_
 	- `interface`: endpoints HTTP para consulta aos registros
 - **Control Tower**
 	* [ ] _Reporter_

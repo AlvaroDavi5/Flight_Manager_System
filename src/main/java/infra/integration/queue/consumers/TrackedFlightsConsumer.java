@@ -5,15 +5,15 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import infra.integration.kafka.KafkaAdminClient;
 import infra.integration.kafka.KafkaAdminClient.ConsumerHandler;
 
-public class ControlTowerReportsConsumer {
+public class TrackedFlightsConsumer {
 	private KafkaAdminClient kafkaClient;
 	private KafkaConsumer<String, String> consumer;
 
-	public ControlTowerReportsConsumer(KafkaAdminClient kafkaClient) {
+	public TrackedFlightsConsumer(KafkaAdminClient kafkaClient) {
 		this.kafkaClient = kafkaClient;
 		this.consumer = this.kafkaClient.createConsumer(
 				this.kafkaClient.getConsumersProperties(),
-				"ControlTowerReportsConsumerGroup");
+				"TrackedFlightsConsumerGroup");
 	}
 
 	public KafkaConsumer<String, String> getConsumer() {

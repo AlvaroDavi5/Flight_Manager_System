@@ -6,16 +6,16 @@ import java.util.Properties;
 import org.slf4j.Logger;
 import infra.integration.kafka.KafkaAdminClient;
 import infra.integration.queue.producers.NotificationsProducer;
-import infra.integration.queue.consumers.ControlTowerReportsConsumer;
-import infra.integration.queue.consumers.FlightTrackerConsumer;
+import infra.integration.queue.consumers.TowerReportsConsumer;
+import infra.integration.queue.consumers.TrackedFlightsConsumer;
 import infra.logging.AppLogger;
 
 public class App {
 	private KafkaAdminClient kafkaClient;
 	private Logger logger;
 	private NotificationsProducer notificationsProducer;
-	private ControlTowerReportsConsumer controlTowerReportsConsumer;
-	private FlightTrackerConsumer flightTrackerConsumer;
+	private TowerReportsConsumer towerReportsConsumer;
+	private TrackedFlightsConsumer trackedFlightsConsumer;
 
 	public App(Properties producersProps, Properties consumerProps) {
 		this.kafkaClient = new KafkaAdminClient(producersProps, consumerProps);
@@ -24,8 +24,8 @@ public class App {
 		this.logger = logger.getLogger();
 
 		this.notificationsProducer = new NotificationsProducer(this.kafkaClient);
-		this.controlTowerReportsConsumer = new ControlTowerReportsConsumer(this.kafkaClient);
-		this.flightTrackerConsumer = new FlightTrackerConsumer(this.kafkaClient);
+		this.towerReportsConsumer = new TowerReportsConsumer(this.kafkaClient);
+		this.trackedFlightsConsumer = new TrackedFlightsConsumer(this.kafkaClient);
 	}
 
 	public void start() {
@@ -39,7 +39,7 @@ public class App {
 		this.notificationsProducer.sendMessage(
 				"clientSubscriptions", 2,
 				msgKey, message.toString());
-		this.controlTowerReportsConsumer.listenMessages("controlTowerReports");
-		this.flightTrackerConsumer.listenMessages("trackedFlights");
+		this.towerReportsConsumer.listenMessages("towerReports");
+		this.trackedFlightsConsumer.listenMessages("trackedFlights");
 	}
 }

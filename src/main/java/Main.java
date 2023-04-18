@@ -21,10 +21,11 @@ public class Main {
 			App app = new App(producersProperties, consumerProperties);
 			app.start();
 		} catch (Error error) {
-			System.out.println("Main.Error: " + error.getMessage());
+			System.out.print("Main.Error → ");
+			error.printStackTrace();
 			System.exit(0);
 		} catch (Exception exception) {
-			System.out.println("Main.Exception:");
+			System.out.print("Main.Exception → ");
 			exception.printStackTrace();
 			System.exit(1);
 		}
