@@ -12,6 +12,11 @@ First assignment for the discipline  ```Tópicos Especiais em Informática IV (E
 
 ---
 
+
+## Architecture
+
+[Back-End Architecture](https://www.figma.com/file/DLgbATt7o29ccL3Qz8Gc2r/Arquitetura-Orienta%C3%A7%C3%A3o-a-Eventos)  
+
 ## How to run the project
 
 To run this project, you need to have the [JDK version 11](https://www.oracle.com/br/java/technologies/javase/jdk11-archive-downloads.html) or higher installed and these libraries: [Apache Kafka](https://kafka.apache.org/) and [Apache Maven](https://maven.apache.org/index.html).  
@@ -62,7 +67,7 @@ $ kafka-consumer-groups.sh --bootstrap-server=localhost:9092 -—describe --grou
 
 - `docs`: documentação de execução, arquitetura e funcionamento
 	* [x] README: execução
-	* [ ] Figma: arquitetura
+	* [x] Figma: arquitetura
 	* [ ] LaTeX: funcionamento
 - **Flight Manager**
 	- `domain`: entidades de ação e registro
