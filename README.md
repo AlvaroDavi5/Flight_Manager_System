@@ -90,11 +90,13 @@ $ kafka-consumer-groups.sh --bootstrap-server=localhost:9092 -—describe --grou
 		- `integration`: serviços de comunicação
 			- `queue`: messageria
 				* [x] KafkaAdminClient
-					- KafkaConsumers
-					- KafkaProducers
+					- [x] KafkaConsumers
+					- [x] KafkaProducers
 				* HttpClient
 					* [ ] _OpenSkyClient_
 	- `interface`: endpoints HTTP para consulta aos registros
+		- [ ] `[GET] /flights-status`
+		- [ ] `[POST] /flight-manager/{flightId}`
 - **Control Tower**
 	* [ ] _Reporter_
 		* Producer
