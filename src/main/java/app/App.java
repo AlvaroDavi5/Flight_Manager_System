@@ -38,8 +38,16 @@ public class App {
 
 		this.notificationsProducer.sendMessage(
 				"clientSubscriptions", 2,
-				msgKey, message.toString());
-		this.towerReportsConsumer.listenMessages("towerReports");
-		this.trackedFlightsConsumer.listenMessages("trackedFlights");
+				msgKey, message);
+		this.towerReportsConsumer.subscribe("towerReports");
+		this.trackedFlightsConsumer.subscribe("trackedFlights");
+		this.startConsumers();
+	}
+
+	private void startConsumers() {
+		while (true) {
+			this.towerReportsConsumer.runPolling();
+			this.trackedFlightsConsumer.runPolling();
+		}
 	}
 }

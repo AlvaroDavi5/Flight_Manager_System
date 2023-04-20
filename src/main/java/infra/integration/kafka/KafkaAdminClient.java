@@ -106,19 +106,19 @@ public class KafkaAdminClient {
 		return new KafkaConsumer<String, String>(props);
 	}
 
-	public void listenMessages(KafkaConsumer<String, String> consumer, String topicName, ConsumerHandler handler) {
-
+	public void subscribe(KafkaConsumer<String, String> consumer, String topicName) {
 		consumer.subscribe(Arrays.asList(topicName));
-		while (true) {
-			ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));
+	}
 
-			for (ConsumerRecord<String, String> record : records) {
-				this.logger.info(
-						"Received message.\n"
-								+ "\tKey: " + record.key() + "\n"
-								+ "\tTimestamp: " + record.timestamp() + "\n");
-				handler.handleMessage(record);
-			}
+	public void runPolling(KafkaConsumer<String, String> consumer, ConsumerHandler handler) {
+		ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));
+
+		for (ConsumerRecord<String, String> record : records) {
+			this.logger.info(
+					"Received new message.\n"
+							+ "\tKey: " + record.key() + "\n"
+							+ "\tTimestamp: " + record.timestamp() + "\n");
+			handler.handleMessage(record);
 		}
 	}
 }
