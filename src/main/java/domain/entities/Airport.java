@@ -36,7 +36,7 @@ public class Airport {
 	}
 
 	public Gate getGate(int gateNumber) {
-		return this.gatesList.get(gateNumber);
+		return this.gatesList.get(gateNumber - 1);
 	}
 
 	public void updateGate(int gateNumber, String status) {

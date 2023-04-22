@@ -2,8 +2,9 @@
 # editor/IDE settings
 *.vscode
 
-# output, test and data files
+# output, test, data and properties files
 /data
+*.properties
 
 # build files and other files
 /target
@@ -21,5 +22,6 @@
 TODO.txt
 
 
-# not ignore input test files
+# not ignore specific files
 !/envs/.env.development.local
+!/configs

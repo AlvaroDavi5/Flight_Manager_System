@@ -16,9 +16,9 @@ public class Main {
 			FileUtils utils = new FileUtils();
 
 			Properties producersProperties = utils.readPropertiesFile(args[0]);
-			Properties consumerProperties = utils.readPropertiesFile(args[1]);
+			Properties consumersProperties = utils.readPropertiesFile(args[1]);
 
-			App app = new App(producersProperties, consumerProperties);
+			App app = new App(producersProperties, consumersProperties);
 			app.start();
 		} catch (Error error) {
 			System.out.print("Main.Error → ");
