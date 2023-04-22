@@ -5,12 +5,15 @@ import org.apache.kafka.clients.producer.KafkaProducer;
 import infra.integration.kafka.KafkaAdminClient;
 import app.utils.ParserUtils;
 
-public class NotificationsProducer {
+public class FlightNotificationsProducer {
+	private String flightNotificationsTopic;
 	private KafkaAdminClient kafkaClient;
 	private KafkaProducer<String, String> producer;
 
-	public NotificationsProducer(KafkaAdminClient kafkaClient) {
+	public FlightNotificationsProducer(KafkaAdminClient kafkaClient) {
 		this.kafkaClient = kafkaClient;
+		this.flightNotificationsTopic = System.getenv("FLIGHT_NOTIFICATIONS_TOPIC");
+
 		this.producer = this.kafkaClient.createProducer(
 				this.kafkaClient.getProducersProperties());
 	}
@@ -23,9 +26,9 @@ public class NotificationsProducer {
 		return this.kafkaClient.sendMessage(this.producer, topicName, partitionSize, key, value);
 	}
 
-	public Boolean sendMessage(String topicName, int partitionSize, String key, HashMap<String, Object> value) {
+	public Boolean sendMessage(int partitionSize, String key, HashMap<String, Object> value) {
 		ParserUtils parser = new ParserUtils();
-		return this.kafkaClient.sendMessage(this.producer, topicName, partitionSize, key,
+		return this.kafkaClient.sendMessage(this.producer, this.flightNotificationsTopic, partitionSize, key,
 				parser.hashMapToStringfiedJson(value, false));
 	}
 }
