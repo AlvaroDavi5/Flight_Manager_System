@@ -64,53 +64,69 @@ $ kafka-consumer-groups.sh --bootstrap-server=localhost:9092 -—describe --grou
 ---
 
 #### TODO
-
-- `docs`: documentação de execução, arquitetura e funcionamento
-	* [x] README: execução
-	* [x] Figma: arquitetura
-	* [ ] LaTeX: funcionamento
+- `docs`: documentation of execution, architecture and operation
+	* [x] README: execution
+	* [x] Figma: architecture
+	* [ ] LaTeX: operation
 - **Flight Manager**
-	- `domain`: entidades de ação e registro
-		- `entities`: entidades de ação e registro
-			* [x] _App_ [ação]
-			* [ ] _FlightManager_ [ação]
-				* [ ] _Airport_ [ação]
-					* [ ] _Gate_ [registro]
-				* [ ] _Flight_ [ação]
-					* [ ] _Airplane_ [registro]
-		- `enums`: valores reservados
-	- `app`: lógica de operations, services e strategies
+	> Consumes landing report events and performs logistics (rejects or accepts).  
+	> Consumes air traffic information events (flight tracking and weather conditions) and predicts possible logistics issues.  
+	> Produces takeoff authorization events.  
+	> Produces flight status notification events.  
+	- `domain`: action and registry entities
+		- `entities`: action and registry entities
+			* [x] _App_ [action]
+				* [x] _Airport_ [action]
+					* [x] _Gate_ [registry]
+					* [ ] _Flight_ [registry]
+		- `enums`: reserved values
+			* [x] _LogisticStatusEnum_ [enum]
+			* [x] _FlightStatusEnum_ [enum]
+			* [x] _PanelStatusEnum_ [enum]
+	- `app`: operations, services, and strategies logic
+		* [ ] _FlightManagerService_ [action]
 	- `infra`:
-		- `database`: armazenamento de registros
-			* [ ] MySQLClient
-				- Flights
+		- `database`: storage of records
+			* [ ] _MySQLClient_
 				- Gates
-		- `cache`: armazenamento temporário de registros e consultas
+				- Flights
+		- `cache`: temporary storage of records and queries
 			* [ ] _RedisClient_
-		- `integration`: serviços de comunicação
-			- `queue`: messageria
-				* [x] KafkaAdminClient
-					- [x] KafkaConsumers
-					- [x] KafkaProducers
-				* HttpClient
-					* [ ] _OpenSkyClient_
-	- `interface`: endpoints HTTP para consulta aos registros
-		- [ ] `[GET] /flights-status`
-		- [ ] `[POST] /flight-manager/{flightId}`
+		- `integration`: communication services
+			- `queue`: messaging
+				* [x] _KafkaAdminClient_
+					- [x] _TowerReportsConsumer_
+					- [x] _AirTrafficConsumer_
+					- [x] _FlightNotificationsProducer_
+					- [x] _FlightLogisticProducer_
+	- `interface`: HTTP endpoints for record querying
+		- [ ] `[GET] /flights-status` - list of all flights updated within a time interval (cached)
+		- [ ] `[GET] /free-gates` - available gates (cached)
+		- [ ] `[GET] /flight-manager/{flightId}` - flight information
+		- [ ] `[POST] /flight-manager/{flightId}` - manage flight
 - **Control Tower**
+	> Generates tower report events with information about new landings (registered or not).  
+	> Consumes flight release notification events.  
+	> Generates tower report events with takeoff response.  
 	* [ ] _Reporter_
 		* Producer
 			* [ ] _KafkaProducer_
+		* Consumer
+			* [ ] _KafkaConsumer_
 	* [ ] _FlightTracker_
 		* [ ] _Cron_
-		* HttpClient
+		* HttpClients
 			* [ ] _OpenSkyClient_
+			* [ ] _OpenMeteoClient_
+			* [ ] _FlightManagerClient_
 - **Flight-Status Panel**
+	> Displays the list of flights and their status within a time interval.  
 	* [ ] _PanelSync_
 		* [ ] _Cron_
 	* HttpClient
 		* [ ] _FlightManagerClient_
 - **Client Subscriptions**
+	> Notifies flight status change events.  
 	* [ ] _Subscription_
 	* Consumer
 		* [ ] _KafkaConsumer_
