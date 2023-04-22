@@ -8,7 +8,7 @@ First assignment for the discipline  ```Tópicos Especiais em Informática IV (E
 
 ### Universidade Federal do Espirito Santo ([UFES](https://ufes.br))
 
-<img source="./docs/img/marca_ufes.png" alt="ufes logo" height="150px" width="250px">  
+<img src="./docs/img/marca_ufes.png" alt="ufes logo" height="150px" width="250px">  
 
 ---
 
