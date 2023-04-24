@@ -7,7 +7,7 @@ public class Gate {
 
 	public Gate(int number) {
 		this.number = number;
-		this.isOpen = true;
+		this.isOpen = false;
 		this.flightCode = null;
 	}
 
