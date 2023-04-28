@@ -13,13 +13,15 @@ First assignment for the discipline  ```Tópicos Especiais em Informática IV (E
 ---
 
 
-## Architecture
+## Architecture and Backing Services
 
-[Back-End Architecture](https://www.figma.com/file/DLgbATt7o29ccL3Qz8Gc2r/Arquitetura-Orienta%C3%A7%C3%A3o-a-Eventos)  
+[Back-End Architecture](https://www.figma.com/file/DLgbATt7o29ccL3Qz8Gc2r/Flight-Manager-Architecture)  
+[OpenSky API](https://openskynetwork.github.io/opensky-api/index.html)  
+[OpenMeteo API](https://open-meteo.com/)  
 
 ## How to run the project
 
-To run this project, you need to have the [JDK version 11](https://www.oracle.com/br/java/technologies/javase/jdk11-archive-downloads.html) or higher installed and these libraries: [Apache Kafka](https://kafka.apache.org/) and [Apache Maven](https://maven.apache.org/index.html).  
+To run this project, is recomended to use [JDK version 18](https://www.oracle.com/br/java/technologies/javase/jdk18-archive-downloads.html) or higher installed and these libraries: [Apache Kafka 3.4.0](https://downloads.apache.org/kafka/3.4.0/RELEASE_NOTES.html) and [Apache Maven 3.5.0](https://maven.apache.org/docs/3.5.0/release-notes.html).  
 This project has created using:   
 ```sh
 # create Maven project
