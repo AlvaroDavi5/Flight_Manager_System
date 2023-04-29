@@ -8,7 +8,7 @@ public class Airport {
 	private int gatesAmount;
 	private LinkedList<Gate> gatesList;
 
-	public Airport(String IATA, String ICAO, int gatesAmount) {
+	public Airport(String ICAO, String IATA, int gatesAmount) {
 		this.IATA = IATA;
 		this.ICAO = ICAO;
 		this.gatesAmount = gatesAmount;
@@ -19,12 +19,12 @@ public class Airport {
 		}
 	}
 
-	public String getIATA() {
-		return this.IATA;
-	}
-
 	public String getICAO() {
 		return this.ICAO;
+	}
+
+	public String getIATA() {
+		return this.IATA;
 	}
 
 	public int getGatesAmount() {

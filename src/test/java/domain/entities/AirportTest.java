@@ -8,8 +8,8 @@ public class AirportTest {
 
 	@Test
 	public void testInstantiation() {
-		assertEquals("SBGR", this.airport.getIATA());
-		assertEquals("GRU", this.airport.getICAO());
+		assertEquals("SBGR", this.airport.getICAO());
+		assertEquals("GRU", this.airport.getIATA());
 		assertEquals(200, this.airport.getGatesAmount());
 		assertEquals(200, this.airport.getGatesList().size());
 	}
@@ -23,6 +23,6 @@ public class AirportTest {
 		assertEquals(145, this.airport.getGate(145).getNumber());
 		assertEquals("CLOSED", this.airport.getGate(145).getStatus());
 		assertEquals("OPENED", this.airport.getGate(10).getStatus());
-		assertEquals("OPENED", this.airport.getGate(5).getStatus());
+		assertEquals("CLOSED", this.airport.getGate(5).getStatus());
 	}
 }
