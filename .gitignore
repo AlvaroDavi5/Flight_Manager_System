@@ -4,6 +4,7 @@
 
 # output, test and data files
 /data
+/logs
 
 # build files and other files
 /target
