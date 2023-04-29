@@ -1,4 +1,8 @@
-#!/bin/zsh
+#!/bin/bash
 
-echo "Starting ZooKeeper...";
-zookeeper-server-start configs/zookeeper.properties;
+
+padrao="\033[0m"
+amarelo="\033[1;33m"
+
+echo -e "\n ${amarelo} Starting ZooKeeper... ${padrao} \n"
+zookeeper-server-start src/main/java/configs/zookeeper.properties;
