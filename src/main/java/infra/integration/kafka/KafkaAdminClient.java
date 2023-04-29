@@ -13,7 +13,7 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
-import org.slf4j.Logger;
+import org.apache.logging.log4j.Logger;
 import infra.logging.AppLogger;
 
 public class KafkaAdminClient {

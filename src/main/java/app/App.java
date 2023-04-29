@@ -1,7 +1,7 @@
 package app;
 
 import java.util.Properties;
-import org.slf4j.Logger;
+import org.apache.logging.log4j.Logger;
 import infra.logging.AppLogger;
 import infra.integration.kafka.KafkaAdminClient;
 import infra.integration.queue.producers.FlightLogisticProducer;
