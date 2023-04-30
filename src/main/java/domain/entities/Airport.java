@@ -27,6 +27,10 @@ public class Airport {
 		return this.IATA;
 	}
 
+	public void setIATA(String IATA) {
+		this.IATA = IATA;
+	}
+
 	public int getGatesAmount() {
 		return this.gatesAmount;
 	}
