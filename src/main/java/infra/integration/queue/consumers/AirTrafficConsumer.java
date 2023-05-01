@@ -44,6 +44,6 @@ public class AirTrafficConsumer {
 				"Message Key: " + key +
 						"\nMessage Value: " + parser.hashMapToStringfiedJson(value, true));
 
-		this.flightManagerService.dispatchMessage();
+		this.flightManagerService.handleAirTrafficMessage(value);
 	}
 }

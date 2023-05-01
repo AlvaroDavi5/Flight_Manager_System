@@ -70,6 +70,10 @@ $ kafka-consumer-groups.sh --bootstrap-server=localhost:9092 -—describe --grou
 	* [x] README: execution
 	* [x] Figma: architecture
 	* [ ] LaTeX: operation
+		1. Architecture
+		2. Infrastructure
+		3. Classes
+		4. Logic
 - **Flight Manager**
 	> Consumes landing report events and performs logistics (rejects or accepts).  
 	> Consumes air traffic information events (flight tracking and weather conditions) and predicts possible logistics issues.  

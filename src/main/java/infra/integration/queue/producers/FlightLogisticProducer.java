@@ -22,8 +22,8 @@ public class FlightLogisticProducer {
 		return this.producer;
 	}
 
-	public Boolean sendMessage(String topicName, int partitionSize, String key, String value) {
-		return this.kafkaClient.sendMessage(this.producer, topicName, partitionSize, key, value);
+	public Boolean sendMessage(int partitionSize, String key, String value) {
+		return this.kafkaClient.sendMessage(this.producer, this.flightLogisticTopic, partitionSize, key, value);
 	}
 
 	public Boolean sendMessage(int partitionSize, String key, HashMap<String, Object> value) {

@@ -3,16 +3,16 @@ package app;
 import java.util.Properties;
 import org.apache.logging.log4j.Logger;
 import infra.logging.AppLogger;
+import app.services.FlightManagerService;
 import infra.integration.kafka.KafkaAdminClient;
 import infra.integration.queue.producers.FlightLogisticProducer;
 import infra.integration.queue.producers.FlightNotificationsProducer;
 import infra.integration.queue.consumers.TowerReportsConsumer;
 import infra.integration.queue.consumers.AirTrafficConsumer;
-import app.services.FlightManagerService;
 
 public class App {
-	private KafkaAdminClient kafkaClient;
 	private Logger logger;
+	private KafkaAdminClient kafkaClient;
 	private TowerReportsConsumer towerReportsConsumer;
 	private AirTrafficConsumer airTrafficConsumer;
 	private FlightManagerService flightManagerService;

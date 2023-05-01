@@ -77,7 +77,7 @@ public class KafkaAdminClient {
 
 		Callback callback = (data, error) -> {
 			if (error != null) {
-				this.logger.info("Error to send message: " + error.getMessage());
+				this.logger.error("Error to send message: " + error.getMessage());
 				return;
 			}
 			this.logger.info(
@@ -118,7 +118,11 @@ public class KafkaAdminClient {
 					"Received new message.\n"
 							+ "\tKey: " + record.key() + "\n"
 							+ "\tTimestamp: " + record.timestamp() + "\n");
-			handler.handleMessage(record);
+			try {
+				handler.handleMessage(record);
+			} catch (Exception exception) {
+				this.logger.error("Error to handle message: " + exception.getMessage());
+			}
 		}
 	}
 }
