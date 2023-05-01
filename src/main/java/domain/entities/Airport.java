@@ -3,8 +3,9 @@ package domain.entities;
 import java.util.LinkedList;
 
 public class Airport {
-	private String IATA;
 	private String ICAO;
+	private String IATA;
+	private boolean airstripFree;
 	private int gatesAmount;
 	private LinkedList<Gate> gatesList;
 
@@ -31,6 +32,18 @@ public class Airport {
 		this.IATA = IATA;
 	}
 
+	public boolean isAirstripFree() {
+		return this.airstripFree;
+	}
+
+	public void openAirstrip() {
+		this.airstripFree = true;
+	}
+
+	public void closeAirstrip() {
+		this.airstripFree = false;
+	}
+
 	public int getGatesAmount() {
 		return this.gatesAmount;
 	}
@@ -43,14 +56,34 @@ public class Airport {
 		return this.gatesList.get(gateNumber - 1);
 	}
 
-	public void updateGate(int gateNumber, String status) {
-		Gate gate = this.getGate(gateNumber);
-		gate.setStatus(status);
+	public Gate getLastFreeGate() {
+		Gate lastGate = null;
+		LinkedList<Gate> gates = this.getGatesList();
+
+		for (int i = 0; i < gates.size(); i++) {
+			Gate gate = this.gatesList.get(i);
+			if (gate.isFree())
+				lastGate = gate;
+		}
+
+		return lastGate;
 	}
 
-	public void updateGate(int gateNumber, String status, String flightCode) {
-		Gate gate = this.getGate(gateNumber);
-		gate.setStatus(status);
-		gate.setFlightCode(flightCode);
+	public void updateGateDocking(Gate gate, boolean isFreeToDock) {
+		if (gate == null)
+			return;
+
+		if (isFreeToDock == true)
+			gate.openDocking();
+		else if (isFreeToDock == false)
+			gate.closeDocking();
+	}
+
+	public void assignFlightToGate(Flight flight, Gate gate) {
+		if (gate != null && flight != null) {
+			flight.setGateNumber(gate.getNumber());
+			gate.setFlightCode(flight.getFlightCode());
+			gate.setFlight(flight);
+		}
 	}
 }

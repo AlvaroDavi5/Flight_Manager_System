@@ -16,13 +16,13 @@ public class AirportTest {
 
 	@Test
 	public void testPersistedGateList() {
-		this.airport.getGate(145).setStatus("CLOSED");
-		this.airport.getGate(10).setStatus("OPENED");
-		this.airport.getGate(5).setStatus("INVALID");
+		this.airport.getGate(145).closeBoarding();
+		this.airport.getGate(10).openBoarding();
+		this.airport.updateGateDocking(this.airport.getGate(5), false);
 
 		assertEquals(145, this.airport.getGate(145).getNumber());
-		assertEquals("CLOSED", this.airport.getGate(145).getStatus());
-		assertEquals("OPENED", this.airport.getGate(10).getStatus());
-		assertEquals("CLOSED", this.airport.getGate(5).getStatus());
+		assertEquals(false, this.airport.getGate(145).isOpen());
+		assertEquals(true, this.airport.getGate(10).isOpen());
+		assertEquals(false, this.airport.getGate(5).isFree());
 	}
 }

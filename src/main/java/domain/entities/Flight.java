@@ -1,9 +1,14 @@
 package domain.entities;
 
 import java.util.HashMap;
+import domain.enums.FlightStatusEnum;
+import domain.enums.LogisticStatusEnum;
 
 public class Flight {
 	private String code;
+	private int gateNumber;
+	private FlightStatusEnum flightStatus;
+	private LogisticStatusEnum logisticStatus;
 	private String departureAirportCode;
 	private String arrivalAirportCode;
 	private int departureAirportCandidates;
@@ -95,5 +100,43 @@ public class Flight {
 	public void setArrivalDistanceInMeters(Integer vertical, Integer horizontal) {
 		this.arrivalDistanceInMeters.put("vertical", vertical);
 		this.arrivalDistanceInMeters.put("horizontal", horizontal);
+	}
+
+	public FlightStatusEnum getFlightStatus() {
+		return this.flightStatus;
+	}
+
+	public void setFlightStatus(FlightStatusEnum status) {
+		this.flightStatus = status;
+	}
+
+	public void setFlightStatus(String status) {
+		FlightStatusEnum flightStatusValue = FlightStatusEnum.valueOf(status);
+
+		if (flightStatusValue != null)
+			this.flightStatus = flightStatusValue;
+	}
+
+	public LogisticStatusEnum getLogisticStatus() {
+		return this.logisticStatus;
+	}
+
+	public void setLogisticStatus(LogisticStatusEnum status) {
+		this.logisticStatus = status;
+	}
+
+	public void setLogisticStatus(String status) {
+		LogisticStatusEnum logisticStatusValue = LogisticStatusEnum.valueOf(status);
+
+		if (logisticStatusValue != null)
+			this.logisticStatus = logisticStatusValue;
+	}
+
+	public int getGateNumber() {
+		return this.gateNumber;
+	}
+
+	public void setGateNumber(int gateNumber) {
+		this.gateNumber = gateNumber;
 	}
 }

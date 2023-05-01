@@ -44,6 +44,6 @@ public class TowerReportsConsumer {
 				"Message Key: " + key +
 						"\nMessage Value: " + parser.hashMapToStringfiedJson(value, true));
 
-		this.flightManagerService.dispatchMessage();
+		this.flightManagerService.handleTowerReportMessage(value);
 	}
 }
