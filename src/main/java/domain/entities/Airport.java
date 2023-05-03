@@ -1,6 +1,7 @@
 package domain.entities;
 
 import java.util.LinkedList;
+import java.util.HashMap;
 
 public class Airport {
 	private String ICAO;
@@ -22,6 +23,10 @@ public class Airport {
 
 	public String getICAO() {
 		return this.ICAO;
+	}
+
+	private void setICAO(String ICAO) {
+		this.ICAO = ICAO;
 	}
 
 	public String getIATA() {
@@ -46,6 +51,10 @@ public class Airport {
 
 	public int getGatesAmount() {
 		return this.gatesAmount;
+	}
+
+	private void setGatesAmount(int amount) {
+		this.gatesAmount = amount;
 	}
 
 	public LinkedList<Gate> getGatesList() {
@@ -81,9 +90,30 @@ public class Airport {
 
 	public void assignFlightToGate(Flight flight, Gate gate) {
 		if (gate != null && flight != null) {
-			flight.setGateNumber(gate.getNumber());
+			flight.setGateNumber(gate.getGateNumber());
 			gate.setFlightCode(flight.getFlightCode());
 			gate.setFlight(flight);
 		}
+	}
+
+	public void fromHashMap(HashMap<String, Object> map) {
+		this.setICAO((String) map.get("ICAO"));
+		this.setIATA((String) map.get("IATA"));
+		if ((boolean) map.get("airstripFree"))
+			this.openAirstrip();
+		else
+			this.closeAirstrip();
+		this.setGatesAmount((int) map.get("gatesAmount"));
+	}
+
+	public HashMap<String, Object> toHashMap() {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+
+		map.put("ICAO", this.getICAO());
+		map.put("IATA", this.getIATA());
+		map.put("airstripFree", this.isAirstripFree());
+		map.put("gatesAmount", this.getGatesAmount());
+
+		return map;
 	}
 }

@@ -19,6 +19,21 @@ First assignment for the discipline  ```Tópicos Especiais em Informática IV (E
 [OpenSky API](https://openskynetwork.github.io/opensky-api/index.html)  
 [OpenMeteo API](https://open-meteo.com/)  
 
+## Main technologies
+
+- Java: programming laguage;
+- JDK: Java Development Kit (compiler, runtime, VM...);
+- Maven: Java project manager;
+- Spring Framework: Multi-task framework that can be used for:
+	* Boot: Spring initial setup;
+	* Web: HTTP server creation;
+- JPA: SQL and NoSQL databases management by abstraction;
+- PostgreSQL: Relational database;
+- Redis: Cache and in-memory key-value NoSQL database;
+- Log4J: Custom logger with appenders;
+- Junit: Testing framework;
+- Docker: Services isolation and process resources management with containers;
+
 ## How to run the project
 
 To run this project, is recomended to use [JDK version 11](https://www.oracle.com/br/java/technologies/javase/jdk11-archive-downloads.html) or higher installed and these libraries: [Apache Kafka 3.4.0](https://downloads.apache.org/kafka/3.4.0/RELEASE_NOTES.html) and [Apache Maven 3.5.0](https://maven.apache.org/docs/3.5.0/release-notes.html).  

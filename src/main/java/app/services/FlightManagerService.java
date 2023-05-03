@@ -1,12 +1,12 @@
 package app.services;
 
 import java.util.Date;
+import java.util.Calendar;
 import java.util.HashMap;
 import org.apache.logging.log4j.Logger;
 import infra.logging.AppLogger;
 import infra.integration.queue.producers.FlightLogisticProducer;
 import infra.integration.queue.producers.FlightNotificationsProducer;
-import app.utils.ParserUtils;
 import domain.entities.Airport;
 import domain.entities.Gate;
 import domain.entities.Flight;
@@ -16,7 +16,6 @@ import domain.enums.LogisticStatusEnum;
 public class FlightManagerService {
 	private Airport airport;
 	private Logger logger;
-	private ParserUtils parser;
 	private FlightLogisticProducer flightLogisticProducer;
 	private FlightNotificationsProducer flightNotificationsProducer;
 
@@ -26,14 +25,14 @@ public class FlightManagerService {
 
 		AppLogger logger = new AppLogger(this.getClass().getName());
 		this.logger = logger.getLogger();
-		this.parser = new ParserUtils();
 
 		this.flightLogisticProducer = flightLogisticProducer;
 		this.flightNotificationsProducer = flightNotificationsProducer;
 	}
 
 	public void handleTowerReportMessage(HashMap<String, Object> message) {
-		Flight flight = this.parser.mapHashMapOnFlight(message);
+		Flight flight = new Flight(null);
+		flight.fromHashMap(message);
 
 		this.logger.warn(
 				"New report event to flight: " + flight.getFlightCode()
@@ -55,16 +54,22 @@ public class FlightManagerService {
 	}
 
 	public void dispatchFlightLogisticMessage(Flight flight) {
-		String msgKey = flight.getFlightCode() + "#" + new Date().getTime();
-		HashMap<String, Object> message = this.parser.mapFlightOnHashMap(flight);
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(new Date());
+
+		String msgKey = flight.getFlightCode() + "#" + (calendar.getTime()).getTime();
+		HashMap<String, Object> message = flight.toHashMap();
 
 		this.flightLogisticProducer.sendMessage(2,
 				msgKey, message);
 	}
 
 	public void dispatchFlightNotificationMessage(Flight flight) {
-		String msgKey = flight.getFlightCode() + "#" + new Date().getTime();
-		HashMap<String, Object> message = this.parser.mapFlightOnHashMap(flight);
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(new Date());
+
+		String msgKey = flight.getFlightCode() + "#" + (calendar.getTime()).getTime();
+		HashMap<String, Object> message = flight.toHashMap();
 		message.remove("logisticStatus");
 		message.remove("departureAirportCandidates");
 		message.remove("departureDistanceInMeters");

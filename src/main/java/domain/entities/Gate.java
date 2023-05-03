@@ -1,10 +1,12 @@
 package domain.entities;
 
+import java.util.HashMap;
+
 public class Gate {
 	private int number;
 	private boolean isFreeToDock;
 	private boolean isOpenToBoarding;
-	private int boardingDurationInMinutes;
+	private int boardingDuration;
 	private String flightCode;
 	private Flight flight;
 
@@ -12,12 +14,16 @@ public class Gate {
 		this.number = number;
 		this.isFreeToDock = true;
 		this.isOpenToBoarding = false;
-		this.boardingDurationInMinutes = 2 * 60;
+		this.boardingDuration = 2 * 60;
 		this.flightCode = null;
 	}
 
-	public int getNumber() {
+	public int getGateNumber() {
 		return this.number;
+	}
+
+	private void setGateNumber(int gateNumber) {
+		this.number = gateNumber;
 	}
 
 	public boolean isFree() {
@@ -38,19 +44,19 @@ public class Gate {
 
 	public void openBoarding() {
 		this.isOpenToBoarding = true;
-		this.boardingDurationInMinutes = 2 * 60;
+		this.boardingDuration = 2 * 60;
 	}
 
 	public void closeBoarding() {
 		this.isOpenToBoarding = false;
 	}
 
-	public int getBoardingDuration() {
-		return this.boardingDurationInMinutes;
+	public int getBoardingDurationInMinutes() {
+		return this.boardingDuration;
 	}
 
-	public void setBoardingDuration(int durationInMinutes) {
-		this.boardingDurationInMinutes = durationInMinutes;
+	public void setBoardingDurationInMinutes(int durationInMinutes) {
+		this.boardingDuration = durationInMinutes;
 	}
 
 	public String getFlightCode() {
@@ -67,5 +73,33 @@ public class Gate {
 
 	public void setFlight(Flight flight) {
 		this.flight = flight;
+	}
+
+	public void fromHashMap(HashMap<String, Object> map) {
+		this.setGateNumber((int) map.get("number"));
+		if ((boolean) map.get("isFreeToDock"))
+			this.openDocking();
+		else
+			this.closeDocking();
+		if ((boolean) map.get("isOpenToBoarding"))
+			this.openBoarding();
+		else
+			this.closeBoarding();
+		this.setBoardingDurationInMinutes((int) map.get("boardingDurationInMinutes"));
+		this.setFlightCode((String) map.get("flightCode"));
+		if (this.getFlightCode() != this.getFlight().getFlightCode())
+			this.setFlight(null);
+	}
+
+	public HashMap<String, Object> toHashMap() {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+
+		map.put("gateNumber", this.getGateNumber());
+		map.put("isFreeToDock", this.getFlightCode());
+		map.put("isOpenToBoarding", this.getFlightCode());
+		map.put("boardingDuration", this.getFlightCode());
+		map.put("flightCode", this.getFlightCode());
+
+		return map;
 	}
 }
