@@ -121,10 +121,10 @@ $ kafka-consumer-groups.sh --bootstrap-server=localhost:9092 -—describe --grou
 					- [x] _FlightNotificationsProducer_
 					- [x] _FlightLogisticProducer_
 	- `interface`: HTTP endpoints for record querying
-		- [ ] `[GET] /flights-status` - list of all flights updated within a time interval (cached)
-		- [ ] `[GET] /free-gates` - available gates (cached)
-		- [ ] `[GET] /flight-manager/{flightId}` - flight information
-		- [ ] `[POST] /flight-manager/{flightId}` - manage flight
+		- [ ] `[GET] /gates/available` - available gates (cached)
+		- [ ] `[GET] /flights/list` - list of all flights updated within a time interval (cached)
+		- [ ] `[GET] /flights/{flightId}` - flight information
+		- [ ] `[POST] /flights/{flightId}` - manage flight
 - **Control Tower**
 	> Generates tower report events with information about new landings (registered or not).  
 	> Consumes flight release notification events.  

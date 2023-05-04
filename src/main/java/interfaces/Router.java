@@ -4,6 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import interfaces.controllers.*;
 
 @RestController
@@ -15,12 +16,13 @@ public class Router {
 		this.flightController = new FlightController();
 	}
 
+	@RequestMapping("/api")
 	public void start() {
 		SpringApplication.run(Router.class);
 	}
 
-	@RequestMapping("/api/healthCheck")
+	@GetMapping("/healthCheck")
 	public String healthCheck() {
-		return "OK";
+		return "{ \"status\": \"OK\" }";
 	}
 }

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.GetMapping;
-// import org.springframework.http.ResponseEntity;
+import org.springframework.http.ResponseEntity;
 import domain.entities.Flight;
 
 @RestController
@@ -24,17 +24,19 @@ public class FlightController {
 		this.defaultEndDate = (calendar.getTime()).getTime();
 	}
 
-	@GetMapping //("/test")
-	public String test(
+	@GetMapping("/list")
+	public ResponseEntity<Flight> list(
 			@RequestParam(value = "startDate", defaultValue = "") long startDate,
 			@RequestParam(value = "endDate", defaultValue = "") long endDate) {
-		System.out.println("startDate: " + startDate + " endDate: " + endDate);
-		Flight flight = new Flight("test");
-		if (flight.getFlightCode() == null) {
-			return "error";
-			// return ResponseEntity.notFound().build();
+		Flight flight = null;
+
+		if (startDate != 0 && endDate != 0)
+			flight = new Flight("test");
+
+		if (flight != null && flight.getFlightCode() == null) {
+			return ResponseEntity.notFound().build();
 		}
-		return "oi";
-		// return ResponseEntity.ok(flight);
+
+		return ResponseEntity.ok(flight);
 	}
 }
