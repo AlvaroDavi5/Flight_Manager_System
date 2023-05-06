@@ -9,6 +9,7 @@ public enum LogisticStatusEnum {
 	ALLOWED_TO_TAKEOFF, // airplane allowed to takeoff
 	REJECTED_TO_TAKEOFF, // airplane rejected to takeoff
 	TAKED_OFF, // airplane taked off
+	DIVERTED, // flight diverted to a different airport than originally planned
 	TAXIING, // airplane currently moving on the ground and airstrip in use
 	REQUESTING_MAINTENANCE, // airplane requesting maintenance
 	REQUESTING_REFUELING, // airplane requesting refueling

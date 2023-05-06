@@ -8,10 +8,9 @@ public enum FlightStatusEnum {
 	IN_TRANSIT, // airplane currently in route to destination
 	ARRIVED, // flight arrived at its destination
 	GROUNDED, // airplane unable to fly due to maintenance or other issues
-	BOARDING, // passengers boarding the airplane
-	DEBOARDING, // passengers exiting the airplane
+	OPENED, // boarding opened
 	CLOSED, // boarding closed
 	LOADING, // cargo or baggage is being loaded onto the airplane
-	DIVERTED, // flight diverted to a different airport than originally planned
 	CANCELLED, // flight cancelled and airplane not used for the scheduled flight
+	CONCLUDED, // flight concluded, nothing to do next
 }

@@ -129,6 +129,7 @@ $ kafka-consumer-groups.sh --bootstrap-server=localhost:9092 -—describe --grou
 	> Generates tower report events with information about new landings (registered or not).  
 	> Consumes flight release notification events.  
 	> Generates tower report events with takeoff response.  
+	> Generates air traffic information events.  
 	* [ ] _Reporter_
 		* Producer
 			* [ ] _KafkaProducer_
@@ -145,7 +146,7 @@ $ kafka-consumer-groups.sh --bootstrap-server=localhost:9092 -—describe --grou
 	* [ ] _PanelSync_
 		* [ ] _Cron_
 	* RestClient
-		* [ ] _FlightManagerClient_
+		* [ ] _FlightManagerRestClient_
 - **Client Subscriptions**
 	> Notifies flight status change events.  
 	* [ ] _Subscription_

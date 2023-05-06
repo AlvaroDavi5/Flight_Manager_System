@@ -31,7 +31,8 @@
 					1. Manter aeronave em espera por um intervalo de tempo
 					2. Verificar liberação da pista novamente
 			- Se indisponível:
-				1. Rejeitar pouso
+					1. Manter aeronave em espera por um intervalo de tempo
+					2. Verificar disponibilidade dos portões novamente
 		- Se não:
 			1. Rejeitar pouso
 	- Se é partida:
@@ -40,6 +41,7 @@
 			1. Permitir decolagem da aeronave
 		- Se ocupada:
 			1. Manter aeronave pronta para decolagem
+			2. Verificar liberação da pista novamente
 
 ### Tráfego Aéreo
 * Ao receber relatório de tráfego aéreo
@@ -47,8 +49,50 @@
 	- Salvar códigos de vôo em cache
 	- Criar vôo programado no banco de dados
 
+Para cada mudança de status importante, novos eventos são gerados e enviados para os tópicos de logística e notificação.
+
 ---
 
 ## Fluxo Lógico com Base nos Status
 
-...
+`LogisticStatus`, **FlightStatus** e _PanelStatus_
+
+- **SCHEDULED**
+	- _SCHEDULED_
+	- `REQUESTING_LAND`
+		- `REJECTED_TO_LAND`
+			- **HOLDING**
+				- `ALLOWED_TO_LAND`
+				- `DIVERTED`
+					- **CANCELLED**
+					- _CANCELLED_
+		- `ALLOWED_TO_LAND`
+			- `TAXIING`
+				- **ARRIVED**
+			- `REQUESTING_MAINTENANCE` || `REQUESTING_REFUELING`
+				1. **GROUNDED**
+				2. `MAINTENANCE` || `REFUELING`
+				3. **READY**
+			- `LANDED`
+				1. **OPENED**
+					1. _DEBOARDING_
+					2. _BOARDING_
+				2. **CLOSED**
+					- _CLOSED_
+				3. **LOADING**
+				- **READY**
+					- `REQUESTING_TAKEOFF`
+				- **CONCLUDED**
+	- _ON_TIME_
+	- _DELAYED_
+- **READY**
+	- `REQUESTING_TAKEOFF`
+		- `REJECTED_TO_TAKEOFF`
+			- **READY**
+		- `ALLOWED_TO_TAKEOFF`
+			- `TAXIING`
+				- **DEPARTED**
+			- `TAKED_OFF`
+				- **IN_TRANSIT**
+					- `REQUESTING_LAND`
+				- _IN_TRANSIT_
