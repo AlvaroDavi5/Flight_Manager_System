@@ -37,15 +37,13 @@ public class App {
 	}
 
 	public void start() {
-		this.router.start();
 		this.logger.info("App Started");
+		this.router.start();
 		this.startConsumers();
 	}
 
 	private void startConsumers() {
-		while (true) {
-			this.towerReportsConsumer.runPolling();
-			this.airTrafficConsumer.runPolling();
-		}
+		this.towerReportsConsumer.start();
+		this.airTrafficConsumer.start();
 	}
 }

@@ -26,7 +26,7 @@ First assignment for the discipline  ```Tópicos Especiais em Informática IV (E
 - Maven: Java project manager;
 - Spring Framework: Multi-task framework that can be used for:
 	* Boot: Spring initial setup;
-	* Web: HTTP server creation;
+	* Web: HTTP server creation and consume;
 - JPA: SQL and NoSQL databases management by abstraction;
 - PostgreSQL: Relational database;
 - Redis: Cache and in-memory key-value NoSQL database;
@@ -136,15 +136,15 @@ $ kafka-consumer-groups.sh --bootstrap-server=localhost:9092 -—describe --grou
 			* [ ] _KafkaConsumer_
 	* [ ] _FlightTracker_
 		* [ ] _Cron_
-		* HttpClients
-			* [ ] _OpenSkyClient_
-			* [ ] _OpenMeteoClient_
-			* [ ] _FlightManagerClient_
+		* RestClients
+			* [ ] _OpenSkyRestClient_
+			* [ ] _OpenMeteoRestClient_
+			* [ ] _FlightManagerRestClient_
 - **Flight-Status Panel**
 	> Displays the list of flights and their status within a time interval.  
 	* [ ] _PanelSync_
 		* [ ] _Cron_
-	* HttpClient
+	* RestClient
 		* [ ] _FlightManagerClient_
 - **Client Subscriptions**
 	> Notifies flight status change events.  

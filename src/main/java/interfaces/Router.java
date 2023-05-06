@@ -7,21 +7,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import interfaces.controllers.*;
 
-@RestController
 @SpringBootApplication
-public class Router {
+@RestController
+@RequestMapping("/api")
+public class Router extends Thread {
 	FlightController flightController;
 
 	public Router() {
 		this.flightController = new FlightController();
 	}
 
-	@RequestMapping("/api")
-	public void start() {
-		SpringApplication.run(Router.class);
+	@Override
+	public void run() {
+		SpringApplication.run(this.getClass());
 	}
 
-	@GetMapping("/healthCheck")
+	@GetMapping("/healthcheck")
 	public String healthCheck() {
 		return "{ \"status\": \"OK\" }";
 	}
