@@ -1,11 +1,9 @@
 package infra.integration.queue.consumers;
 
-import java.util.HashMap;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import infra.integration.kafka.KafkaAdminClient;
 import infra.integration.kafka.KafkaAdminClient.ConsumerHandler;
-import app.utils.ParserUtils;
 
 public abstract class AbstractConsumer extends Thread {
 	private KafkaAdminClient kafkaClient;
@@ -32,13 +30,5 @@ public abstract class AbstractConsumer extends Thread {
 	}
 
 	public void handleMessage(ConsumerRecord<String, String> record) {
-		ParserUtils parser = new ParserUtils();
-
-		String key = record.key();
-		HashMap<String, Object> value = parser.stringfiedJsonToHashMap(record.value());
-
-		System.out.println(
-				"Message Key: " + key +
-						"\nMessage Value: " + parser.hashMapToStringfiedJson(value, true));
 	}
 }

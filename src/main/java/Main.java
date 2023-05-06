@@ -7,8 +7,6 @@ import app.App;
 
 public class Main {
 	public static void main(String[] args) throws IOException {
-		System.out.println("----- STARTED -----\n\n");
-
 		try {
 			if (args.length < 2)
 				throw new Error("Invalid number of arguments (expected 2 arguments)", null);
@@ -29,7 +27,5 @@ public class Main {
 			exception.printStackTrace();
 			System.exit(1);
 		}
-
-		System.out.println("\n\n----- FINISHED -----");
 	}
 }

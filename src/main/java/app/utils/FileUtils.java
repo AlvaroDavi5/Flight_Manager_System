@@ -19,7 +19,7 @@ public class FileUtils {
 			props.load(buffer);
 			buffer.close();
 		} catch (Exception exception) {
-			System.out.println("FileUtils.Exception: " + exception.getMessage());
+			System.out.println("FileUtils.Exception → " + exception.getMessage());
 		}
 
 		return props;
