@@ -20,16 +20,14 @@ public class App {
 	private FlightManagerService flightManagerService;
 
 	public App(Properties producersProps, Properties consumerProps) {
-		this.router = new Router();
-
 		AppLogger logger = new AppLogger(this.getClass().getName());
 		this.logger = logger.getLogger();
 
+		this.router = new Router();
 		this.kafkaClient = new KafkaAdminClient(producersProps, consumerProps);
 
 		FlightLogisticProducer flightLogisticProducer = new FlightLogisticProducer(this.kafkaClient);
 		FlightNotificationsProducer flightNotificationsProducer = new FlightNotificationsProducer(this.kafkaClient);
-
 		this.flightManagerService = new FlightManagerService(flightLogisticProducer, flightNotificationsProducer);
 
 		this.towerReportsConsumer = new TowerReportsConsumer(this.kafkaClient, this.flightManagerService);

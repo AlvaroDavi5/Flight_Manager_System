@@ -8,17 +8,15 @@ import infra.integration.kafka.KafkaAdminClient.ConsumerHandler;
 import app.utils.ParserUtils;
 
 public abstract class AbstractConsumer extends Thread {
-	private String topicName;
 	private KafkaAdminClient kafkaClient;
 	private KafkaConsumer<String, String> consumer;
 
 	public AbstractConsumer(KafkaAdminClient kafkaClient, String consumerGroup, String topicName) {
 		this.kafkaClient = kafkaClient;
-		this.topicName = topicName;
 		this.consumer = this.kafkaClient.createConsumer(
 				this.kafkaClient.getConsumersProperties(),
 				consumerGroup);
-		this.kafkaClient.subscribe(this.consumer, this.topicName);
+		this.kafkaClient.subscribe(this.consumer, topicName);
 	}
 
 	public KafkaConsumer<String, String> getConsumer() {
