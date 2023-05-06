@@ -20,7 +20,7 @@ public class AirportTest {
 		this.airport.getGate(10).openBoarding();
 		this.airport.updateGateDocking(this.airport.getGate(5), false);
 
-		assertEquals(145, this.airport.getGate(145).getNumber());
+		assertEquals(145, this.airport.getGate(145).getGateNumber());
 		assertEquals(false, this.airport.getGate(145).isOpen());
 		assertEquals(true, this.airport.getGate(10).isOpen());
 		assertEquals(false, this.airport.getGate(5).isFree());

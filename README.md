@@ -19,9 +19,24 @@ First assignment for the discipline  ```Tópicos Especiais em Informática IV (E
 [OpenSky API](https://openskynetwork.github.io/opensky-api/index.html)  
 [OpenMeteo API](https://open-meteo.com/)  
 
+## Main technologies
+
+- Java: programming laguage;
+- JDK: Java Development Kit (compiler, runtime, VM...);
+- Maven: Java project manager;
+- Spring Framework: Multi-task framework that can be used for:
+	* Boot: Spring initial setup;
+	* Web: HTTP server creation and consume;
+- JPA: SQL and NoSQL databases management by abstraction;
+- PostgreSQL: Relational database;
+- Redis: Cache and in-memory key-value NoSQL database;
+- Log4J: Custom logger with appenders;
+- Junit: Testing framework;
+- Docker: Services isolation and process resources management with containers;
+
 ## How to run the project
 
-To run this project, is recomended to use [JDK version 18](https://www.oracle.com/br/java/technologies/javase/jdk18-archive-downloads.html) or higher installed and these libraries: [Apache Kafka 3.4.0](https://downloads.apache.org/kafka/3.4.0/RELEASE_NOTES.html) and [Apache Maven 3.5.0](https://maven.apache.org/docs/3.5.0/release-notes.html).  
+To run this project, is recomended to use [JDK version 11](https://www.oracle.com/br/java/technologies/javase/jdk11-archive-downloads.html) or higher installed and these libraries: [Apache Kafka 3.4.0](https://downloads.apache.org/kafka/3.4.0/RELEASE_NOTES.html) and [Apache Maven 3.5.0](https://maven.apache.org/docs/3.5.0/release-notes.html).  
 This project has created using:   
 ```sh
 # create Maven project
@@ -106,10 +121,10 @@ $ kafka-consumer-groups.sh --bootstrap-server=localhost:9092 -—describe --grou
 					- [x] _FlightNotificationsProducer_
 					- [x] _FlightLogisticProducer_
 	- `interface`: HTTP endpoints for record querying
-		- [ ] `[GET] /flights-status` - list of all flights updated within a time interval (cached)
-		- [ ] `[GET] /free-gates` - available gates (cached)
-		- [ ] `[GET] /flight-manager/{flightId}` - flight information
-		- [ ] `[POST] /flight-manager/{flightId}` - manage flight
+		- [ ] `[GET] /gates/available` - available gates (cached)
+		- [ ] `[GET] /flights/list` - list of all flights updated within a time interval (cached)
+		- [ ] `[GET] /flights/{flightId}` - flight information
+		- [ ] `[POST] /flights/{flightId}` - manage flight
 - **Control Tower**
 	> Generates tower report events with information about new landings (registered or not).  
 	> Consumes flight release notification events.  
@@ -121,15 +136,15 @@ $ kafka-consumer-groups.sh --bootstrap-server=localhost:9092 -—describe --grou
 			* [ ] _KafkaConsumer_
 	* [ ] _FlightTracker_
 		* [ ] _Cron_
-		* HttpClients
-			* [ ] _OpenSkyClient_
-			* [ ] _OpenMeteoClient_
-			* [ ] _FlightManagerClient_
+		* RestClients
+			* [ ] _OpenSkyRestClient_
+			* [ ] _OpenMeteoRestClient_
+			* [ ] _FlightManagerRestClient_
 - **Flight-Status Panel**
 	> Displays the list of flights and their status within a time interval.  
 	* [ ] _PanelSync_
 		* [ ] _Cron_
-	* HttpClient
+	* RestClient
 		* [ ] _FlightManagerClient_
 - **Client Subscriptions**
 	> Notifies flight status change events.  

@@ -8,7 +8,7 @@ import infra.integration.kafka.KafkaAdminClient.ConsumerHandler;
 import app.utils.ParserUtils;
 import app.services.FlightManagerService;
 
-public class AirTrafficConsumer {
+public class AirTrafficConsumer extends Thread {
 	private String airTrafficTopic;
 	private KafkaAdminClient kafkaClient;
 	private KafkaConsumer<String, String> consumer;
@@ -29,9 +29,12 @@ public class AirTrafficConsumer {
 		return this.consumer;
 	}
 
-	public void runPolling() {
-		ConsumerHandler handler = (record) -> this.handleMessage(record);
-		this.kafkaClient.runPolling(this.consumer, handler);
+	@Override
+	public void run() {
+		while (true) {
+			ConsumerHandler handler = (record) -> this.handleMessage(record);
+			this.kafkaClient.runPolling(this.consumer, handler);
+		}
 	}
 
 	private void handleMessage(ConsumerRecord<String, String> record) {

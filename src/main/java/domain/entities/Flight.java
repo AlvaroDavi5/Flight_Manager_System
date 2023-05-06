@@ -10,22 +10,26 @@ public class Flight {
 	private FlightStatusEnum flightStatus;
 	private LogisticStatusEnum logisticStatus;
 	private String departureAirportCode;
-	private String arrivalAirportCode;
+	private Integer departureHorizontalDistance;
+	private Integer departureVerticalDistance;
 	private int departureAirportCandidates;
-	private int arrivalAirportCandidates;
-	private HashMap<String, Integer> departureDistanceInMeters;
-	private HashMap<String, Integer> arrivalDistanceInMeters;
 	private int departureTime;
+	private String arrivalAirportCode;
+	private Integer arrivalHorizontalDistance;
+	private Integer arrivalVerticalDistance;
+	private int arrivalAirportCandidates;
 	private int arrivalTime;
 
-	public Flight(String code) {
-		this.code = code;
-		this.departureDistanceInMeters = new HashMap<String, Integer>();
-		this.arrivalDistanceInMeters = new HashMap<String, Integer>();
+	public Flight(String flightCode) {
+		this.code = flightCode;
 	}
 
 	public String getFlightCode() {
 		return this.code;
+	}
+
+	private void setFlightCode(String flightCode) {
+		this.code = flightCode;
 	}
 
 	public String getDepartureAirportCode() {
@@ -60,46 +64,58 @@ public class Flight {
 		this.arrivalAirportCandidates = count;
 	}
 
-	public int getDepartureTime() {
+	public int getDepartureTimeInEpoch() {
 		return this.departureTime;
 	}
 
-	public void setDepartureTime(int timeInEpoch) {
+	public void setDepartureTimeInEpoch(int timeInEpoch) {
 		this.departureTime = timeInEpoch;
 	}
 
-	public int getArrivalTime() {
+	public int getArrivalTimeInEpoch() {
 		return this.arrivalTime;
 	}
 
-	public void setArrivalTime(int timeInEpoch) {
+	public void setArrivalTimeInEpoch(int timeInEpoch) {
 		this.arrivalTime = timeInEpoch;
 	}
 
 	public HashMap<String, Integer> getDepartureDistanceInMeters() {
-		return this.departureDistanceInMeters;
+		HashMap<String, Integer> departureDistanceInMeters = new HashMap<String, Integer>();
+
+		departureDistanceInMeters.put("vertical", this.departureVerticalDistance);
+		departureDistanceInMeters.put("horizontal", this.departureHorizontalDistance);
+
+		return departureDistanceInMeters;
 	}
 
 	public void setDepartureDistanceInMeters(HashMap<String, Integer> distance) {
-		this.departureDistanceInMeters = distance;
+		this.departureVerticalDistance = distance.get("vertical");
+		this.departureHorizontalDistance = distance.get("horizontal");
 	}
 
 	public void setDepartureDistanceInMeters(Integer vertical, Integer horizontal) {
-		this.departureDistanceInMeters.put("vertical", vertical);
-		this.departureDistanceInMeters.put("horizontal", horizontal);
+		this.departureVerticalDistance = vertical;
+		this.departureHorizontalDistance = horizontal;
 	}
 
 	public HashMap<String, Integer> getArrivalDistanceInMeters() {
-		return this.arrivalDistanceInMeters;
+		HashMap<String, Integer> arrivalDistanceInMeters = new HashMap<String, Integer>();
+
+		arrivalDistanceInMeters.put("vertical", this.arrivalVerticalDistance);
+		arrivalDistanceInMeters.put("horizontal", this.arrivalHorizontalDistance);
+
+		return arrivalDistanceInMeters;
 	}
 
 	public void setArrivalDistanceInMeters(HashMap<String, Integer> distance) {
-		this.arrivalDistanceInMeters = distance;
+		this.arrivalVerticalDistance = distance.get("vertical");
+		this.arrivalHorizontalDistance = distance.get("horizontal");
 	}
 
 	public void setArrivalDistanceInMeters(Integer vertical, Integer horizontal) {
-		this.arrivalDistanceInMeters.put("vertical", vertical);
-		this.arrivalDistanceInMeters.put("horizontal", horizontal);
+		this.arrivalVerticalDistance = vertical;
+		this.arrivalHorizontalDistance = horizontal;
 	}
 
 	public FlightStatusEnum getFlightStatus() {
@@ -138,5 +154,45 @@ public class Flight {
 
 	public void setGateNumber(int gateNumber) {
 		this.gateNumber = gateNumber;
+	}
+
+	public void fromHashMap(HashMap<String, Object> map) {
+		this.setFlightCode((String) map.get("flightCode"));
+		this.setGateNumber((int) map.get("gateNumber"));
+		this.setFlightStatus((String) map.get("flightStatus"));
+		this.setLogisticStatus((String) map.get("logisticStatus"));
+		this.setDepartureAirportCode((String) map.get("departureAirportCode"));
+		this.setDepartureAirportCandidates((int) map.get("departureAirportCandidates"));
+		this.setDepartureDistanceInMeters(
+				(Integer) map.get("departureVerticalDistance"),
+				(Integer) map.get("departureHorizontalDistance"));
+		this.setDepartureTimeInEpoch((int) map.get("departureTime"));
+		this.setArrivalAirportCode((String) map.get("arrivalAirportCode"));
+		this.setArrivalAirportCandidates((int) map.get("arrivalAirportCandidates"));
+		this.setDepartureDistanceInMeters(
+				(Integer) map.get("arrivalVerticalDistance"),
+				(Integer) map.get("arrivalHorizontalDistance"));
+		this.setArrivalTimeInEpoch((int) map.get("arrivalTime"));
+	}
+
+	public HashMap<String, Object> toHashMap() {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+
+		map.put("flightCode", this.getFlightCode());
+		map.put("gateNumber", this.getGateNumber());
+		map.put("flightStatus", this.getFlightStatus());
+		map.put("logisticStatus", this.getLogisticStatus());
+		map.put("departureAirportCode", this.getDepartureAirportCode());
+		map.put("departureAirportCandidates", this.getDepartureAirportCandidates());
+		map.put("departureVerticalDistance", this.getDepartureDistanceInMeters().get("vertical"));
+		map.put("departureHorizontalDistance", this.getDepartureDistanceInMeters().get("horizontal"));
+		map.put("departureTime", this.getDepartureTimeInEpoch());
+		map.put("arrivalAirportCode", this.getArrivalAirportCode());
+		map.put("arrivalAirportCandidates", this.getArrivalAirportCandidates());
+		map.put("arrivalVerticalDistance", this.getArrivalDistanceInMeters().get("vertical"));
+		map.put("arrivalHorizontalDistance", this.getArrivalDistanceInMeters().get("horizontal"));
+		map.put("arrivalTime", this.getArrivalTimeInEpoch());
+
+		return map;
 	}
 }
