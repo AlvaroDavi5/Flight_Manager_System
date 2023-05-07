@@ -99,7 +99,7 @@ $ kafka-consumer-groups.sh --bootstrap-server=localhost:9092 -—describe --grou
 			* [x] _App_ [action]
 				* [x] _Airport_ [action]
 					* [x] _Gate_ [registry]
-					* [ ] _Flight_ [registry]
+					* [x] _Flight_ [registry]
 		- `enums`: reserved values
 			* [x] _LogisticStatusEnum_ [enum]
 			* [x] _FlightStatusEnum_ [enum]
