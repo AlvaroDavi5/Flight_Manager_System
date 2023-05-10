@@ -43,6 +43,32 @@
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+			<version>3.0.6</version>
+			<scope>compile</scope>
+		</dependency>
+		<!-- Hibernate ORM -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>5.6.10.Final</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>5.6.10.Final</version>
+			<scope>compile</scope>
+		</dependency>
+		<!-- PostgreSQl Database -->
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.6.0</version>
+			<scope>runtime</scope>
+		</dependency>
 		<!-- Apache Kafka -->
 		<dependency>
 			<groupId>org.apache.kafka</groupId>
@@ -68,7 +94,7 @@
 			<version>2.14.2</version>
 			<scope>compile</scope>
 		</dependency>
-		<!-- Logging -->
+		<!-- Log4J Logging -->
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-api</artifactId>
