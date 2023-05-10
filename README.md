@@ -17,7 +17,6 @@ First assignment for the discipline  ```Tópicos Especiais em Informática IV (E
 
 [Back-End Architecture](https://www.figma.com/file/DLgbATt7o29ccL3Qz8Gc2r/Flight-Manager-Architecture)  
 [OpenSky API](https://openskynetwork.github.io/opensky-api/index.html)  
-[OpenMeteo API](https://open-meteo.com/)  
 
 ## Main technologies
 
@@ -108,7 +107,7 @@ $ kafka-consumer-groups.sh --bootstrap-server=localhost:9092 -—describe --grou
 		* [ ] _FlightManagerService_ [action]
 	- `infra`:
 		- `database`: storage of records
-			* [ ] _MySQLClient_
+			* [ ] _PostgresRepository_
 				- Gates
 				- Flights
 		- `cache`: temporary storage of records and queries
@@ -139,7 +138,6 @@ $ kafka-consumer-groups.sh --bootstrap-server=localhost:9092 -—describe --grou
 		* [ ] _Cron_
 		* RestClients
 			* [ ] _OpenSkyRestClient_
-			* [ ] _OpenMeteoRestClient_
 			* [ ] _FlightManagerRestClient_
 - **Flight-Status Panel**
 	> Displays the list of flights and their status within a time interval.  
