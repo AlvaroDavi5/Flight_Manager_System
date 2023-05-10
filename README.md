@@ -39,7 +39,7 @@ To run this project, is recomended to use [JDK version 11](https://www.oracle.co
 This project has created using:   
 ```sh
 # create Maven project
-$ mvn archetype:generate -DgroupId=app -DartifactId=Flight_Manager_System -DarchetypeVersion=1.4 -DinteractiveMode=false
+$ mvn archetype:generate -DgroupId=com.flightmanager -DartifactId=Flight_Manager_System -DarchetypeVersion=1.4 -DinteractiveMode=false
 ```
 
 After installing the JDK, you can run the project by typing the following commands in terminal:  
