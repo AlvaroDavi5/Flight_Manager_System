@@ -6,7 +6,8 @@ import java.util.HashMap;
 public class Airport {
 	private String ICAO;
 	private String IATA;
-	private boolean airstripFree;
+	private boolean isAirstripFree;
+	private boolean isSafeToFlight;
 	private int gatesAmount;
 	private LinkedList<Gate> gatesList;
 
@@ -38,15 +39,27 @@ public class Airport {
 	}
 
 	public boolean isAirstripFree() {
-		return this.airstripFree;
+		return this.isAirstripFree;
 	}
 
 	public void openAirstrip() {
-		this.airstripFree = true;
+		this.isAirstripFree = true;
 	}
 
 	public void closeAirstrip() {
-		this.airstripFree = false;
+		this.isAirstripFree = false;
+	}
+
+	public boolean isSafeToFlight() {
+		return this.isSafeToFlight;
+	}
+
+	public void safeToFlight() {
+		this.isSafeToFlight = true;
+	}
+
+	public void unsafeToFlight() {
+		this.isSafeToFlight = false;
 	}
 
 	public int getGatesAmount() {
@@ -71,7 +84,7 @@ public class Airport {
 
 		for (int i = 0; i < gates.size(); i++) {
 			Gate gate = this.gatesList.get(i);
-			if (gate.isFree())
+			if (gate.isFreeToDock())
 				lastGate = gate;
 		}
 

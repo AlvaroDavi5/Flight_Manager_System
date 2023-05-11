@@ -26,7 +26,7 @@ public class Gate {
 		this.number = gateNumber;
 	}
 
-	public boolean isFree() {
+	public boolean isFreeToDock() {
 		return this.isFreeToDock;
 	}
 
@@ -38,7 +38,7 @@ public class Gate {
 		this.isFreeToDock = false;
 	}
 
-	public boolean isOpen() {
+	public boolean isOpenToBoarding() {
 		return this.isOpenToBoarding;
 	}
 
