@@ -13,14 +13,11 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
-import org.apache.logging.log4j.Logger;
-import com.flightmanager.infra.logging.AppLogger;
 
 public class KafkaAdminClient {
 	// attributes
 	private Properties producersProperties;
 	private Properties consumersProperties;
-	private Logger logger;
 
 	// interfaces
 	public interface ConsumerHandler {
@@ -29,9 +26,6 @@ public class KafkaAdminClient {
 
 	// constructor method
 	public KafkaAdminClient(Properties producersPros, Properties consumersProps) {
-		AppLogger logger = new AppLogger(this.getClass().getName());
-		this.logger = logger.getLogger();
-
 		String bootstrapServer = System.getenv("KAFKA_BOOTSTRAP_SERVER");
 		bootstrapServer = (bootstrapServer == null) ? "localhost:9092" : bootstrapServer;
 
@@ -77,10 +71,10 @@ public class KafkaAdminClient {
 
 		Callback callback = (data, error) -> {
 			if (error != null) {
-				this.logger.error("Error to send message: " + error.getMessage());
+				System.out.println("Error to send message: " + error.getMessage());
 				return;
 			}
-			this.logger.info(
+			System.out.println(
 					"Sended message successfully.\n"
 							+ "\tTopic: " + data.topic() + "\n"
 							+ "\tOffset: " + data.offset() + "\n"
@@ -114,14 +108,14 @@ public class KafkaAdminClient {
 		ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));
 
 		for (ConsumerRecord<String, String> record : records) {
-			this.logger.info(
+			System.out.println(
 					"Received new message.\n"
 							+ "\tKey: " + record.key() + "\n"
 							+ "\tTimestamp: " + record.timestamp() + "\n");
 			try {
 				handler.handleMessage(record);
 			} catch (Exception exception) {
-				this.logger.error("Error to handle message: " + exception.getMessage());
+				System.out.println("Error to handle message: " + exception.getMessage());
 			}
 		}
 	}

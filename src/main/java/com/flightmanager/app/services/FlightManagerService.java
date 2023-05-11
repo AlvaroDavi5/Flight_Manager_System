@@ -30,6 +30,10 @@ public class FlightManagerService {
 		this.flightNotificationsProducer = flightNotificationsProducer;
 	}
 
+	public void start() {
+		this.logger.info("Flight Manager App Started");
+	}
+
 	public void handleTowerReportMessage(HashMap<String, Object> message) {
 		Flight flight = new Flight(null);
 		flight.fromHashMap(message);

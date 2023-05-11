@@ -40,6 +40,7 @@ public class KafkaApp extends Thread {
 
 	@Override
 	public void run() {
+		this.flightManagerService.start();
 		this.startConsumers();
 	}
 
