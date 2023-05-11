@@ -1,25 +1,16 @@
 package com.flightmanager;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.SpringApplication;
 import com.flightmanager.app.KafkaApp;
-import com.flightmanager.infra.database.models.*;
-import com.flightmanager.app.services.*;
-import com.flightmanager.interfaces.*;
-import com.flightmanager.interfaces.controllers.*;
-import com.flightmanager.infra.database.repositories.*;
 
 @SpringBootApplication
-@EnableAutoConfiguration
-@EnableTransactionManagement
-@EnableJpaRepositories(basePackageClasses = { FlightsRepositoryInterface.class })
-@ComponentScan(basePackageClasses = { Router.class, FlightController.class, FlightService.class })
-@EntityScan(basePackageClasses = { FlightsModel.class })
+@EnableJpaRepositories("com.flightmanager.*")
+@ComponentScan("com.flightmanager.*")
+@EntityScan("com.flightmanager.*")
 public class Main {
 	public static void main(String[] args) {
 		try {

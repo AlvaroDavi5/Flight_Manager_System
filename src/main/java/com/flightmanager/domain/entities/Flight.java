@@ -3,6 +3,7 @@ package com.flightmanager.domain.entities;
 import java.util.HashMap;
 import com.flightmanager.domain.enums.FlightStatusEnum;
 import com.flightmanager.domain.enums.LogisticStatusEnum;
+import com.flightmanager.infra.database.models.FlightsModel;
 
 public class Flight {
 	private String code;
@@ -35,7 +36,7 @@ public class Flight {
 		this.arrivalVerticalDistance = 0;
 		this.arrivalAirportCandidates = 0;
 		this.arrivalTime = 0;
-		}
+	}
 
 	public String getFlightCode() {
 		return this.code;
@@ -135,6 +136,10 @@ public class Flight {
 		return this.flightStatus;
 	}
 
+	public String getFlightStatusString() {
+		return "" + this.flightStatus;
+	}
+
 	public void setFlightStatus(FlightStatusEnum status) {
 		this.flightStatus = status;
 	}
@@ -148,6 +153,10 @@ public class Flight {
 
 	public LogisticStatusEnum getLogisticStatus() {
 		return this.logisticStatus;
+	}
+
+	public String getLogisticStatusString() {
+		return "" + this.logisticStatus;
 	}
 
 	public void setLogisticStatus(LogisticStatusEnum status) {
@@ -169,6 +178,46 @@ public class Flight {
 		this.gateNumber = gateNumber;
 	}
 
+	public void fromModel(FlightsModel model) {
+		this.setFlightCode((String) model.getCode());
+		this.setGateNumber((int) model.getGateNumber());
+		this.setFlightStatus((String) model.getFlightStatus());
+		this.setLogisticStatus((String) model.getLogisticStatus());
+		this.setDepartureAirportCode((String) model.getDepartureAirportCode());
+		this.setDepartureAirportCandidates((int) model.getDepartureAirportCandidates());
+		this.setDepartureDistanceInMeters(
+				(Integer) model.getDepartureVerticalDistance(),
+				(Integer) model.getDepartureHorizontalDistance());
+		this.setDepartureTimeInEpoch((int) model.getDepartureTime());
+		this.setArrivalAirportCode((String) model.getArrivalAirportCode());
+		this.setArrivalAirportCandidates((int) model.getArrivalAirportCandidates());
+		this.setArrivalDistanceInMeters(
+				(Integer) model.getArrivalVerticalDistance(),
+				(Integer) model.getArrivalHorizontalDistance());
+		this.setArrivalTimeInEpoch((int) model.getArrivalTime());
+	}
+
+	public FlightsModel toModel() {
+		FlightsModel model = new FlightsModel();
+
+		model.setCode(this.getFlightCode());
+		model.setGateNumber(this.getGateNumber());
+		model.setFlightStatus(this.getFlightStatusString());
+		model.setLogisticStatus(this.getLogisticStatusString());
+		model.setDepartureAirportCode(this.getDepartureAirportCode());
+		model.setDepartureAirportCandidates(this.getDepartureAirportCandidates());
+		model.setDepartureVerticalDistance(this.getDepartureDistanceInMeters().get("vertical"));
+		model.setDepartureHorizontalDistance(this.getDepartureDistanceInMeters().get("horizontal"));
+		model.setDepartureTime(this.getDepartureTimeInEpoch());
+		model.setArrivalAirportCode(this.getArrivalAirportCode());
+		model.setArrivalAirportCandidates(this.getArrivalAirportCandidates());
+		model.setArrivalVerticalDistance(this.getArrivalDistanceInMeters().get("vertical"));
+		model.setArrivalHorizontalDistance(this.getArrivalDistanceInMeters().get("horizontal"));
+		model.setArrivalTime(this.getArrivalTimeInEpoch());
+
+		return model;
+	}
+
 	public void fromHashMap(HashMap<String, Object> map) {
 		this.setFlightCode((String) map.get("flightCode"));
 		this.setGateNumber((int) map.get("gateNumber"));
@@ -182,7 +231,7 @@ public class Flight {
 		this.setDepartureTimeInEpoch((int) map.get("departureTime"));
 		this.setArrivalAirportCode((String) map.get("arrivalAirportCode"));
 		this.setArrivalAirportCandidates((int) map.get("arrivalAirportCandidates"));
-		this.setDepartureDistanceInMeters(
+		this.setArrivalDistanceInMeters(
 				(Integer) map.get("arrivalVerticalDistance"),
 				(Integer) map.get("arrivalHorizontalDistance"));
 		this.setArrivalTimeInEpoch((int) map.get("arrivalTime"));
@@ -193,8 +242,8 @@ public class Flight {
 
 		map.put("flightCode", this.getFlightCode());
 		map.put("gateNumber", this.getGateNumber());
-		map.put("flightStatus", this.getFlightStatus());
-		map.put("logisticStatus", this.getLogisticStatus());
+		map.put("flightStatus", this.getFlightStatusString());
+		map.put("logisticStatus", this.getLogisticStatusString());
 		map.put("departureAirportCode", this.getDepartureAirportCode());
 		map.put("departureAirportCandidates", this.getDepartureAirportCandidates());
 		map.put("departureVerticalDistance", this.getDepartureDistanceInMeters().get("vertical"));

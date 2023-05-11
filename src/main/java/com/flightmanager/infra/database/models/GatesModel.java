@@ -1,11 +1,7 @@
 package com.flightmanager.infra.database.models;
 
 import java.io.Serializable;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "gates")
@@ -16,11 +12,16 @@ public class GatesModel implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 
+	@Column(name = "gateNumber", nullable = false, unique = false)
 	private int gateNumber;
-	private boolean isFreeToDock;
-	private boolean isOpenToBoarding;
-	private int boardingDuration;
-	private String flightCode;
+	@Column(name = "isFreeToDock", nullable = true, unique = false)
+	private boolean isFreeToDock = true;
+	@Column(name = "isOpenToBoarding", nullable = true, unique = false)
+	private boolean isOpenToBoarding = false;
+	@Column(name = "boardingDuration", nullable = true, unique = false)
+	private int boardingDuration = 120;
+	@Column(name = "flightCode", length = 15, nullable = true, unique = false)
+	private String flightCode = null;
 
 	public GatesModel() {
 	}

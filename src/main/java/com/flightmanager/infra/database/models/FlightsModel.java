@@ -1,13 +1,7 @@
 package com.flightmanager.infra.database.models;
 
 import java.io.Serializable;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import com.flightmanager.domain.entities.Flight;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "flights")
@@ -20,39 +14,35 @@ public class FlightsModel implements Serializable {
 
 	@Column(name = "code", length = 10, nullable = false, unique = false)
 	private String code;
-	private int gateNumber;
+	@Column(name = "gateNumber", nullable = true, unique = false)
+	private int gateNumber = 0;
+	@Column(name = "flightStatus", length = 10, nullable = false, unique = false)
 	private String flightStatus;
+	@Column(name = "logisticStatus", length = 10, nullable = false, unique = false)
 	private String logisticStatus;
-	private String departureAirportCode;
-	private Integer departureHorizontalDistance;
-	private Integer departureVerticalDistance;
-	private int departureAirportCandidates;
-	private int departureTime;
-	private String arrivalAirportCode;
-	private Integer arrivalHorizontalDistance;
-	private Integer arrivalVerticalDistance;
-	private int arrivalAirportCandidates;
-	private int arrivalTime;
+	@Column(name = "departureAirportCode", length = 10, nullable = true, unique = false)
+	private String departureAirportCode = null;
+	@Column(name = "departureHorizontalDistance", nullable = true, unique = false)
+	private Integer departureHorizontalDistance = 0;
+	@Column(name = "departureVerticalDistance", nullable = true, unique = false)
+	private Integer departureVerticalDistance = 0;
+	@Column(name = "departureAirportCandidates", nullable = true, unique = false)
+	private int departureAirportCandidates = 0;
+	@Column(name = "departureTime", nullable = true, unique = false)
+	private int departureTime = 0;
+	@Column(name = "arrivalAirportCode", length = 10, nullable = true, unique = false)
+	private String arrivalAirportCode = null;
+	@Column(name = "arrivalHorizontalDistance", nullable = true, unique = false)
+	private Integer arrivalHorizontalDistance = 0;
+	@Column(name = "arrivalVerticalDistance", nullable = true, unique = false)
+	private Integer arrivalVerticalDistance = 0;
+	@Column(name = "arrivalAirportCandidates", nullable = true, unique = false)
+	private int arrivalAirportCandidates = 0;
+	@Column(name = "arrivalTime", nullable = true, unique = false)
+	private int arrivalTime = 0;
 
 	public FlightsModel() {
 	}
-
-	public Flight toEntity() {
-		Flight flight = new Flight(this.flightStatus);
-		flight.setGateNumber(this.gateNumber);
-		flight.setFlightStatus(this.flightStatus);
-		flight.setLogisticStatus(this.logisticStatus);
-		flight.setDepartureAirportCode(this.departureAirportCode);
-		flight.setDepartureDistanceInMeters(this.departureVerticalDistance, this.departureHorizontalDistance);
-		flight.setDepartureAirportCandidates(this.departureAirportCandidates);
-		flight.setDepartureTimeInEpoch(this.departureTime);
-		flight.setArrivalAirportCode(this.arrivalAirportCode);
-		flight.setArrivalDistanceInMeters(this.arrivalVerticalDistance, this.arrivalHorizontalDistance);
-		flight.setArrivalAirportCandidates(this.arrivalAirportCandidates);
-		flight.setArrivalTimeInEpoch(this.arrivalTime);
-
-		return flight;
-	};
 
 	public String getCode() {
 		return this.code;

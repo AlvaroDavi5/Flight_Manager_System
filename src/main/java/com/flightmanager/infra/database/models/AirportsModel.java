@@ -1,11 +1,7 @@
 package com.flightmanager.infra.database.models;
 
 import java.io.Serializable;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "airports")
@@ -16,10 +12,15 @@ public class AirportsModel implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 
+	@Column(name = "ICAO", length = 10, nullable = false, unique = false)
 	private String ICAO;
+	@Column(name = "IATA", length = 10, nullable = false, unique = false)
 	private String IATA;
-	private boolean isAirstripFree;
-	private boolean isSafeToFlight;
+	@Column(name = "isAirstripFree", nullable = true, unique = false)
+	private boolean isAirstripFree = true;
+	@Column(name = "isSafeToFlight", nullable = true, unique = false)
+	private boolean isSafeToFlight = true;
+	@Column(name = "gatesAmount", nullable = false, unique = false)
 	private int gatesAmount;
 
 	public AirportsModel() {
