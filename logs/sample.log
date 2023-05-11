@@ -1,0 +1,12 @@
+2023-05-10 22:36:17.194 | FATAL : [Thread-0] [services.FlightManagerService:34] - Flight Manager App Started
+2023-05-10 22:36:17.201 | ERROR : [Thread-0] [services.FlightManagerService:35] - Flight Manager App Started
+2023-05-10 22:36:17.202 | WARN : [Thread-0] [services.FlightManagerService:36] - Flight Manager App Started
+2023-05-10 22:36:17.202 | INFO : [Thread-0] [services.FlightManagerService:37] - Flight Manager App Started
+2023-05-10 22:36:17.203 | DEBUG : [Thread-0] [services.FlightManagerService:38] - Flight Manager App Started
+2023-05-10 22:36:17.204 | TRACE : [Thread-0] [services.FlightManagerService:39] - Flight Manager App Started
+2023-05-10 22:36:19.713 | INFO : [com.flightmanager.Main.main()] [tomcat.TomcatWebServer:108] - Tomcat initialized with port(s): 3000 (http)
+2023-05-10 22:36:19.906 | INFO : [com.flightmanager.Main.main()] [context.ServletWebServerApplicationContext:291] - Root WebApplicationContext: initialization completed in 1889 ms
+2023-05-10 22:36:20.285 | INFO : [com.flightmanager.Main.main()] [hibernate.Version:44] - HHH000412: Hibernate ORM core version 6.1.7.Final
+2023-05-10 22:36:22.764 | WARN : [com.flightmanager.Main.main()] [jpa.JpaBaseConfiguration$JpaWebConfiguration:231] - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-05-10 22:36:23.235 | INFO : [com.flightmanager.Main.main()] [tomcat.TomcatWebServer:220] - Tomcat started on port(s): 3000 (http) with context path ''
+
