@@ -12,13 +12,13 @@ public class FlightsModel implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 
-	@Column(name = "code", length = 10, nullable = false, unique = false)
+	@Column(name = "code", length = 15, nullable = false, unique = true)
 	private String code;
 	@Column(name = "gateNumber", nullable = true, unique = false)
 	private int gateNumber = 0;
-	@Column(name = "flightStatus", length = 10, nullable = false, unique = false)
+	@Column(name = "flightStatus", length = 20, nullable = false, unique = false)
 	private String flightStatus;
-	@Column(name = "logisticStatus", length = 10, nullable = false, unique = false)
+	@Column(name = "logisticStatus", length = 20, nullable = false, unique = false)
 	private String logisticStatus;
 	@Column(name = "departureAirportCode", length = 10, nullable = true, unique = false)
 	private String departureAirportCode = null;

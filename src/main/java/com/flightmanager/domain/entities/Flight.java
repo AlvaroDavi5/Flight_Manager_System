@@ -179,6 +179,9 @@ public class Flight {
 	}
 
 	public void fromModel(FlightsModel model) {
+		if (model == null)
+			return;
+
 		this.setFlightCode((String) model.getCode());
 		this.setGateNumber((int) model.getGateNumber());
 		this.setFlightStatus((String) model.getFlightStatus());
@@ -219,6 +222,9 @@ public class Flight {
 	}
 
 	public void fromHashMap(HashMap<String, Object> map) {
+		if (map == null)
+			return;
+
 		this.setFlightCode((String) map.get("flightCode"));
 		this.setGateNumber((int) map.get("gateNumber"));
 		this.setFlightStatus((String) map.get("flightStatus"));

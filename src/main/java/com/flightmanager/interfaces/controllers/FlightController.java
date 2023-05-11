@@ -1,11 +1,12 @@
 package com.flightmanager.interfaces.controllers;
 
 import java.util.LinkedList;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.beans.factory.annotation.Autowired;
 import jakarta.transaction.Transactional;
 import org.springframework.http.ResponseEntity;
+import com.flightmanager.app.utils.ParserUtils;
 import com.flightmanager.domain.entities.Flight;
 import com.flightmanager.infra.database.models.FlightsModel;
 import com.flightmanager.infra.integration.rest.OpenSkyRestClient;
@@ -16,14 +17,24 @@ import com.flightmanager.infra.database.repositories.FlightsRepositoryInterface;
 public class FlightController {
 	@Autowired
 	private FlightsRepositoryInterface flightsRepository;
+	private ParserUtils parserUtils = new ParserUtils();
 	private OpenSkyRestClient openSkyRestClient = new OpenSkyRestClient();
+
+	private FlightsModel stringfiedJsonToFlightsModel(String data) {
+		Flight newFlight = new Flight(null);
+		newFlight.fromHashMap(this.parserUtils.stringfiedJsonToHashMap(data));
+		return newFlight.toModel();
+	}
 
 	@PostMapping
 	@Transactional
-	public @ResponseBody ResponseEntity<Flight> create(@RequestBody @Validated FlightsModel flightData) {
+	public @ResponseBody ResponseEntity<Flight> create(@RequestBody String flightData) {
 		try {
+			// TODO - add service again
 			Flight flight = new Flight(null);
-			flight.fromModel(this.flightsRepository.save(flightData));
+			flight.fromModel(
+					this.flightsRepository.save(
+							this.stringfiedJsonToFlightsModel(flightData)));
 
 			if (flight == null || flight.getFlightCode() == null) {
 				return ResponseEntity.notFound().build();
@@ -54,10 +65,12 @@ public class FlightController {
 
 	@PutMapping("/{id}")
 	@Transactional
-	public @ResponseBody ResponseEntity<Flight> update(@RequestBody @Validated FlightsModel flightData) {
+	public @ResponseBody ResponseEntity<Flight> update(@RequestBody String flightData) {
 		try {
 			Flight flight = new Flight(null);
-			flight.fromModel(this.flightsRepository.save(flightData));
+			flight.fromModel(
+					this.flightsRepository.save(
+							this.stringfiedJsonToFlightsModel(flightData)));
 
 			if (flight == null || flight.getFlightCode() == null) {
 				return ResponseEntity.notFound().build();
@@ -110,7 +123,7 @@ public class FlightController {
 			return this.openSkyRestClient.getHealthCheck();
 		} catch (Exception exception) {
 			System.out.println("HealthCheck Exception");
-			return ResponseEntity.badRequest().body("{}");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{}");
 		}
 	}
 }

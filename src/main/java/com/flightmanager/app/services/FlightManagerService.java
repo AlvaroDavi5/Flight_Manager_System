@@ -50,11 +50,11 @@ public class FlightManagerService {
 			flight.setFlightStatus(FlightStatusEnum.HOLDING);
 		}
 
-		// TODO: create flux
+		// TODO - create flux
 	}
 
 	public void handleAirTrafficMessage(HashMap<String, Object> message) {
-		// TODO: create flux
+		// TODO - create flux
 	}
 
 	public void dispatchFlightLogisticMessage(Flight flight) {

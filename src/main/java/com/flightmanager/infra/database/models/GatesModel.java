@@ -12,7 +12,7 @@ public class GatesModel implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 
-	@Column(name = "gateNumber", nullable = false, unique = false)
+	@Column(name = "gateNumber", nullable = false, unique = true)
 	private int gateNumber;
 	@Column(name = "isFreeToDock", nullable = true, unique = false)
 	private boolean isFreeToDock = true;

@@ -1,6 +1,7 @@
 package com.flightmanager.domain.entities;
 
 import java.util.HashMap;
+import com.flightmanager.infra.database.models.GatesModel;
 
 public class Gate {
 	private int number;
@@ -74,6 +75,34 @@ public class Gate {
 
 	public void setFlight(Flight flight) {
 		this.flight = flight;
+	}
+
+	public void fromModel(GatesModel model) {
+		this.setGateNumber((int) model.getGateNumber());
+		if ((boolean) model.getIsFreeToDock())
+			this.openDocking();
+		else
+			this.closeDocking();
+		if ((boolean) model.getIsOpenToBoarding())
+			this.openBoarding();
+		else
+			this.closeBoarding();
+		this.setBoardingDurationInMinutes((int) model.getBoardingDuration());
+		this.setFlightCode((String) model.getFlightCode());
+		if (this.getFlightCode() != this.getFlight().getFlightCode())
+			this.setFlight(null);
+	}
+
+	public GatesModel toModel() {
+		GatesModel model = new GatesModel();
+
+		model.setGateNumber(this.getGateNumber());
+		model.setIsFreeToDock(this.isFreeToDock());
+		model.setIsOpenToBoarding(this.isOpenToBoarding());
+		model.setBoardingDuration(this.getBoardingDurationInMinutes());
+		model.setFlightCode(this.getFlightCode());
+
+		return model;
 	}
 
 	public void fromHashMap(HashMap<String, Object> map) {
