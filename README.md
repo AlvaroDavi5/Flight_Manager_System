@@ -105,11 +105,13 @@ $ kafka-consumer-groups.sh --bootstrap-server=localhost:9092 -—describe --grou
 			* [x] _PanelStatusEnum_ [enum]
 	- `app`: operations, services, and strategies logic
 		* [ ] _FlightManagerService_ [action]
+		* [x] _FlightService_ [action]
+		* [ ] _GateService_ [action]
 	- `infra`:
 		- `database`: storage of records
-			* [ ] _PostgresRepository_
-				- Gates
-				- Flights
+			* _PostgresRepository_
+				- [ ] Gates
+				- [x] Flights
 		- `cache`: temporary storage of records and queries
 			* [ ] _RedisClient_
 		- `integration`: communication services

@@ -4,19 +4,18 @@ import java.util.LinkedList;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import jakarta.transaction.Transactional;
 import org.springframework.http.ResponseEntity;
 import com.flightmanager.app.utils.ParserUtils;
+import com.flightmanager.app.services.FlightService;
 import com.flightmanager.domain.entities.Flight;
 import com.flightmanager.infra.database.models.FlightsModel;
 import com.flightmanager.infra.integration.rest.OpenSkyRestClient;
-import com.flightmanager.infra.database.repositories.FlightsRepositoryInterface;
 
 @RestController
 @RequestMapping("/api/flights")
 public class FlightController {
 	@Autowired
-	private FlightsRepositoryInterface flightsRepository;
+	private FlightService flightService;
 	private ParserUtils parserUtils = new ParserUtils();
 	private OpenSkyRestClient openSkyRestClient = new OpenSkyRestClient();
 
@@ -27,14 +26,9 @@ public class FlightController {
 	}
 
 	@PostMapping
-	@Transactional
-	public @ResponseBody ResponseEntity<Flight> create(@RequestBody String flightData) {
+	public @ResponseBody ResponseEntity<Flight> create(@RequestBody String data) {
 		try {
-			// TODO - add service again
-			Flight flight = new Flight(null);
-			flight.fromModel(
-					this.flightsRepository.save(
-							this.stringfiedJsonToFlightsModel(flightData)));
+			Flight flight = this.flightService.create(this.stringfiedJsonToFlightsModel(data));
 
 			if (flight == null || flight.getFlightCode() == null) {
 				return ResponseEntity.notFound().build();
@@ -47,11 +41,9 @@ public class FlightController {
 	}
 
 	@GetMapping("/{id}")
-	@Transactional
 	public @ResponseBody ResponseEntity<Flight> read(@RequestParam(value = "id", defaultValue = "0") long id) {
 		try {
-			Flight flight = new Flight(null);
-			flight.fromModel(this.flightsRepository.findById(id));
+			Flight flight = this.flightService.read(id);
 
 			if (flight == null || flight.getFlightCode() == null) {
 				return ResponseEntity.notFound().build();
@@ -64,13 +56,9 @@ public class FlightController {
 	}
 
 	@PutMapping("/{id}")
-	@Transactional
-	public @ResponseBody ResponseEntity<Flight> update(@RequestBody String flightData) {
+	public @ResponseBody ResponseEntity<Flight> update(@RequestBody String data) {
 		try {
-			Flight flight = new Flight(null);
-			flight.fromModel(
-					this.flightsRepository.save(
-							this.stringfiedJsonToFlightsModel(flightData)));
+			Flight flight = this.flightService.update(this.stringfiedJsonToFlightsModel(data));
 
 			if (flight == null || flight.getFlightCode() == null) {
 				return ResponseEntity.notFound().build();
@@ -83,31 +71,22 @@ public class FlightController {
 	}
 
 	@DeleteMapping("/{id}")
-	@Transactional
 	public @ResponseBody ResponseEntity<Boolean> delete(@RequestParam(value = "id", defaultValue = "0") long id) {
 		try {
-			this.flightsRepository.deleteById(id);
-			return ResponseEntity.ok(true);
+			Boolean deleted = this.flightService.delete(id);
+			return ResponseEntity.ok(deleted);
 		} catch (Exception exception) {
 			return ResponseEntity.ok(false);
 		}
 	}
 
 	@GetMapping("/list")
-	@Transactional
 	public @ResponseBody ResponseEntity<LinkedList<Flight>> list(
 			@RequestParam(value = "startDate", defaultValue = "") long startDate,
 			@RequestParam(value = "endDate", defaultValue = "") long endDate) {
 		if (startDate != 0 && endDate != 0)
 			try {
-				LinkedList<FlightsModel> flightModels = this.flightsRepository.findAll();
-				LinkedList<Flight> flights = new LinkedList<Flight>();
-
-				for (FlightsModel flightModel : flightModels) {
-					Flight flight = new Flight(null);
-					flight.fromModel(flightModel);
-					flights.addLast(flight);
-				}
+				LinkedList<Flight> flights = this.flightService.list(startDate, endDate);
 
 				return ResponseEntity.ok(flights);
 			} catch (Exception exception) {
