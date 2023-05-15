@@ -11,8 +11,7 @@ public enum LogisticStatusEnum {
 	TAKED_OFF, // airplane taked off
 	DIVERTED, // flight diverted to a different airport than originally planned
 	TAXIING, // airplane currently moving on the ground and airstrip in use
+	IN_TRANSIT, // airplane currently in route to destination
 	REQUESTING_MAINTENANCE, // airplane requesting maintenance
-	REQUESTING_REFUELING, // airplane requesting refueling
 	MAINTENANCE, // airplane undergoing routine or unscheduled maintenance
-	REFUELING, // airplane being refueled in preparation for a flight
 }

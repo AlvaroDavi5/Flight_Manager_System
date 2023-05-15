@@ -17,7 +17,7 @@ public class KafkaApp extends Thread {
 	private AirTrafficConsumer airTrafficConsumer;
 	private FlightManagerService flightManagerService;
 
-	public KafkaApp() {
+	public KafkaApp(String[] args) {
 		FileUtils utils = new FileUtils();
 		try {
 			this.producersProps = utils.readPropertiesFile("./src/main/resources/producer.properties");
@@ -29,11 +29,10 @@ public class KafkaApp extends Thread {
 		}
 
 		this.kafkaClient = new KafkaAdminClient(this.producersProps, this.consumerProps);
+		this.flightManagerService = new FlightManagerService(args);
 
-		FlightLogisticProducer flightLogisticProducer = new FlightLogisticProducer(this.kafkaClient);
-		FlightNotificationsProducer flightNotificationsProducer = new FlightNotificationsProducer(this.kafkaClient);
-		this.flightManagerService = new FlightManagerService(flightLogisticProducer, flightNotificationsProducer);
-
+		this.flightManagerService.setFlightLogisticProducer(new FlightLogisticProducer(this.kafkaClient));
+		this.flightManagerService.setFlightNotificationsProducer(new FlightNotificationsProducer(this.kafkaClient));
 		this.towerReportsConsumer = new TowerReportsConsumer(this.kafkaClient, this.flightManagerService);
 		this.airTrafficConsumer = new AirTrafficConsumer(this.kafkaClient, this.flightManagerService);
 	}

@@ -10,7 +10,7 @@ public class FlightsModel implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	public long id;
 
 	@Column(name = "code", length = 15, nullable = false, unique = true)
 	private String code;

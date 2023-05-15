@@ -3,13 +3,16 @@ package com.flightmanager.domain.entities;
 import java.util.HashMap;
 import com.flightmanager.domain.enums.FlightStatusEnum;
 import com.flightmanager.domain.enums.LogisticStatusEnum;
+import com.flightmanager.domain.enums.PanelStatusEnum;
 import com.flightmanager.infra.database.models.FlightsModel;
 
 public class Flight {
+	private long id;
 	private String code;
 	private int gateNumber;
 	private FlightStatusEnum flightStatus;
 	private LogisticStatusEnum logisticStatus;
+	private PanelStatusEnum panelStatus;
 	private String departureAirportCode;
 	private Integer departureHorizontalDistance;
 	private Integer departureVerticalDistance;
@@ -22,6 +25,7 @@ public class Flight {
 	private int arrivalTime;
 
 	public Flight(String flightCode) {
+		this.id = 0;
 		this.code = flightCode;
 		this.gateNumber = 0;
 		this.flightStatus = null;
@@ -36,6 +40,14 @@ public class Flight {
 		this.arrivalVerticalDistance = 0;
 		this.arrivalAirportCandidates = 0;
 		this.arrivalTime = 0;
+	}
+
+	public long getId() {
+		return this.id;
+	}
+
+	private void setId(long id) {
+		this.id = id;
 	}
 
 	public String getFlightCode() {
@@ -170,6 +182,25 @@ public class Flight {
 			this.logisticStatus = logisticStatusValue;
 	}
 
+	public PanelStatusEnum getpanelStatus() {
+		return this.panelStatus;
+	}
+
+	public String getpanelStatusString() {
+		return "" + this.panelStatus;
+	}
+
+	public void setpanelStatus(PanelStatusEnum status) {
+		this.panelStatus = status;
+	}
+
+	public void setpanelStatus(String status) {
+		PanelStatusEnum panelStatusValue = PanelStatusEnum.valueOf(status);
+
+		if (panelStatusValue != null)
+			this.panelStatus = panelStatusValue;
+	}
+
 	public int getGateNumber() {
 		return this.gateNumber;
 	}
@@ -182,6 +213,7 @@ public class Flight {
 		if (model == null)
 			return;
 
+		this.setId((long) model.id);
 		this.setFlightCode((String) model.getCode());
 		this.setGateNumber((int) model.getGateNumber());
 		this.setFlightStatus((String) model.getFlightStatus());
@@ -211,12 +243,12 @@ public class Flight {
 		model.setDepartureAirportCandidates(this.getDepartureAirportCandidates());
 		model.setDepartureVerticalDistance(this.getDepartureDistanceInMeters().get("vertical"));
 		model.setDepartureHorizontalDistance(this.getDepartureDistanceInMeters().get("horizontal"));
-		model.setDepartureTime(this.getDepartureTimeInEpoch());
+		model.setDepartureTime((int) this.getDepartureTimeInEpoch());
 		model.setArrivalAirportCode(this.getArrivalAirportCode());
 		model.setArrivalAirportCandidates(this.getArrivalAirportCandidates());
 		model.setArrivalVerticalDistance(this.getArrivalDistanceInMeters().get("vertical"));
 		model.setArrivalHorizontalDistance(this.getArrivalDistanceInMeters().get("horizontal"));
-		model.setArrivalTime(this.getArrivalTimeInEpoch());
+		model.setArrivalTime((int) this.getArrivalTimeInEpoch());
 
 		return model;
 	}

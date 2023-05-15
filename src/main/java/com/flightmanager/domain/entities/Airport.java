@@ -1,5 +1,7 @@
 package com.flightmanager.domain.entities;
 
+import java.util.Date;
+import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.HashMap;
 
@@ -7,6 +9,7 @@ public class Airport {
 	private String ICAO;
 	private String IATA;
 	private boolean isAirstripFree;
+	private long airstripCloseTime;
 	private boolean isSafeToFlight;
 	private int gatesAmount;
 	private LinkedList<Gate> gatesList;
@@ -46,10 +49,19 @@ public class Airport {
 
 	public void openAirstrip() {
 		this.isAirstripFree = true;
+		this.airstripCloseTime = 0;
 	}
 
 	public void closeAirstrip() {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(new Date());
+
 		this.isAirstripFree = false;
+		this.airstripCloseTime = (calendar.getTime()).getTime();
+	}
+
+	public long getAirstripCloseTime() {
+		return this.airstripCloseTime;
 	}
 
 	public boolean isSafeToFlight() {
@@ -91,6 +103,19 @@ public class Airport {
 		}
 
 		return lastGate;
+	}
+
+	public Gate findGateByNumber(Integer gateNumber) {
+		Gate findedGate = null;
+		LinkedList<Gate> gates = this.getGatesList();
+
+		for (int i = 0; i < gates.size(); i++) {
+			Gate gate = this.gatesList.get(i);
+			if (gate.getGateNumber() == gateNumber)
+				findedGate = gate;
+		}
+
+		return findedGate;
 	}
 
 	public void updateGateDocking(Gate gate, boolean isFreeToDock) {

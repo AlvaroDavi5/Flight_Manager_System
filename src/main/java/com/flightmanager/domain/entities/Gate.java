@@ -4,6 +4,7 @@ import java.util.HashMap;
 import com.flightmanager.infra.database.models.GatesModel;
 
 public class Gate {
+	private long id;
 	private int number;
 	private boolean isFreeToDock;
 	private boolean isOpenToBoarding;
@@ -12,12 +13,21 @@ public class Gate {
 	private Flight flight;
 
 	public Gate(int number) {
+		this.id = 0;
 		this.number = number;
 		this.isFreeToDock = true;
 		this.isOpenToBoarding = false;
 		this.boardingDuration = 2 * 60;
 		this.flightCode = null;
 		this.flight = null;
+	}
+
+	public long getId() {
+		return this.id;
+	}
+
+	private void setId(long id) {
+		this.id = id;
 	}
 
 	public int getGateNumber() {
@@ -78,6 +88,7 @@ public class Gate {
 	}
 
 	public void fromModel(GatesModel model) {
+		this.setId((long) model.id);
 		this.setGateNumber((int) model.getGateNumber());
 		if ((boolean) model.getIsFreeToDock())
 			this.openDocking();

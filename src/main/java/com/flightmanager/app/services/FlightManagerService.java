@@ -4,29 +4,47 @@ import java.util.Date;
 import java.util.Calendar;
 import java.util.HashMap;
 import org.apache.logging.log4j.Logger;
-import com.flightmanager.infra.logging.AppLogger;
-import com.flightmanager.infra.integration.queue.producers.FlightLogisticProducer;
-import com.flightmanager.infra.integration.queue.producers.FlightNotificationsProducer;
 import com.flightmanager.domain.entities.Airport;
 import com.flightmanager.domain.entities.Gate;
 import com.flightmanager.domain.entities.Flight;
-import com.flightmanager.domain.enums.FlightStatusEnum;
-import com.flightmanager.domain.enums.LogisticStatusEnum;
+import com.flightmanager.app.strategies.FlightManagerFluxStrategy;
+import com.flightmanager.infra.logging.AppLogger;
+import com.flightmanager.infra.integration.queue.producers.FlightLogisticProducer;
+import com.flightmanager.infra.integration.queue.producers.FlightNotificationsProducer;
 
 public class FlightManagerService {
 	private Airport airport;
 	private Logger logger;
+	private FlightManagerFluxStrategy flightManagerFluxStrategy;
 	private FlightLogisticProducer flightLogisticProducer;
 	private FlightNotificationsProducer flightNotificationsProducer;
 
-	public FlightManagerService(FlightLogisticProducer flightLogisticProducer,
-			FlightNotificationsProducer flightNotificationsProducer) {
-		this.airport = new Airport("SBGR", "GRU", 200);
+	public FlightManagerService(String[] data) {
+		String airportICAO = System.getenv("AIRPORT_ICAO");
+		airportICAO = airportICAO == null
+				? data[0]
+				: airportICAO;
+		String airportIATA = System.getenv("AIRPORT_IATA");
+		airportIATA = airportIATA == null
+				? data[1]
+				: airportIATA;
+		Integer airportGatesAmount = Integer.parseInt(System.getenv("AIRPORT_GATES"));
+		airportGatesAmount = airportGatesAmount == null || airportGatesAmount == 0
+				? Integer.parseInt(data[2])
+				: airportGatesAmount;
+
+		this.airport = new Airport(airportICAO, airportIATA, airportGatesAmount);
+		this.flightManagerFluxStrategy = new FlightManagerFluxStrategy(this);
 
 		AppLogger logger = new AppLogger(this.getClass().getName());
 		this.logger = logger.getLogger();
+	}
 
+	public void setFlightLogisticProducer(FlightLogisticProducer flightLogisticProducer) {
 		this.flightLogisticProducer = flightLogisticProducer;
+	}
+
+	public void setFlightNotificationsProducer(FlightNotificationsProducer flightNotificationsProducer) {
 		this.flightNotificationsProducer = flightNotificationsProducer;
 	}
 
@@ -38,19 +56,13 @@ public class FlightManagerService {
 		Flight flight = new Flight(null);
 		flight.fromHashMap(message);
 
-		this.logger.warn(
+		this.logger.info(
 				"New report event to flight: " + flight.getFlightCode()
 						+ " with status: " + flight.getFlightStatus());
 
-		Gate freeGate = this.airport.getLastFreeGate();
+		this.flightManagerFluxStrategy.manageFlux(flight);
 
-		if (freeGate != null && flight.getLogisticStatus() == LogisticStatusEnum.REQUESTING_LAND) {
-			this.airport.assignFlightToGate(flight, freeGate);
-		} else {
-			flight.setFlightStatus(FlightStatusEnum.HOLDING);
-		}
-
-		// TODO - create flux
+		this.dispatchFlightLogisticMessage(flight);
 	}
 
 	public void handleAirTrafficMessage(HashMap<String, Object> message) {
@@ -82,5 +94,49 @@ public class FlightManagerService {
 
 		this.flightNotificationsProducer.sendMessage(2,
 				msgKey, message);
+	}
+
+	public Boolean isRegistered(Flight flight) {
+		return flight.getId() != 0;
+	}
+
+	public Gate getFreeGate() {
+		Gate freeGate = this.airport.getLastFreeGate();
+
+		// TODO - validate it on database
+
+		return freeGate;
+	}
+
+	public Gate findGateByNumber(Integer gateNumber) {
+		Gate gate = this.airport.findGateByNumber(gateNumber);
+
+		return gate;
+	}
+
+	public String getAirportICAO() {
+		String airportICAO = this.airport.getICAO();
+
+		return airportICAO;
+	}
+
+	public Boolean isAirstripFreeToLand() {
+		Airport airport = this.airport;
+
+		// TODO - validate it on database
+
+		return airport.isAirstripFree();
+	}
+
+	public void closeAirstrip() {
+		this.airport.closeAirstrip();
+
+		// TODO - do it on database
+	}
+
+	public void openAirstrip() {
+		this.airport.openAirstrip();
+
+		// TODO - do it on database
 	}
 }

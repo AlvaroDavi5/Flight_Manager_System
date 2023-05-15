@@ -10,7 +10,7 @@ public class GatesModel implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	public long id;
 
 	@Column(name = "gateNumber", nullable = false, unique = true)
 	private int gateNumber;

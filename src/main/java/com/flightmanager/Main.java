@@ -14,7 +14,10 @@ import com.flightmanager.app.KafkaApp;
 public class Main {
 	public static void main(String[] args) {
 		try {
-			KafkaApp kafkaApp = new KafkaApp();
+			if (args.length < 3)
+				throw new Error("Invalid number of arguments (expected 3 arguments)", null);
+
+			KafkaApp kafkaApp = new KafkaApp(args);
 
 			kafkaApp.start();
 			SpringApplication.run(Main.class);

@@ -5,7 +5,6 @@ public enum FlightStatusEnum {
 	HOLDING, // airplane currently circling the airport in a holding pattern
 	READY, // airplane fully operational and ready to fly
 	DEPARTED, // flight departed and is in route to its destination
-	IN_TRANSIT, // airplane currently in route to destination
 	ARRIVED, // flight arrived at its destination
 	GROUNDED, // airplane unable to fly due to maintenance or other issues
 	OPENED, // boarding opened
