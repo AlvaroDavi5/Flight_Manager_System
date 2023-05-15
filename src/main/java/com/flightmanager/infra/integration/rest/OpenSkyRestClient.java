@@ -8,13 +8,21 @@ public class OpenSkyRestClient {
 	private RestTemplate restTemplate;
 
 	public OpenSkyRestClient() {
-		this.baseUrl = "http://localhost:3000/api";
+		this.baseUrl = "opensky-network.org/api";
 		this.restTemplate = new RestTemplate();
 	}
 
-	public ResponseEntity<String> getHealthCheck() {
+	public ResponseEntity<String> getArrivalsByAirport(String ICAO, long startDate, long endDate) {
 		ResponseEntity<String> response = this.restTemplate.getForEntity(
-				(this.baseUrl + "/healthcheck"),
+				(this.baseUrl + "/flights/arrival?airport=" + ICAO + "&begin=" + startDate + "&end=" + endDate),
+				String.class);
+
+		return response;
+	}
+
+	public ResponseEntity<String> getDeparturesByAirport(String ICAO, long startDate, long endDate) {
+		ResponseEntity<String> response = this.restTemplate.getForEntity(
+				(this.baseUrl + "/flights/departure?airport=" + ICAO + "&begin=" + startDate + "&end=" + endDate),
 				String.class);
 
 		return response;

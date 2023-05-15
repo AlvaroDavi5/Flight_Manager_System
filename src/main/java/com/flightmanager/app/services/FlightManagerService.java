@@ -63,6 +63,7 @@ public class FlightManagerService {
 		this.flightManagerFluxStrategy.manageFlux(flight);
 
 		this.dispatchFlightLogisticMessage(flight);
+		this.dispatchFlightNotificationMessage(flight);
 	}
 
 	public void handleAirTrafficMessage(HashMap<String, Object> message) {
@@ -98,6 +99,7 @@ public class FlightManagerService {
 
 	public Boolean isRegistered(Flight flight) {
 		return flight.getId() != 0;
+		// TODO - validate it on database and OpenSky
 	}
 
 	public Gate getFreeGate() {
@@ -123,20 +125,14 @@ public class FlightManagerService {
 	public Boolean isAirstripFreeToLand() {
 		Airport airport = this.airport;
 
-		// TODO - validate it on database
-
 		return airport.isAirstripFree();
 	}
 
 	public void closeAirstrip() {
 		this.airport.closeAirstrip();
-
-		// TODO - do it on database
 	}
 
 	public void openAirstrip() {
 		this.airport.openAirstrip();
-
-		// TODO - do it on database
 	}
 }

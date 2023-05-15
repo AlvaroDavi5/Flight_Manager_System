@@ -9,7 +9,6 @@ import com.flightmanager.app.utils.ParserUtils;
 import com.flightmanager.app.services.FlightService;
 import com.flightmanager.domain.entities.Flight;
 import com.flightmanager.infra.database.models.FlightsModel;
-import com.flightmanager.infra.integration.rest.OpenSkyRestClient;
 
 @RestController
 @RequestMapping("/api/flights")
@@ -17,7 +16,6 @@ public class FlightController {
 	@Autowired
 	private FlightService flightService;
 	private ParserUtils parserUtils = new ParserUtils();
-	private OpenSkyRestClient openSkyRestClient = new OpenSkyRestClient();
 
 	private FlightsModel stringfiedJsonToFlightsModel(String data) {
 		Flight newFlight = new Flight(null);
@@ -74,9 +72,9 @@ public class FlightController {
 	public @ResponseBody ResponseEntity<Boolean> delete(@RequestParam(value = "id", defaultValue = "0") long id) {
 		try {
 			Boolean deleted = this.flightService.delete(id);
-			return ResponseEntity.ok(deleted);
+			return ResponseEntity.status(HttpStatus.OK).body(deleted);
 		} catch (Exception exception) {
-			return ResponseEntity.ok(false);
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
 		}
 	}
 
@@ -93,16 +91,5 @@ public class FlightController {
 				return ResponseEntity.badRequest().build();
 			}
 		return ResponseEntity.notFound().build();
-	}
-
-	@GetMapping("/test")
-	public @ResponseBody ResponseEntity<String> test() {
-		try {
-			System.out.println("HealthCheck Requested");
-			return this.openSkyRestClient.getHealthCheck();
-		} catch (Exception exception) {
-			System.out.println("HealthCheck Exception");
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{}");
-		}
 	}
 }

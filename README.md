@@ -122,8 +122,7 @@ $ kafka-consumer-groups.sh --bootstrap-server=localhost:9092 -—describe --grou
 					- [x] _FlightNotificationsProducer_
 					- [x] _FlightLogisticProducer_
 	- `interface`: HTTP endpoints for record querying
-		- [ ] `[GET] /gates/available` - available gates (cached)
-		- [ ] `[GET] /flights/list` - list of all flights updated within a time interval (cached)
+		- [x] `[GET] /flights/list` - list of all flights updated within a time interval (cached)
 		- [ ] `[GET] /flights/{flightId}` - flight information
 		- [ ] `[POST] /flights/{flightId}` - manage flight
 - **Control Tower**
@@ -139,8 +138,8 @@ $ kafka-consumer-groups.sh --bootstrap-server=localhost:9092 -—describe --grou
 	* [ ] _FlightTracker_
 		* [ ] _Cron_
 		* RestClients
-			* [ ] _OpenSkyRestClient_
-			* [ ] _FlightManagerRestClient_
+			* [x] _OpenSkyRestClient_
+			* [x] _FlightManagerRestClient_
 - **Flight-Status Panel**
 	> Displays the list of flights and their status within a time interval.  
 	* [ ] _PanelSync_
