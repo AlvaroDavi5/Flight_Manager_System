@@ -1,17 +1,23 @@
 package com.controltower.app;
 
+import java.util.Date;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Scanner;
 import java.util.Properties;
 import com.flightmanager.app.utils.FileUtils;
+import com.flightmanager.domain.entities.Flight;
 import com.flightmanager.infra.integration.kafka.KafkaAdminClient;
-import com.flightmanager.infra.integration.queue.consumers.TowerReportsConsumer;
-import com.flightmanager.infra.integration.queue.producers.FlightLogisticProducer;
+import com.controltower.infra.producers.TowerReportsProducer;
+import com.controltower.infra.consumers.FlightLogisticConsumer;
 
 public class App {
 	private FileUtils utils = new FileUtils();
 	private Properties producersProps;
 	private Properties consumerProps;
 	private KafkaAdminClient kafkaClient;
-	private TowerReportsConsumer towerReportsConsumer;
+	private TowerReportsProducer towerReportsProducer;
+	private FlightLogisticConsumer flightLogisticConsumer;
 
 	public App(String[] args) {
 		try {
@@ -25,17 +31,31 @@ public class App {
 
 		this.kafkaClient = new KafkaAdminClient(this.producersProps, this.consumerProps);
 
-		new FlightLogisticProducer(this.kafkaClient);
-		new TowerReportsConsumer(this.kafkaClient, null);
+		this.towerReportsProducer = new TowerReportsProducer(this.kafkaClient);
+		this.flightLogisticConsumer = new FlightLogisticConsumer(this.kafkaClient);
 	}
 
 	public void start() {
-		while (true) {
-			// TODO - read stdin and generate flight to producer
-			this.utils.getInput();
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(new Date());
+		Scanner input = new Scanner(System.in);
 
-			// TODO - consume messages and display on stdout
-			this.towerReportsConsumer.run();
+		while (input.hasNextLine()) {
+			this.flightLogisticConsumer.run();
+
+			System.out.println("\n\n Generate new flight event: [FLIGHT_CODE] [FLIGHT_STATUS] [LOGISTIC_STATUS]");
+			String[] data = input.nextLine().split(" ");
+
+			Flight flight = new Flight(data[0]);
+			flight.setFlightStatus(data[1]);
+			flight.setLogisticStatus(data[2]);
+
+			String msgKey = flight.getFlightCode() + "#" + (calendar.getTime()).getTime();
+			HashMap<String, Object> message = flight.toHashMap();
+
+			this.towerReportsProducer.sendMessage(2, msgKey, message);
 		}
+
+		input.close();
 	}
 }

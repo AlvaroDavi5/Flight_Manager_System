@@ -5,12 +5,13 @@ import com.controltower.app.App;
 public class Main {
 	public static void main(String[] args) {
 		try {
-			if (args.length < 3)
-				throw new Error("Invalid number of arguments (expected 3 arguments)", null);
+			if (args.length < 1)
+				throw new Error("Invalid number of arguments (expected 1 argument)", null);
 
-			App kafkaApp = new App(args);
+			App app = new App(args);
 
-			kafkaApp.start();
+			System.out.println(" --- App Started --- ");
+			app.start();
 		} catch (Error error) {
 			System.out.println("Main.Error → " + error.getMessage());
 			error.printStackTrace();

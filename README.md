@@ -104,7 +104,7 @@ $ kafka-consumer-groups.sh --bootstrap-server=localhost:9092 -—describe --grou
 			* [x] _FlightStatusEnum_ [enum]
 			* [x] _PanelStatusEnum_ [enum]
 	- `app`: operations, services, and strategies logic
-		* [ ] _FlightManagerService_ [action]
+		* [x] _FlightManagerService_ [action]
 		* [x] _FlightService_ [action]
 		* [ ] _GateService_ [action]
 	- `infra`:
@@ -123,8 +123,8 @@ $ kafka-consumer-groups.sh --bootstrap-server=localhost:9092 -—describe --grou
 					- [x] _FlightLogisticProducer_
 	- `interface`: HTTP endpoints for record querying
 		- [x] `[GET] /flights/list` - list of all flights updated within a time interval (cached)
-		- [ ] `[GET] /flights/{flightId}` - flight information
-		- [ ] `[POST] /flights/{flightId}` - manage flight
+		- [ ] `[POST] /flights/{flightId}` - register flight
+		- [ ] `[PUT] /flights/{flightId}` - update flight
 - **Control Tower**
 	> Generates tower report events with information about new landings (registered or not).  
 	> Consumes flight release notification events.  
