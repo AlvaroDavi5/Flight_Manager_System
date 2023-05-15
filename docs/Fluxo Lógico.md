@@ -69,9 +69,9 @@ Para cada mudança de status importante, novos eventos são gerados e enviados p
 		- `ALLOWED_TO_LAND`
 			- `TAXIING`
 				- **ARRIVED**
-			- `REQUESTING_MAINTENANCE` || `REQUESTING_REFUELING`
+			- `REQUESTING_MAINTENANCE`
 				1. **GROUNDED**
-				2. `MAINTENANCE` || `REFUELING`
+				2. `MAINTENANCE`
 				3. **READY**
 			- `LANDED`
 				1. **OPENED**

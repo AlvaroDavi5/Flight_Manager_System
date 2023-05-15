@@ -17,7 +17,6 @@ First assignment for the discipline  ```Tópicos Especiais em Informática IV (E
 
 [Back-End Architecture](https://www.figma.com/file/DLgbATt7o29ccL3Qz8Gc2r/Flight-Manager-Architecture)  
 [OpenSky API](https://openskynetwork.github.io/opensky-api/index.html)  
-[OpenMeteo API](https://open-meteo.com/)  
 
 ## Main technologies
 
@@ -36,11 +35,11 @@ First assignment for the discipline  ```Tópicos Especiais em Informática IV (E
 
 ## How to run the project
 
-To run this project, is recomended to use [JDK version 11](https://www.oracle.com/br/java/technologies/javase/jdk11-archive-downloads.html) or higher installed and these libraries: [Apache Kafka 3.4.0](https://downloads.apache.org/kafka/3.4.0/RELEASE_NOTES.html) and [Apache Maven 3.5.0](https://maven.apache.org/docs/3.5.0/release-notes.html).  
+To run this project, is recomended to use [JDK version 17](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html) or higher installed and these libraries: [Apache Kafka 3.4.0](https://downloads.apache.org/kafka/3.4.0/RELEASE_NOTES.html) and [Apache Maven 3.5.0](https://maven.apache.org/docs/3.5.0/release-notes.html).  
 This project has created using:   
 ```sh
 # create Maven project
-$ mvn archetype:generate -DgroupId=app -DartifactId=Flight_Manager_System -DarchetypeVersion=1.4 -DinteractiveMode=false
+$ mvn archetype:generate -DgroupId=com.flightmanager -DartifactId=Flight_Manager_System -DarchetypeVersion=1.4 -DinteractiveMode=false
 ```
 
 After installing the JDK, you can run the project by typing the following commands in terminal:  
@@ -105,12 +104,14 @@ $ kafka-consumer-groups.sh --bootstrap-server=localhost:9092 -—describe --grou
 			* [x] _FlightStatusEnum_ [enum]
 			* [x] _PanelStatusEnum_ [enum]
 	- `app`: operations, services, and strategies logic
-		* [ ] _FlightManagerService_ [action]
+		* [x] _FlightManagerService_ [action]
+		* [x] _FlightService_ [action]
+		* [ ] _GateService_ [action]
 	- `infra`:
 		- `database`: storage of records
-			* [ ] _MySQLClient_
-				- Gates
-				- Flights
+			* _PostgresRepository_
+				- [ ] Gates
+				- [x] Flights
 		- `cache`: temporary storage of records and queries
 			* [ ] _RedisClient_
 		- `integration`: communication services
@@ -121,10 +122,9 @@ $ kafka-consumer-groups.sh --bootstrap-server=localhost:9092 -—describe --grou
 					- [x] _FlightNotificationsProducer_
 					- [x] _FlightLogisticProducer_
 	- `interface`: HTTP endpoints for record querying
-		- [ ] `[GET] /gates/available` - available gates (cached)
-		- [ ] `[GET] /flights/list` - list of all flights updated within a time interval (cached)
-		- [ ] `[GET] /flights/{flightId}` - flight information
-		- [ ] `[POST] /flights/{flightId}` - manage flight
+		- [x] `[GET] /flights/list` - list of all flights updated within a time interval (cached)
+		- [ ] `[POST] /flights/{flightId}` - register flight
+		- [ ] `[PUT] /flights/{flightId}` - update flight
 - **Control Tower**
 	> Generates tower report events with information about new landings (registered or not).  
 	> Consumes flight release notification events.  
@@ -138,9 +138,8 @@ $ kafka-consumer-groups.sh --bootstrap-server=localhost:9092 -—describe --grou
 	* [ ] _FlightTracker_
 		* [ ] _Cron_
 		* RestClients
-			* [ ] _OpenSkyRestClient_
-			* [ ] _OpenMeteoRestClient_
-			* [ ] _FlightManagerRestClient_
+			* [x] _OpenSkyRestClient_
+			* [x] _FlightManagerRestClient_
 - **Flight-Status Panel**
 	> Displays the list of flights and their status within a time interval.  
 	* [ ] _PanelSync_
