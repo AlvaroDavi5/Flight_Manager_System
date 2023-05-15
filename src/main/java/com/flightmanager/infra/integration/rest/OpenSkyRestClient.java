@@ -13,6 +13,7 @@ public class OpenSkyRestClient {
 	}
 
 	public ResponseEntity<String> getArrivalsByAirport(String ICAO, long startDate, long endDate) {
+		// FIXME - URI is not absolute
 		ResponseEntity<String> response = this.restTemplate.getForEntity(
 				(this.baseUrl + "/flights/arrival?airport=" + ICAO + "&begin=" + startDate + "&end=" + endDate),
 				String.class);

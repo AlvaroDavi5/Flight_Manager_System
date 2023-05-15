@@ -39,6 +39,7 @@ public class KafkaApp extends Thread {
 
 	@Override
 	public void run() {
+		// FIXME - change to kafka on spring boot
 		this.flightManagerService.start();
 		this.startConsumers();
 	}

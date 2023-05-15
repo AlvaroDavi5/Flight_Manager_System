@@ -75,9 +75,6 @@ public class FlightService {
 	public LinkedList<Flight> list(long startDate, long endDate) {
 		if (startDate != 0 && endDate != 0)
 			try {
-				if (startDate != 0 && endDate != 0) {
-					return null;
-				}
 				LinkedList<FlightsModel> flightModels = this.flightsRepository.findAll();
 				LinkedList<Flight> flights = new LinkedList<Flight>();
 
