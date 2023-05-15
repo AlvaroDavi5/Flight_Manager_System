@@ -43,12 +43,13 @@ public class App {
 		while (input.hasNextLine()) {
 			this.flightLogisticConsumer.run();
 
-			System.out.println("\n\n Generate new flight event: [FLIGHT_CODE] [FLIGHT_STATUS] [LOGISTIC_STATUS]");
+			System.out.println("\n\n Generate new flight event: [FLIGHT_CODE] [GATE_NUMBER] [FLIGHT_STATUS] [LOGISTIC_STATUS]");
 			String[] data = input.nextLine().split(" ");
 
 			Flight flight = new Flight(data[0]);
-			flight.setFlightStatus(data[1]);
-			flight.setLogisticStatus(data[2]);
+			flight.setGateNumber(Integer.parseInt(data[1]));
+			flight.setFlightStatus(data[2]);
+			flight.setLogisticStatus(data[3]);
 
 			String msgKey = flight.getFlightCode() + "#" + (calendar.getTime()).getTime();
 			HashMap<String, Object> message = flight.toHashMap();
