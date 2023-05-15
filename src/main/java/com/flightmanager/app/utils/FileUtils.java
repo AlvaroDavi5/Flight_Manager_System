@@ -1,9 +1,11 @@
 package com.flightmanager.app.utils;
 
 import java.io.IOException;
-import java.util.Properties;
 import java.io.FileReader;
 import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.Properties;
+import java.util.stream.Collectors;
 
 public class FileUtils {
 	public FileUtils() {
@@ -23,5 +25,10 @@ public class FileUtils {
 		}
 
 		return props;
+	}
+
+	public String getInput() {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+		return reader.lines().collect(Collectors.joining("\n"));
 	}
 }
