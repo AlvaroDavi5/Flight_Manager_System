@@ -1,8 +1,8 @@
-package com.flightmanager.infra.integration.queue.producers;
+package com.controltower.infra.integration.queue.producers;
 
 import java.util.HashMap;
 import org.apache.kafka.clients.producer.KafkaProducer;
-import com.flightmanager.infra.integration.kafka.KafkaAdminClient;
+import com.controltower.infra.integration.kafka.KafkaAdminClient;
 import com.flightmanager.app.utils.ParserUtils;
 
 public abstract class AbstractProducer {
