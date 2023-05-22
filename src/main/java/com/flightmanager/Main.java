@@ -18,7 +18,6 @@ public class Main {
 				throw new Error("Invalid number of arguments (expected 3 arguments)", null);
 
 			KafkaApp kafkaApp = new KafkaApp(args);
-
 			kafkaApp.start();
 			SpringApplication.run(Main.class);
 		} catch (Error error) {

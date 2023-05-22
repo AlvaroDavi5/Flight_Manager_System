@@ -11,7 +11,7 @@ import com.flightmanager.infra.integration.queue.consumers.AirTrafficConsumer;
 
 public class KafkaApp extends Thread {
 	private Properties producersProps;
-	private Properties consumerProps;
+	private Properties consumersProps;
 	private KafkaAdminClient kafkaClient;
 	private TowerReportsConsumer towerReportsConsumer;
 	private AirTrafficConsumer airTrafficConsumer;
@@ -21,14 +21,14 @@ public class KafkaApp extends Thread {
 		FileUtils utils = new FileUtils();
 		try {
 			this.producersProps = utils.readPropertiesFile("./src/main/resources/producer.properties");
-			this.consumerProps = utils.readPropertiesFile("./src/main/resources/consumer.properties");
+			this.consumersProps = utils.readPropertiesFile("./src/main/resources/consumer.properties");
 		} catch (Exception exception) {
 			System.out.print("Read properties error, exiting...");
 			exception.printStackTrace();
 			System.exit(1);
 		}
 
-		this.kafkaClient = new KafkaAdminClient(this.producersProps, this.consumerProps);
+		this.kafkaClient = new KafkaAdminClient(this.producersProps, this.consumersProps);
 		this.flightManagerService = new FlightManagerService(args);
 
 		this.flightManagerService.setFlightLogisticProducer(new FlightLogisticProducer(this.kafkaClient));
