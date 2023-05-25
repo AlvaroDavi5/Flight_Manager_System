@@ -28,7 +28,6 @@ First assignment for the discipline  ```Tópicos Especiais em Informática IV (E
 	* Web: HTTP server creation and consume;
 - JPA: SQL and NoSQL databases management by abstraction;
 - PostgreSQL: Relational database;
-- Redis: Cache and in-memory key-value NoSQL database;
 - Log4J: Custom logger with appenders;
 - Junit: Testing framework;
 - Docker: Services isolation and process resources management with containers;
@@ -83,7 +82,7 @@ $ kafka-consumer-groups.sh --bootstrap-server=localhost:9092 -—describe --grou
 - `docs`: documentation of execution, architecture and operation
 	* [x] README: execution
 	* [x] Figma: architecture
-	* [ ] LaTeX: operation
+	* [ ] LibreOffice: operation
 		1. Architecture
 		2. Infrastructure
 		3. Classes
@@ -112,17 +111,14 @@ $ kafka-consumer-groups.sh --bootstrap-server=localhost:9092 -—describe --grou
 			* _PostgresRepository_
 				- [ ] Gates
 				- [x] Flights
-		- `cache`: temporary storage of records and queries
-			* [ ] _RedisClient_
 		- `integration`: communication services
 			- `queue`: messaging
 				* [x] _KafkaAdminClient_
 					- [x] _TowerReportsConsumer_
-					- [x] _AirTrafficConsumer_
-					- [x] _FlightNotificationsProducer_
+					- [ ] _FlightNotificationsProducer_
 					- [x] _FlightLogisticProducer_
 	- `interface`: HTTP endpoints for record querying
-		- [x] `[GET] /flights/list` - list of all flights updated within a time interval (cached)
+		- [x] `[GET] /flights/list` - list of all flights updated within a time interval
 		- [ ] `[POST] /flights/{flightId}` - register flight
 		- [ ] `[PUT] /flights/{flightId}` - update flight
 - **Control Tower**
@@ -139,7 +135,7 @@ $ kafka-consumer-groups.sh --bootstrap-server=localhost:9092 -—describe --grou
 		* [ ] _Cron_
 		* RestClients
 			* [x] _OpenSkyRestClient_
-			* [x] _FlightManagerRestClient_
+			* [ ] _FlightManagerRestClient_
 - **Flight-Status Panel**
 	> Displays the list of flights and their status within a time interval.  
 	* [ ] _PanelSync_

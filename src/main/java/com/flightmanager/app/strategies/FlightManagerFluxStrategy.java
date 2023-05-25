@@ -112,15 +112,16 @@ public class FlightManagerFluxStrategy {
 				panelStatus = PanelStatusEnum.CLOSED;
 		}
 
+		// TODO - add status
 		/*
-		 * FlightStatusEnum.LOADING
-		 * 
-		 * FlightStatusEnum.OPENED
-		 * PanelStatusEnum.DEBOARDING
-		 * PanelStatusEnum.BOARDING
-		 * 
-		 * PanelStatusEnum.SCHEDULED
-		 * PanelStatusEnum.DELAYED
+			FlightStatusEnum.LOADING
+
+			FlightStatusEnum.OPENED
+			PanelStatusEnum.DEBOARDING
+			PanelStatusEnum.BOARDING
+
+			PanelStatusEnum.SCHEDULED
+			PanelStatusEnum.DELAYED
 		 */
 
 		flight.setpanelStatus(panelStatus);

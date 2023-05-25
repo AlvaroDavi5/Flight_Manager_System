@@ -1,25 +1,18 @@
 package com.flightmanager.infra.integration.queue.consumers;
 
-import java.util.HashMap;
+import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
-import com.flightmanager.infra.integration.kafka.KafkaAdminClient;
-import com.flightmanager.app.utils.ParserUtils;
 import com.flightmanager.app.services.FlightManagerService;
 
-public class TowerReportsConsumer extends AbstractConsumer {
+@Service
+public class TowerReportsConsumer {
+	@Autowired
 	private FlightManagerService flightManagerService;
 
-	public TowerReportsConsumer(KafkaAdminClient kafkaClient, FlightManagerService flightManagerService) {
-		super(kafkaClient, "TowerReportsConsumerGroup", System.getenv("TOWER_REPORTS_TOPIC"));
-		this.flightManagerService = flightManagerService;
-	}
-
-	@Override
-	public void handleMessage(ConsumerRecord<String, String> record) {
-		ParserUtils parser = new ParserUtils();
-
-		HashMap<String, Object> value = parser.stringfiedJsonToHashMap(record.value());
-
-		this.flightManagerService.handleTowerReportMessage(value);
+	@KafkaListener(id = "TowerReportsConsumer", topics = "towerReports", groupId = "TowerReportsConsumerGroup")
+	public void consume(ConsumerRecord<String, String> msg) {
+		this.flightManagerService.handleTowerReportMessage(msg.value());
 	}
 }

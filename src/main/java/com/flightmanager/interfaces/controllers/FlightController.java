@@ -15,11 +15,11 @@ import com.flightmanager.infra.database.models.FlightsModel;
 public class FlightController {
 	@Autowired
 	private FlightService flightService;
-	private ParserUtils parserUtils = new ParserUtils();
+	private ParserUtils parser = new ParserUtils();
 
 	private FlightsModel stringfiedJsonToFlightsModel(String data) {
 		Flight newFlight = new Flight(null);
-		newFlight.fromHashMap(this.parserUtils.stringfiedJsonToHashMap(data));
+		newFlight.fromHashMap(this.parser.stringfiedJsonToHashMap(data));
 		return newFlight.toModel();
 	}
 

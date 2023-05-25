@@ -1,7 +1,6 @@
-package com.controltower.infra.producers;
+package com.controltower.infra.integration.queue.producers;
 
-import com.flightmanager.infra.integration.kafka.KafkaAdminClient;
-import com.flightmanager.infra.integration.queue.producers.AbstractProducer;
+import com.controltower.infra.integration.kafka.KafkaAdminClient;
 
 public class TowerReportsProducer extends AbstractProducer {
 

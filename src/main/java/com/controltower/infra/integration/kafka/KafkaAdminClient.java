@@ -1,4 +1,4 @@
-package com.flightmanager.infra.integration.kafka;
+package com.controltower.infra.integration.kafka;
 
 import java.time.Duration;
 import java.util.Arrays;

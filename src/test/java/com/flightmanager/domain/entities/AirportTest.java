@@ -1,7 +1,6 @@
 package com.flightmanager.domain.entities;
 
 import org.junit.Test;
-
 import static org.junit.Assert.assertEquals;
 
 public class AirportTest {

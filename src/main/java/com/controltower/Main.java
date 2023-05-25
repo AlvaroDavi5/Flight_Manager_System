@@ -5,10 +5,7 @@ import com.controltower.app.App;
 public class Main {
 	public static void main(String[] args) {
 		try {
-			if (args.length < 1)
-				throw new Error("Invalid number of arguments (expected 1 argument)", null);
-
-			App app = new App(args);
+			App app = new App();
 
 			System.out.println(" --- App Started --- ");
 			app.start();
