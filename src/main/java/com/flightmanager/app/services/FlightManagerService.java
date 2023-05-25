@@ -3,23 +3,33 @@ package com.flightmanager.app.services;
 import java.util.Date;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.LinkedList;
 import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
 import com.flightmanager.domain.entities.Airport;
 import com.flightmanager.domain.entities.Gate;
 import com.flightmanager.domain.entities.Flight;
+import com.flightmanager.app.utils.ParserUtils;
 import com.flightmanager.app.strategies.FlightManagerFluxStrategy;
 import com.flightmanager.infra.logging.AppLogger;
 import com.flightmanager.infra.integration.queue.producers.FlightLogisticProducer;
-import com.flightmanager.infra.integration.queue.producers.FlightNotificationsProducer;
+import com.flightmanager.infra.integration.rest.OpenSkyRestClient;
 
+@Service
 public class FlightManagerService {
+	private ParserUtils parser;
 	private Airport airport;
 	private Logger logger;
 	private FlightManagerFluxStrategy flightManagerFluxStrategy;
+	@Autowired
 	private FlightLogisticProducer flightLogisticProducer;
-	private FlightNotificationsProducer flightNotificationsProducer;
+	@Autowired
+	private FlightService flightService;
+	@Autowired
+	private OpenSkyRestClient openSkyRestClient;
 
-	public FlightManagerService(String[] data) {
+	public void start(String[] data) {
 		String airportICAO = System.getenv("AIRPORT_ICAO");
 		airportICAO = airportICAO == null
 				? data[0]
@@ -38,23 +48,14 @@ public class FlightManagerService {
 
 		AppLogger logger = new AppLogger(this.getClass().getName());
 		this.logger = logger.getLogger();
-	}
+		this.parser = new ParserUtils();
 
-	public void setFlightLogisticProducer(FlightLogisticProducer flightLogisticProducer) {
-		this.flightLogisticProducer = flightLogisticProducer;
-	}
-
-	public void setFlightNotificationsProducer(FlightNotificationsProducer flightNotificationsProducer) {
-		this.flightNotificationsProducer = flightNotificationsProducer;
-	}
-
-	public void start() {
 		this.logger.info("Flight Manager App Started");
 	}
 
-	public void handleTowerReportMessage(HashMap<String, Object> message) {
+	public void handleTowerReportMessage(String message) {
 		Flight flight = new Flight(null);
-		flight.fromHashMap(message);
+		flight.fromHashMap(this.parser.stringfiedJsonToHashMap(message));
 
 		this.logger.info(
 				"New report event to flight: " + flight.getFlightCode()
@@ -63,11 +64,6 @@ public class FlightManagerService {
 		this.flightManagerFluxStrategy.manageFlux(flight);
 
 		this.dispatchFlightLogisticMessage(flight);
-		this.dispatchFlightNotificationMessage(flight);
-	}
-
-	public void handleAirTrafficMessage(HashMap<String, Object> message) {
-		// TODO - create flux
 	}
 
 	public void dispatchFlightLogisticMessage(Flight flight) {
@@ -76,30 +72,43 @@ public class FlightManagerService {
 
 		String msgKey = flight.getFlightCode() + "#" + (calendar.getTime()).getTime();
 		HashMap<String, Object> message = flight.toHashMap();
+		message.put("key", msgKey);
 
-		this.flightLogisticProducer.sendMessage(2,
-				msgKey, message);
-	}
-
-	public void dispatchFlightNotificationMessage(Flight flight) {
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(new Date());
-
-		String msgKey = flight.getFlightCode() + "#" + (calendar.getTime()).getTime();
-		HashMap<String, Object> message = flight.toHashMap();
-		message.remove("logisticStatus");
-		message.remove("departureAirportCandidates");
-		message.remove("departureDistanceInMeters");
-		message.remove("arrivalAirportCandidates");
-		message.remove("arrivalDistanceInMeters");
-
-		this.flightNotificationsProducer.sendMessage(2,
-				msgKey, message);
+		this.logger.info("Sended message with key: " + msgKey);
+		this.flightLogisticProducer.sender(this.parser.hashMapToStringfiedJson(message, false));
 	}
 
 	public Boolean isRegistered(Flight flight) {
-		return flight.getId() != 0;
-		// TODO - validate it on database and OpenSky
+		Boolean hasId = flight.getId() != 0;
+		Boolean isOnDatabase = this.flightService.read(flight.getId()) != null;
+		return hasId && isOnDatabase;
+	}
+
+	public Boolean isScheduled(Flight flight) {
+		LinkedList<HashMap<String, Object>> airTraffic = this.getCurrentAirTraffic();
+
+		for (HashMap<String, Object> trafficRegister : airTraffic) {
+			if (trafficRegister.get("callsign") == flight.getFlightCode())
+				return true;
+		}
+
+		return false;
+	}
+
+	public LinkedList<HashMap<String, Object>> getCurrentAirTraffic() {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(new Date());
+		calendar.set(Calendar.MINUTE, calendar.get(Calendar.MINUTE) - 10);
+		long endDate = (calendar.getTime()).getTime() / 1000;
+		calendar.setTime(new Date());
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		long startDate = (calendar.getTime()).getTime() / 1000;
+
+		String requestResult = this.openSkyRestClient.getArrivalsByAirport(this.getAirportICAO(), startDate, endDate)
+				.getBody();
+		return this.parser.stringfiedObjectArrayToHashMapList(requestResult);
 	}
 
 	public Gate getFreeGate() {
