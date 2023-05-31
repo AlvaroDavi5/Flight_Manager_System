@@ -7,7 +7,7 @@ import com.controltower.infra.integration.kafka.KafkaAdminClient;
 
 public class FlightLogisticConsumer extends AbstractConsumer {
 	public FlightLogisticConsumer(KafkaAdminClient kafkaClient) {
-		super(kafkaClient, "FlightLogisticConsumerGroup", System.getenv("TOWER_REPORTS_TOPIC"));
+		super(kafkaClient, "FlightLogisticConsumerGroup", System.getenv("FLIGHT_LOGISTIC_TOPIC"));
 	}
 
 	@Override

@@ -8,13 +8,13 @@ import java.util.HashMap;
 public class Airport {
 	private String ICAO;
 	private String IATA;
-	private boolean isAirstripFree;
+	private Boolean isAirstripFree;
 	private long airstripCloseTime;
-	private boolean isSafeToFlight;
-	private int gatesAmount;
+	private Boolean isSafeToFlight;
+	private Integer gatesAmount;
 	private LinkedList<Gate> gatesList;
 
-	public Airport(String ICAO, String IATA, int gatesAmount) {
+	public Airport(String ICAO, String IATA, Integer gatesAmount) {
 		this.IATA = IATA;
 		this.ICAO = ICAO;
 		this.isAirstripFree = true;
@@ -22,7 +22,7 @@ public class Airport {
 		this.gatesAmount = gatesAmount;
 		this.gatesList = new LinkedList<Gate>();
 
-		for (int i = 1; i < gatesAmount + 1; i++) {
+		for (Integer i = 1; i < gatesAmount + 1; i++) {
 			this.gatesList.addLast(new Gate(i));
 			// TODO - save on database
 		}
@@ -44,7 +44,7 @@ public class Airport {
 		this.IATA = IATA;
 	}
 
-	public boolean isAirstripFree() {
+	public Boolean isAirstripFree() {
 		return this.isAirstripFree;
 	}
 
@@ -65,7 +65,7 @@ public class Airport {
 		return this.airstripCloseTime;
 	}
 
-	public boolean isSafeToFlight() {
+	public Boolean isSafeToFlight() {
 		return this.isSafeToFlight;
 	}
 
@@ -77,11 +77,11 @@ public class Airport {
 		this.isSafeToFlight = false;
 	}
 
-	public int getGatesAmount() {
+	public Integer getGatesAmount() {
 		return this.gatesAmount;
 	}
 
-	private void setGatesAmount(int amount) {
+	private void setGatesAmount(Integer amount) {
 		this.gatesAmount = amount;
 	}
 
@@ -89,7 +89,7 @@ public class Airport {
 		return this.gatesList;
 	}
 
-	public Gate getGate(int gateNumber) {
+	public Gate getGate(Integer gateNumber) {
 		return this.gatesList.get(gateNumber - 1);
 	}
 
@@ -97,7 +97,7 @@ public class Airport {
 		Gate lastGate = null;
 		LinkedList<Gate> gates = this.getGatesList();
 
-		for (int i = 0; i < gates.size(); i++) {
+		for (Integer i = 0; i < gates.size(); i++) {
 			Gate gate = this.gatesList.get(i);
 			if (gate.isFreeToDock())
 				lastGate = gate;
@@ -110,7 +110,7 @@ public class Airport {
 		Gate findedGate = null;
 		LinkedList<Gate> gates = this.getGatesList();
 
-		for (int i = 0; i < gates.size(); i++) {
+		for (Integer i = 0; i < gates.size(); i++) {
 			Gate gate = this.gatesList.get(i);
 			if (gate.getGateNumber() == gateNumber)
 				findedGate = gate;
@@ -119,7 +119,7 @@ public class Airport {
 		return findedGate;
 	}
 
-	public void updateGateDocking(Gate gate, boolean isFreeToDock) {
+	public void updateGateDocking(Gate gate, Boolean isFreeToDock) {
 		if (gate == null)
 			return;
 
@@ -140,11 +140,11 @@ public class Airport {
 	public void fromHashMap(HashMap<String, Object> map) {
 		this.setICAO((String) map.get("ICAO"));
 		this.setIATA((String) map.get("IATA"));
-		if ((boolean) map.get("airstripFree"))
+		if ((Boolean) map.get("airstripFree"))
 			this.openAirstrip();
 		else
 			this.closeAirstrip();
-		this.setGatesAmount((int) map.get("gatesAmount"));
+		this.setGatesAmount((Integer) map.get("gatesAmount"));
 	}
 
 	public HashMap<String, Object> toHashMap() {

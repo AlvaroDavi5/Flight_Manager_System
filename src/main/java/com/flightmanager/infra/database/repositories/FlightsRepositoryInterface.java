@@ -9,6 +9,8 @@ public interface FlightsRepositoryInterface extends JpaRepository<FlightsModel, 
 
 	FlightsModel findById(long id);
 
+	FlightsModel findByCode(String code);
+
 	LinkedList<FlightsModel> findAll();
 
 	long count();

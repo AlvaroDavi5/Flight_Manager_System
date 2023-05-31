@@ -62,7 +62,7 @@ public class FlightManagerService {
 						+ " with status: " + flight.getFlightStatus());
 
 		this.flightManagerFluxStrategy.manageFlux(flight);
-
+		this.updateRegisteredFlight(flight);
 		this.dispatchFlightLogisticMessage(flight);
 	}
 
@@ -74,17 +74,43 @@ public class FlightManagerService {
 		HashMap<String, Object> message = flight.toHashMap();
 		message.put("key", msgKey);
 
+		this.flightLogisticProducer.send(this.parser.hashMapToStringfiedJson(message, false));
 		this.logger.info("Sended message with key: " + msgKey);
-		this.flightLogisticProducer.sender(this.parser.hashMapToStringfiedJson(message, false));
 	}
 
-	public Boolean isRegistered(Flight flight) {
-		Boolean hasId = flight.getId() != 0;
-		Boolean isOnDatabase = this.flightService.read(flight.getId()) != null;
-		return hasId && isOnDatabase;
+	public void updateRegisteredFlight(Flight flight) {
+		if (this.isRegisteredFlight(flight)) {
+			Flight findedFlight = this.flightService.findByCode(flight.getFlightCode());
+			findedFlight.setFlightStatus(flight.getFlightStatus());
+			findedFlight.setLogisticStatus(flight.getLogisticStatus());
+			this.flightService.update(findedFlight.getId(), findedFlight.toModel());
+			flight.fromModel(findedFlight.toModel());
+		} else {
+			HashMap<String, Object> trafficRegister = this.getScheduledFlight(flight);
+			if (trafficRegister != null) {
+				flight.setArrivalAirportCode((String) trafficRegister.get("estArrivalAirport"));
+				flight.setArrivalDistanceInMeters(
+						(Integer) trafficRegister.get("estArrivalAirportVertDistance"),
+						(Integer) trafficRegister.get("estArrivalAirportHorizDistance"));
+				flight.setArrivalAirportCandidates((Integer) trafficRegister.get("arrivalAirportCandidatesCount"));
+				flight.setArrivalTimeInEpoch((Integer) trafficRegister.get("lastSeen"));
+				flight.setDepartureAirportCode((String) trafficRegister.get("estDepartureAirport"));
+				flight.setDepartureDistanceInMeters(
+						(Integer) trafficRegister.get("estDepartureAirportVertDistance"),
+						(Integer) trafficRegister.get("estDepartureAirportHorizDistance"));
+				flight.setDepartureAirportCandidates((Integer) trafficRegister.get("departureAirportCandidatesCount"));
+				flight.setDepartureTimeInEpoch((Integer) trafficRegister.get("firstSeen"));
+				this.flightService.create(flight.toModel());
+			}
+		}
 	}
 
-	public Boolean isScheduled(Flight flight) {
+	public Boolean isRegisteredFlight(Flight flight) {
+		Flight findedFlight = this.flightService.findByCode(flight.getFlightCode());
+		return findedFlight != null && findedFlight.getId() > 0;
+	}
+
+	public Boolean isScheduledFlight(Flight flight) {
 		LinkedList<HashMap<String, Object>> airTraffic = this.getCurrentAirTraffic();
 
 		for (HashMap<String, Object> trafficRegister : airTraffic) {
@@ -93,6 +119,17 @@ public class FlightManagerService {
 		}
 
 		return false;
+	}
+
+	private HashMap<String, Object> getScheduledFlight(Flight flight) {
+		LinkedList<HashMap<String, Object>> airTraffic = this.getCurrentAirTraffic();
+
+		for (HashMap<String, Object> trafficRegister : airTraffic) {
+			if (trafficRegister.get("callsign") == flight.getFlightCode())
+				return trafficRegister;
+		}
+
+		return null;
 	}
 
 	public LinkedList<HashMap<String, Object>> getCurrentAirTraffic() {

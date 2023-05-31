@@ -1,15 +1,16 @@
 package com.flightmanager.infra.integration.queue.producers;
 
-import org.springframework.stereotype.Component;
-import org.springframework.boot.ApplicationRunner;
+import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 
-@Component
+@Service
 public class FlightLogisticProducer {
-	public ApplicationRunner sender(String msg) {
-		KafkaTemplate<Object, Object> template = new KafkaTemplate<Object, Object>(null, false);
-		return args -> {
-			template.send("flightLogistic", msg);
-		};
+
+	@Autowired
+	private KafkaTemplate<String, String> kafkaTemplate;
+
+	public void send(String payload) {
+		kafkaTemplate.send("flightLogistic", payload);
 	}
 }

@@ -27,6 +27,11 @@ public abstract class AbstractConsumer extends Thread {
 		}
 	}
 
+	public void runPolling() {
+		ConsumerHandler handler = (record) -> this.handleMessage(record);
+		this.kafkaClient.runPolling(this.consumer, handler);
+	}
+
 	public KafkaConsumer<String, String> getConsumer() {
 		return this.consumer;
 	}

@@ -36,32 +36,44 @@ public class App {
 	}
 
 	public void start() {
-		this.startConsumers();
 
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(new Date());
 		Scanner input = new Scanner(System.in);
-
-		while (input.hasNextLine()) {
+		while (true) {
+			this.runConsumers();
 			System.out
 					.println("\n\n Generate new flight event: [FLIGHT_CODE] [GATE_NUMBER] [FLIGHT_STATUS] [LOGISTIC_STATUS]");
-			String[] data = input.nextLine().split(" ");
 
-			Flight flight = new Flight(data[0]);
-			flight.setGateNumber(Integer.parseInt(data[1]));
-			flight.setFlightStatus(data[2]);
-			flight.setLogisticStatus(data[3]);
+			String line = input.nextLine();
+			if (line.equals("") || line == null) {
+				break;
+			}
 
-			String msgKey = flight.getFlightCode() + "#" + (calendar.getTime()).getTime();
-			HashMap<String, Object> message = flight.toHashMap();
-
-			this.towerReportsProducer.sendMessage(2, msgKey, message);
+			String[] data = line.split(" ");
+			if (data.length >= 4)
+				this.createEvent(data);
+			this.runConsumers();
 		}
 
 		input.close();
+		System.exit(0);
 	}
 
-	private void startConsumers() {
-		this.flightLogisticConsumer.run();
+	private void runConsumers() {
+		this.flightLogisticConsumer.runPolling();
+	}
+
+	private void createEvent(String[] data) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(new Date());
+
+		Flight flight = new Flight(data[0]);
+		flight.setGateNumber(Integer.parseInt(data[1]));
+		flight.setFlightStatus(data[2]);
+		flight.setLogisticStatus(data[3]);
+
+		String msgKey = flight.getFlightCode() + "#" + (calendar.getTime()).getTime();
+		HashMap<String, Object> message = flight.toHashMap();
+
+		this.towerReportsProducer.sendMessage(2, msgKey, message);
 	}
 }
