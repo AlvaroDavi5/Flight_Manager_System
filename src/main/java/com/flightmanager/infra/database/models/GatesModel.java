@@ -13,48 +13,48 @@ public class GatesModel implements Serializable {
 	public long id;
 
 	@Column(name = "gateNumber", nullable = false, unique = true)
-	private int gateNumber;
+	private Integer gateNumber;
 	@Column(name = "isFreeToDock", nullable = true, unique = false)
-	private boolean isFreeToDock = true;
+	private Boolean isFreeToDock = true;
 	@Column(name = "isOpenToBoarding", nullable = true, unique = false)
-	private boolean isOpenToBoarding = false;
+	private Boolean isOpenToBoarding = false;
 	@Column(name = "boardingDuration", nullable = true, unique = false)
-	private int boardingDuration = 120;
+	private Integer boardingDuration = 120;
 	@Column(name = "flightCode", length = 15, nullable = true, unique = false)
 	private String flightCode = null;
 
 	public GatesModel() {
 	}
 
-	public int getGateNumber() {
+	public Integer getGateNumber() {
 		return this.gateNumber;
 	};
 
-	public void setGateNumber(int gateNumber) {
+	public void setGateNumber(Integer gateNumber) {
 		this.gateNumber = gateNumber;
 	};
 
-	public boolean getIsFreeToDock() {
+	public Boolean getIsFreeToDock() {
 		return this.isFreeToDock;
 	};
 
-	public void setIsFreeToDock(boolean isFreeToDock) {
+	public void setIsFreeToDock(Boolean isFreeToDock) {
 		this.isFreeToDock = isFreeToDock;
 	};
 
-	public boolean getIsOpenToBoarding() {
+	public Boolean getIsOpenToBoarding() {
 		return this.isOpenToBoarding;
 	};
 
-	public void setIsOpenToBoarding(boolean isOpenToBoarding) {
+	public void setIsOpenToBoarding(Boolean isOpenToBoarding) {
 		this.isOpenToBoarding = isOpenToBoarding;
 	};
 
-	public int getBoardingDuration() {
+	public Integer getBoardingDuration() {
 		return this.boardingDuration;
 	};
 
-	public void setBoardingDuration(int boardingDuration) {
+	public void setBoardingDuration(Integer boardingDuration) {
 		this.boardingDuration = boardingDuration;
 	};
 

@@ -21,12 +21,12 @@ public abstract class AbstractProducer {
 		return this.producer;
 	}
 
-	public Boolean sendMessage(int partitionSize, String key, String value) {
+	public Boolean sendMessage(Integer partitionSize, String key, String value) {
 		return this.kafkaClient.sendMessage(this.producer, this.topicName, partitionSize, key, value);
 	}
 
 	// @Overload
-	public Boolean sendMessage(int partitionSize, String key, HashMap<String, Object> value) {
+	public Boolean sendMessage(Integer partitionSize, String key, HashMap<String, Object> value) {
 		ParserUtils parser = new ParserUtils();
 		return this.kafkaClient.sendMessage(this.producer, this.topicName, partitionSize, key,
 				parser.hashMapToStringfiedJson(value, false));

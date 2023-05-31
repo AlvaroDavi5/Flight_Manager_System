@@ -15,7 +15,7 @@ public class FlightsModel implements Serializable {
 	@Column(name = "code", length = 15, nullable = false, unique = true)
 	private String code;
 	@Column(name = "gateNumber", nullable = true, unique = false)
-	private int gateNumber = 0;
+	private Integer gateNumber = 0;
 	@Column(name = "flightStatus", length = 20, nullable = false, unique = false)
 	private String flightStatus;
 	@Column(name = "logisticStatus", length = 20, nullable = false, unique = false)
@@ -27,9 +27,9 @@ public class FlightsModel implements Serializable {
 	@Column(name = "departureVerticalDistance", nullable = true, unique = false)
 	private Integer departureVerticalDistance = 0;
 	@Column(name = "departureAirportCandidates", nullable = true, unique = false)
-	private int departureAirportCandidates = 0;
+	private Integer departureAirportCandidates = 0;
 	@Column(name = "departureTime", nullable = true, unique = false)
-	private int departureTime = 0;
+	private Integer departureTime = 0;
 	@Column(name = "arrivalAirportCode", length = 10, nullable = true, unique = false)
 	private String arrivalAirportCode = null;
 	@Column(name = "arrivalHorizontalDistance", nullable = true, unique = false)
@@ -37,9 +37,9 @@ public class FlightsModel implements Serializable {
 	@Column(name = "arrivalVerticalDistance", nullable = true, unique = false)
 	private Integer arrivalVerticalDistance = 0;
 	@Column(name = "arrivalAirportCandidates", nullable = true, unique = false)
-	private int arrivalAirportCandidates = 0;
+	private Integer arrivalAirportCandidates = 0;
 	@Column(name = "arrivalTime", nullable = true, unique = false)
-	private int arrivalTime = 0;
+	private Integer arrivalTime = 0;
 
 	public FlightsModel() {
 	}
@@ -52,11 +52,11 @@ public class FlightsModel implements Serializable {
 		this.code = code;
 	};
 
-	public int getGateNumber() {
+	public Integer getGateNumber() {
 		return this.gateNumber;
 	}
 
-	public void setGateNumber(int gateNumber) {
+	public void setGateNumber(Integer gateNumber) {
 		this.gateNumber = gateNumber;
 	};
 
@@ -100,19 +100,19 @@ public class FlightsModel implements Serializable {
 		this.departureVerticalDistance = departureVerticalDistance;
 	};
 
-	public int getDepartureAirportCandidates() {
+	public Integer getDepartureAirportCandidates() {
 		return this.departureAirportCandidates;
 	}
 
-	public void setDepartureAirportCandidates(int departureAirportCandidates) {
+	public void setDepartureAirportCandidates(Integer departureAirportCandidates) {
 		this.departureAirportCandidates = departureAirportCandidates;
 	};
 
-	public int getDepartureTime() {
+	public Integer getDepartureTime() {
 		return this.departureTime;
 	}
 
-	public void setDepartureTime(int departureTime) {
+	public void setDepartureTime(Integer departureTime) {
 		this.departureTime = departureTime;
 	};
 
@@ -140,19 +140,19 @@ public class FlightsModel implements Serializable {
 		this.arrivalVerticalDistance = arrivalVerticalDistance;
 	};
 
-	public int getArrivalAirportCandidates() {
+	public Integer getArrivalAirportCandidates() {
 		return this.arrivalAirportCandidates;
 	}
 
-	public void setArrivalAirportCandidates(int arrivalAirportCandidates) {
+	public void setArrivalAirportCandidates(Integer arrivalAirportCandidates) {
 		this.arrivalAirportCandidates = arrivalAirportCandidates;
 	};
 
-	public int getArrivalTime() {
+	public Integer getArrivalTime() {
 		return this.arrivalTime;
 	}
 
-	public void setArrivalTime(int arrivalTime) {
+	public void setArrivalTime(Integer arrivalTime) {
 		this.arrivalTime = arrivalTime;
 	};
 }
