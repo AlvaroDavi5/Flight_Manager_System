@@ -1,10 +1,16 @@
 package com.flightmanager.infra.integration.queue.producers;
 
-import com.flightmanager.infra.integration.kafka.KafkaAdminClient;
+import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 
-public class FlightLogisticProducer extends AbstractProducer {
+@Service
+public class FlightLogisticProducer {
 
-	public FlightLogisticProducer(KafkaAdminClient kafkaClient) {
-		super(kafkaClient, System.getenv("FLIGHT_LOGISTIC_TOPIC"));
+	@Autowired
+	private KafkaTemplate<String, String> kafkaTemplate;
+
+	public void send(String payload) {
+		kafkaTemplate.send("flightLogistic", payload);
 	}
 }

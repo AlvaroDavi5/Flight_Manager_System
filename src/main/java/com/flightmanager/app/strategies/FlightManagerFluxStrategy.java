@@ -18,11 +18,11 @@ public class FlightManagerFluxStrategy {
 		FlightStatusEnum flightStatus = flight.getFlightStatus();
 		LogisticStatusEnum logisticStatus = flight.getLogisticStatus();
 		PanelStatusEnum panelStatus = flight.getpanelStatus();
-		Boolean isRegistered = this.flightManagerService.isRegistered(flight);
 
 		if (logisticStatus == LogisticStatusEnum.REQUESTING_LAND) {
-
-			if (flightStatus == FlightStatusEnum.SCHEDULED && isRegistered) {
+			if (flightStatus == FlightStatusEnum.SCHEDULED &&
+					(this.flightManagerService.isRegisteredFlight(flight) ||
+							this.flightManagerService.isScheduledFlight(flight))) {
 				Gate freeGate = this.flightManagerService.getFreeGate();
 				Boolean isAirstripFreeToLand = this.flightManagerService.isAirstripFreeToLand();
 
@@ -112,16 +112,17 @@ public class FlightManagerFluxStrategy {
 				panelStatus = PanelStatusEnum.CLOSED;
 		}
 
+		// TODO - add status
 		/*
-		 * FlightStatusEnum.LOADING
-		 * 
-		 * FlightStatusEnum.OPENED
-		 * PanelStatusEnum.DEBOARDING
-		 * PanelStatusEnum.BOARDING
-		 * 
-		 * PanelStatusEnum.SCHEDULED
-		 * PanelStatusEnum.DELAYED
-		 */
+			FlightStatusEnum.LOADING
+
+			FlightStatusEnum.OPENED
+			PanelStatusEnum.DEBOARDING
+			PanelStatusEnum.BOARDING
+
+			PanelStatusEnum.SCHEDULED
+			PanelStatusEnum.DELAYED
+		*/
 
 		flight.setpanelStatus(panelStatus);
 		flight.setFlightStatus(flightStatus);

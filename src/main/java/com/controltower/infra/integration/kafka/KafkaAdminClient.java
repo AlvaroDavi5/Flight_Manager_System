@@ -1,4 +1,4 @@
-package com.flightmanager.infra.integration.kafka;
+package com.controltower.infra.integration.kafka;
 
 import java.time.Duration;
 import java.util.Arrays;
@@ -65,7 +65,7 @@ public class KafkaAdminClient {
 		return new KafkaProducer<String, String>(props);
 	}
 
-	public Boolean sendMessage(KafkaProducer<String, String> producer, String topicName, int partitionSize,
+	public Boolean sendMessage(KafkaProducer<String, String> producer, String topicName, Integer partitionSize,
 			String key, String value) {
 		ProducerRecord<String, String> record = new ProducerRecord<String, String>(topicName, partitionSize, key, value);
 

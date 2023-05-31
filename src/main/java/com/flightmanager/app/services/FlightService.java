@@ -46,10 +46,49 @@ public class FlightService {
 	}
 
 	@Transactional
-	public Flight update(FlightsModel flightData) {
+	public Flight findByCode(String code) {
 		try {
 			Flight flight = new Flight(null);
-			flight.fromModel(this.flightsRepository.save(flightData));
+			flight.fromModel(this.flightsRepository.findByCode(code));
+
+			if (flight == null || flight.getFlightCode() == null) {
+				return null;
+			}
+
+			return flight;
+		} catch (Exception exception) {
+			return null;
+		}
+	}
+
+	@Transactional
+	public Flight update(long id, FlightsModel flightData) {
+		try {
+			Flight flight = new Flight(null);
+			System.out.println("id: " + id);
+			FlightsModel flightModel = this.flightsRepository.findById(id);
+			System.out.println("code: " + flightModel.getCode());
+			if (flightData.getCode() != null)
+				flightModel.setCode(flightData.getCode());
+			if (flightData.getGateNumber() != null)
+				flightModel.setGateNumber(flightData.getGateNumber());
+			if (flightData.getFlightStatus() != null)
+				flightModel.setFlightStatus(flightData.getFlightStatus());
+			if (flightData.getLogisticStatus() != null)
+				flightModel.setLogisticStatus(flightData.getLogisticStatus());
+			if (flightData.getDepartureAirportCode() != null)
+				flightModel.setDepartureAirportCode(flightData.getDepartureAirportCode());
+			flightModel.setDepartureHorizontalDistance(flightData.getDepartureHorizontalDistance());
+			flightModel.setDepartureVerticalDistance(flightData.getDepartureVerticalDistance());
+			flightModel.setDepartureAirportCandidates(flightData.getDepartureAirportCandidates());
+			flightModel.setDepartureTime(flightData.getDepartureTime());
+			if (flightData.getArrivalAirportCode() != null)
+				flightModel.setArrivalAirportCode(flightData.getArrivalAirportCode());
+			flightModel.setArrivalHorizontalDistance(flightData.getArrivalHorizontalDistance());
+			flightModel.setArrivalVerticalDistance(flightData.getArrivalVerticalDistance());
+			flightModel.setArrivalAirportCandidates(flightData.getArrivalAirportCandidates());
+			flightModel.setArrivalTime(flightData.getArrivalTime());
+			flight.fromModel(flightModel);
 
 			if (flight == null || flight.getFlightCode() == null) {
 				return null;

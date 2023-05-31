@@ -9,20 +9,20 @@ import com.flightmanager.infra.database.models.FlightsModel;
 public class Flight {
 	private long id;
 	private String code;
-	private int gateNumber;
+	private Integer gateNumber;
 	private FlightStatusEnum flightStatus;
 	private LogisticStatusEnum logisticStatus;
 	private PanelStatusEnum panelStatus;
 	private String departureAirportCode;
 	private Integer departureHorizontalDistance;
 	private Integer departureVerticalDistance;
-	private int departureAirportCandidates;
-	private int departureTime;
+	private Integer departureAirportCandidates;
+	private Integer departureTime;
 	private String arrivalAirportCode;
 	private Integer arrivalHorizontalDistance;
 	private Integer arrivalVerticalDistance;
-	private int arrivalAirportCandidates;
-	private int arrivalTime;
+	private Integer arrivalAirportCandidates;
+	private Integer arrivalTime;
 
 	public Flight(String flightCode) {
 		this.id = 0;
@@ -74,35 +74,35 @@ public class Flight {
 		this.arrivalAirportCode = airportCode;
 	}
 
-	public int getDepartureAirportCandidates() {
+	public Integer getDepartureAirportCandidates() {
 		return this.departureAirportCandidates;
 	}
 
-	public void setDepartureAirportCandidates(int count) {
+	public void setDepartureAirportCandidates(Integer count) {
 		this.departureAirportCandidates = count;
 	}
 
-	public int getArrivalAirportCandidates() {
+	public Integer getArrivalAirportCandidates() {
 		return this.arrivalAirportCandidates;
 	}
 
-	public void setArrivalAirportCandidates(int count) {
+	public void setArrivalAirportCandidates(Integer count) {
 		this.arrivalAirportCandidates = count;
 	}
 
-	public int getDepartureTimeInEpoch() {
+	public Integer getDepartureTimeInEpoch() {
 		return this.departureTime;
 	}
 
-	public void setDepartureTimeInEpoch(int timeInEpoch) {
+	public void setDepartureTimeInEpoch(Integer timeInEpoch) {
 		this.departureTime = timeInEpoch;
 	}
 
-	public int getArrivalTimeInEpoch() {
+	public Integer getArrivalTimeInEpoch() {
 		return this.arrivalTime;
 	}
 
-	public void setArrivalTimeInEpoch(int timeInEpoch) {
+	public void setArrivalTimeInEpoch(Integer timeInEpoch) {
 		this.arrivalTime = timeInEpoch;
 	}
 
@@ -157,10 +157,13 @@ public class Flight {
 	}
 
 	public void setFlightStatus(String status) {
-		FlightStatusEnum flightStatusValue = FlightStatusEnum.valueOf(status);
+		try {
+			FlightStatusEnum flightStatusValue = FlightStatusEnum.valueOf(status);
 
-		if (flightStatusValue != null)
-			this.flightStatus = flightStatusValue;
+			if (flightStatusValue != null)
+				this.flightStatus = flightStatusValue;
+		} catch (Exception exception) {
+		}
 	}
 
 	public LogisticStatusEnum getLogisticStatus() {
@@ -176,10 +179,13 @@ public class Flight {
 	}
 
 	public void setLogisticStatus(String status) {
-		LogisticStatusEnum logisticStatusValue = LogisticStatusEnum.valueOf(status);
+		try {
+			LogisticStatusEnum logisticStatusValue = LogisticStatusEnum.valueOf(status);
 
-		if (logisticStatusValue != null)
-			this.logisticStatus = logisticStatusValue;
+			if (logisticStatusValue != null)
+				this.logisticStatus = logisticStatusValue;
+		} catch (Exception exception) {
+		}
 	}
 
 	public PanelStatusEnum getpanelStatus() {
@@ -195,17 +201,20 @@ public class Flight {
 	}
 
 	public void setpanelStatus(String status) {
-		PanelStatusEnum panelStatusValue = PanelStatusEnum.valueOf(status);
+		try {
+			PanelStatusEnum panelStatusValue = PanelStatusEnum.valueOf(status);
 
-		if (panelStatusValue != null)
-			this.panelStatus = panelStatusValue;
+			if (panelStatusValue != null)
+				this.panelStatus = panelStatusValue;
+		} catch (Exception exception) {
+		}
 	}
 
-	public int getGateNumber() {
+	public Integer getGateNumber() {
 		return this.gateNumber;
 	}
 
-	public void setGateNumber(int gateNumber) {
+	public void setGateNumber(Integer gateNumber) {
 		this.gateNumber = gateNumber;
 	}
 
@@ -215,21 +224,23 @@ public class Flight {
 
 		this.setId((long) model.id);
 		this.setFlightCode((String) model.getCode());
-		this.setGateNumber((int) model.getGateNumber());
-		this.setFlightStatus((String) model.getFlightStatus());
-		this.setLogisticStatus((String) model.getLogisticStatus());
+		this.setGateNumber((Integer) model.getGateNumber());
+		if (model.getFlightStatus() != null)
+			this.setFlightStatus((String) model.getFlightStatus());
+		if (model.getLogisticStatus() != null)
+			this.setLogisticStatus((String) model.getLogisticStatus());
 		this.setDepartureAirportCode((String) model.getDepartureAirportCode());
-		this.setDepartureAirportCandidates((int) model.getDepartureAirportCandidates());
+		this.setDepartureAirportCandidates((Integer) model.getDepartureAirportCandidates());
 		this.setDepartureDistanceInMeters(
 				(Integer) model.getDepartureVerticalDistance(),
 				(Integer) model.getDepartureHorizontalDistance());
-		this.setDepartureTimeInEpoch((int) model.getDepartureTime());
+		this.setDepartureTimeInEpoch((Integer) model.getDepartureTime());
 		this.setArrivalAirportCode((String) model.getArrivalAirportCode());
-		this.setArrivalAirportCandidates((int) model.getArrivalAirportCandidates());
+		this.setArrivalAirportCandidates((Integer) model.getArrivalAirportCandidates());
 		this.setArrivalDistanceInMeters(
 				(Integer) model.getArrivalVerticalDistance(),
 				(Integer) model.getArrivalHorizontalDistance());
-		this.setArrivalTimeInEpoch((int) model.getArrivalTime());
+		this.setArrivalTimeInEpoch((Integer) model.getArrivalTime());
 	}
 
 	public FlightsModel toModel() {
@@ -243,12 +254,12 @@ public class Flight {
 		model.setDepartureAirportCandidates(this.getDepartureAirportCandidates());
 		model.setDepartureVerticalDistance(this.getDepartureDistanceInMeters().get("vertical"));
 		model.setDepartureHorizontalDistance(this.getDepartureDistanceInMeters().get("horizontal"));
-		model.setDepartureTime((int) this.getDepartureTimeInEpoch());
+		model.setDepartureTime((Integer) this.getDepartureTimeInEpoch());
 		model.setArrivalAirportCode(this.getArrivalAirportCode());
 		model.setArrivalAirportCandidates(this.getArrivalAirportCandidates());
 		model.setArrivalVerticalDistance(this.getArrivalDistanceInMeters().get("vertical"));
 		model.setArrivalHorizontalDistance(this.getArrivalDistanceInMeters().get("horizontal"));
-		model.setArrivalTime((int) this.getArrivalTimeInEpoch());
+		model.setArrivalTime((Integer) this.getArrivalTimeInEpoch());
 
 		return model;
 	}
@@ -258,21 +269,23 @@ public class Flight {
 			return;
 
 		this.setFlightCode((String) map.get("flightCode"));
-		this.setGateNumber((int) map.get("gateNumber"));
-		this.setFlightStatus((String) map.get("flightStatus"));
-		this.setLogisticStatus((String) map.get("logisticStatus"));
+		this.setGateNumber((Integer) map.get("gateNumber"));
+		if (map.get("flightStatus") != null)
+			this.setFlightStatus((String) map.get("flightStatus"));
+		if (map.get("logisticStatus") != null)
+			this.setLogisticStatus((String) map.get("logisticStatus"));
 		this.setDepartureAirportCode((String) map.get("departureAirportCode"));
-		this.setDepartureAirportCandidates((int) map.get("departureAirportCandidates"));
+		this.setDepartureAirportCandidates((Integer) map.get("departureAirportCandidates"));
 		this.setDepartureDistanceInMeters(
 				(Integer) map.get("departureVerticalDistance"),
 				(Integer) map.get("departureHorizontalDistance"));
-		this.setDepartureTimeInEpoch((int) map.get("departureTime"));
+		this.setDepartureTimeInEpoch((Integer) map.get("departureTime"));
 		this.setArrivalAirportCode((String) map.get("arrivalAirportCode"));
-		this.setArrivalAirportCandidates((int) map.get("arrivalAirportCandidates"));
+		this.setArrivalAirportCandidates((Integer) map.get("arrivalAirportCandidates"));
 		this.setArrivalDistanceInMeters(
 				(Integer) map.get("arrivalVerticalDistance"),
 				(Integer) map.get("arrivalHorizontalDistance"));
-		this.setArrivalTimeInEpoch((int) map.get("arrivalTime"));
+		this.setArrivalTimeInEpoch((Integer) map.get("arrivalTime"));
 	}
 
 	public HashMap<String, Object> toHashMap() {

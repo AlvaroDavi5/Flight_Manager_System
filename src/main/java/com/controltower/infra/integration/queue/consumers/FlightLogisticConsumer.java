@@ -1,14 +1,13 @@
-package com.controltower.infra.consumers;
+package com.controltower.infra.integration.queue.consumers;
 
 import java.util.HashMap;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import com.flightmanager.app.utils.ParserUtils;
-import com.flightmanager.infra.integration.kafka.KafkaAdminClient;
-import com.flightmanager.infra.integration.queue.consumers.AbstractConsumer;
+import com.controltower.infra.integration.kafka.KafkaAdminClient;
 
 public class FlightLogisticConsumer extends AbstractConsumer {
 	public FlightLogisticConsumer(KafkaAdminClient kafkaClient) {
-		super(kafkaClient, "FlightLogisticConsumerGroup", System.getenv("TOWER_REPORTS_TOPIC"));
+		super(kafkaClient, "FlightLogisticConsumerGroup", System.getenv("FLIGHT_LOGISTIC_TOPIC"));
 	}
 
 	@Override

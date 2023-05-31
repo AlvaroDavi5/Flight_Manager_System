@@ -5,14 +5,14 @@ import com.flightmanager.infra.database.models.GatesModel;
 
 public class Gate {
 	private long id;
-	private int number;
-	private boolean isFreeToDock;
-	private boolean isOpenToBoarding;
-	private int boardingDuration;
+	private Integer number;
+	private Boolean isFreeToDock;
+	private Boolean isOpenToBoarding;
+	private Integer boardingDuration;
 	private String flightCode;
 	private Flight flight;
 
-	public Gate(int number) {
+	public Gate(Integer number) {
 		this.id = 0;
 		this.number = number;
 		this.isFreeToDock = true;
@@ -30,15 +30,15 @@ public class Gate {
 		this.id = id;
 	}
 
-	public int getGateNumber() {
+	public Integer getGateNumber() {
 		return this.number;
 	}
 
-	private void setGateNumber(int gateNumber) {
+	private void setGateNumber(Integer gateNumber) {
 		this.number = gateNumber;
 	}
 
-	public boolean isFreeToDock() {
+	public Boolean isFreeToDock() {
 		return this.isFreeToDock;
 	}
 
@@ -50,7 +50,7 @@ public class Gate {
 		this.isFreeToDock = false;
 	}
 
-	public boolean isOpenToBoarding() {
+	public Boolean isOpenToBoarding() {
 		return this.isOpenToBoarding;
 	}
 
@@ -63,11 +63,11 @@ public class Gate {
 		this.isOpenToBoarding = false;
 	}
 
-	public int getBoardingDurationInMinutes() {
+	public Integer getBoardingDurationInMinutes() {
 		return this.boardingDuration;
 	}
 
-	public void setBoardingDurationInMinutes(int durationInMinutes) {
+	public void setBoardingDurationInMinutes(Integer durationInMinutes) {
 		this.boardingDuration = durationInMinutes;
 	}
 
@@ -89,16 +89,16 @@ public class Gate {
 
 	public void fromModel(GatesModel model) {
 		this.setId((long) model.id);
-		this.setGateNumber((int) model.getGateNumber());
-		if ((boolean) model.getIsFreeToDock())
+		this.setGateNumber((Integer) model.getGateNumber());
+		if ((Boolean) model.getIsFreeToDock())
 			this.openDocking();
 		else
 			this.closeDocking();
-		if ((boolean) model.getIsOpenToBoarding())
+		if ((Boolean) model.getIsOpenToBoarding())
 			this.openBoarding();
 		else
 			this.closeBoarding();
-		this.setBoardingDurationInMinutes((int) model.getBoardingDuration());
+		this.setBoardingDurationInMinutes((Integer) model.getBoardingDuration());
 		this.setFlightCode((String) model.getFlightCode());
 		if (this.getFlightCode() != this.getFlight().getFlightCode())
 			this.setFlight(null);
@@ -117,16 +117,16 @@ public class Gate {
 	}
 
 	public void fromHashMap(HashMap<String, Object> map) {
-		this.setGateNumber((int) map.get("number"));
-		if ((boolean) map.get("isFreeToDock"))
+		this.setGateNumber((Integer) map.get("number"));
+		if ((Boolean) map.get("isFreeToDock"))
 			this.openDocking();
 		else
 			this.closeDocking();
-		if ((boolean) map.get("isOpenToBoarding"))
+		if ((Boolean) map.get("isOpenToBoarding"))
 			this.openBoarding();
 		else
 			this.closeBoarding();
-		this.setBoardingDurationInMinutes((int) map.get("boardingDurationInMinutes"));
+		this.setBoardingDurationInMinutes((Integer) map.get("boardingDurationInMinutes"));
 		this.setFlightCode((String) map.get("flightCode"));
 		if (this.getFlightCode() != this.getFlight().getFlightCode())
 			this.setFlight(null);
