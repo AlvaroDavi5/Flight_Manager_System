@@ -39,7 +39,7 @@ public class FlightController {
 	}
 
 	@GetMapping("/{id}")
-	public @ResponseBody ResponseEntity<Flight> read(@RequestParam(value = "id", defaultValue = "0") long id) {
+	public @ResponseBody ResponseEntity<Flight> read(@PathVariable long id) {
 		try {
 			Flight flight = this.flightService.read(id);
 
@@ -54,9 +54,17 @@ public class FlightController {
 	}
 
 	@PutMapping("/{id}")
-	public @ResponseBody ResponseEntity<Flight> update(@RequestBody String data) {
+	public @ResponseBody ResponseEntity<Flight> update(@PathVariable long id,
+			@RequestBody String data) {
 		try {
-			Flight flight = this.flightService.update(this.stringfiedJsonToFlightsModel(data));
+			FlightsModel flightData = this.stringfiedJsonToFlightsModel(data);
+			flightData.setCode(null);
+			flightData.setGateNumber(null);
+			flightData.setFlightStatus(null);
+			flightData.setLogisticStatus(null);
+			flightData.setDepartureAirportCode(null);
+			flightData.setArrivalAirportCode(null);
+			Flight flight = this.flightService.update(id, flightData);
 
 			if (flight == null || flight.getFlightCode() == null) {
 				return ResponseEntity.notFound().build();
@@ -69,7 +77,7 @@ public class FlightController {
 	}
 
 	@DeleteMapping("/{id}")
-	public @ResponseBody ResponseEntity<Boolean> delete(@RequestParam(value = "id", defaultValue = "0") long id) {
+	public @ResponseBody ResponseEntity<Boolean> delete(@PathVariable long id) {
 		try {
 			Boolean deleted = this.flightService.delete(id);
 			return ResponseEntity.status(HttpStatus.OK).body(deleted);
