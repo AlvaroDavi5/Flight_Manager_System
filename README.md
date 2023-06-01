@@ -112,15 +112,17 @@ $ kafka-consumer-groups.sh --bootstrap-server=localhost:9092 -—describe --grou
 				- [ ] Gates
 				- [x] Flights
 		- `integration`: communication services
+			- `rest`: requesting
+				* [x] _OpenSkyRestClient_
 			- `queue`: messaging
 				* [x] _KafkaAdminClient_
 					- [x] _TowerReportsConsumer_
-					- [ ] _FlightNotificationsProducer_
+					- [x] _FlightNotificationsProducer_
 					- [x] _FlightLogisticProducer_
 	- `interface`: HTTP endpoints for record querying
 		- [x] `[GET] /flights/list` - list of all flights updated within a time interval
-		- [ ] `[POST] /flights/{flightId}` - register flight
-		- [ ] `[PUT] /flights/{flightId}` - update flight
+		- [x] `[POST] /flights/{flightId}` - register flight
+		- [x] `[PUT] /flights/{flightId}` - update flight
 - **Control Tower**
 	> Generates tower report events with information about new landings (registered or not).  
 	> Consumes flight release notification events.  
@@ -128,14 +130,11 @@ $ kafka-consumer-groups.sh --bootstrap-server=localhost:9092 -—describe --grou
 	> Generates air traffic information events.  
 	* [ ] _Reporter_
 		* Producer
-			* [ ] _KafkaProducer_
+			* [x] _KafkaProducer_
 		* Consumer
-			* [ ] _KafkaConsumer_
-	* [ ] _FlightTracker_
-		* [ ] _Cron_
-		* RestClients
-			* [x] _OpenSkyRestClient_
-			* [ ] _FlightManagerRestClient_
+			* [x] _KafkaConsumer_
+	* RestClients
+		* [ ] _FlightManagerRestClient_
 - **Flight-Status Panel**
 	> Displays the list of flights and their status within a time interval.  
 	* [ ] _PanelSync_
