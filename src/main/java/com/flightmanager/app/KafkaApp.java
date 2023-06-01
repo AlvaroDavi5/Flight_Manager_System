@@ -24,6 +24,8 @@ public class KafkaApp {
 		return new NewTopic("flightLogistic", 3, (short) 1);
 	}
 
+	// TODO - add 'flightNotification' topic
+
 	public void start() {
 		AppLogger logger = new AppLogger(this.getClass().getName());
 		logger.getLogger().info("Kafka App Started");

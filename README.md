@@ -128,13 +128,11 @@ $ kafka-consumer-groups.sh --bootstrap-server=localhost:9092 -—describe --grou
 	> Consumes flight release notification events.  
 	> Generates tower report events with takeoff response.  
 	> Generates air traffic information events.  
-	* [ ] _Reporter_
+	* [x] _Reporter_
 		* Producer
 			* [x] _KafkaProducer_
 		* Consumer
 			* [x] _KafkaConsumer_
-	* RestClients
-		* [ ] _FlightManagerRestClient_
 - **Flight-Status Panel**
 	> Displays the list of flights and their status within a time interval.  
 	* [ ] _PanelSync_
