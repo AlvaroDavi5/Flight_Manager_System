@@ -24,7 +24,10 @@ public class KafkaApp {
 		return new NewTopic("flightLogistic", 3, (short) 1);
 	}
 
-	// TODO - add 'flightNotification' topic
+	@Bean
+	private NewTopic createFlightNotificationTopic() {
+		return new NewTopic("flightNotification", 3, (short) 1);
+	}
 
 	public void start() {
 		AppLogger logger = new AppLogger(this.getClass().getName());

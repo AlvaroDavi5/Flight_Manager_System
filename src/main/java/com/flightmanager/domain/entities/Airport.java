@@ -24,7 +24,6 @@ public class Airport {
 
 		for (Integer i = 1; i < gatesAmount + 1; i++) {
 			this.gatesList.addLast(new Gate(i));
-			// TODO - save on database
 		}
 	}
 

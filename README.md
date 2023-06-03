@@ -105,11 +105,11 @@ $ kafka-consumer-groups.sh --bootstrap-server=localhost:9092 -—describe --grou
 	- `app`: operations, services, and strategies logic
 		* [x] _FlightManagerService_ [action]
 		* [x] _FlightService_ [action]
-		* [ ] _GateService_ [action]
+		* [x] _GateService_ [action]
 	- `infra`:
 		- `database`: storage of records
 			* _PostgresRepository_
-				- [ ] Gates
+				- [x] Gates
 				- [x] Flights
 		- `integration`: communication services
 			- `rest`: requesting

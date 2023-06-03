@@ -27,6 +27,8 @@ public class FlightManagerService {
 	@Autowired
 	private FlightService flightService;
 	@Autowired
+	private GateService gateService;
+	@Autowired
 	private OpenSkyRestClient openSkyRestClient;
 
 	public void start(String[] data) {
@@ -64,6 +66,7 @@ public class FlightManagerService {
 		this.flightManagerFluxStrategy.manageFlux(flight);
 		this.updateRegisteredFlight(flight);
 		this.dispatchFlightLogisticMessage(flight);
+		// TODO - add 'flightNotification' topic
 	}
 
 	public void dispatchFlightLogisticMessage(Flight flight) {
@@ -148,12 +151,53 @@ public class FlightManagerService {
 		return this.parser.stringfiedObjectArrayToHashMapList(requestResult);
 	}
 
+	public Gate createGate(Gate newGate) {
+		Gate gate = this.gateService.create(newGate.toModel());
+		gate.fromModel(newGate.toModel());
+		return gate;
+	}
+
 	public Gate getFreeGate() {
 		Gate freeGate = this.airport.getLastFreeGate();
 
-		// TODO - validate it on database
+		Gate gate = this.gateService.findByGateNumber(freeGate.getGateNumber());
+		if (gate == null || !gate.isFreeToDock())
+			return null;
 
 		return freeGate;
+	}
+
+	public void updateGate(Gate updatedGate) {
+		Gate findedGate = this.gateService.findByGateNumber(updatedGate.getGateNumber());
+		if (findedGate == null)
+			findedGate = this.createGate(updatedGate);
+		findedGate.fromModel(updatedGate.toModel());
+		this.gateService.update(findedGate.getId(), findedGate.toModel());
+	}
+
+	public void openGateDocking(Gate gate) {
+		gate.openDocking();
+		this.updateGate(gate);
+	}
+
+	public void closeGateDocking(Gate gate) {
+		gate.closeDocking();
+		this.updateGate(gate);
+	}
+
+	public void openGateBoarding(Gate gate) {
+		gate.openBoarding();
+		this.updateGate(gate);
+	}
+
+	public void closeGateBoarding(Gate gate) {
+		gate.closeBoarding();
+		this.updateGate(gate);
+	}
+
+	public void setGateFlightCode(Gate gate, String flightCode) {
+		gate.setFlightCode(flightCode);
+		this.updateGate(gate);
 	}
 
 	public Gate findGateByNumber(Integer gateNumber) {
