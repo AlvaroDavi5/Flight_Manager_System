@@ -6,6 +6,7 @@ import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.Topology;
+import org.apache.kafka.streams.kstream.KTable;
 import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.common.serialization.Serdes;
 
@@ -44,11 +45,15 @@ public class KafkaStreamsClient {
 
 	public interface StreamsHandler {
 		KStream<String, String> handleStreams(KStream<String, String> sourceKStream);
+
+		KTable<String, String> handleTables(KTable<String, String> sourceKTable);
 	}
 
 	public void start(StreamsHandler handler) {
-		final KStream<String, String> sourceKStream = this.builder.stream(this.sourceTopic);
+		final KStream<String, String> sourceKStream = this.builder.stream(this.sourceTopic); // data stream, as a log
+		final KTable<String, String> sourceKTable = this.builder.table(this.sourceTopic); // stream snapshot (last register)
 		handler.handleStreams(sourceKStream).to(this.targetTopic);
+		handler.handleTables(sourceKTable).toStream().to(this.targetTopic);
 
 		final Topology topology = this.builder.build();
 		final KafkaStreams streams = new KafkaStreams(topology, this.streamsProperties);
