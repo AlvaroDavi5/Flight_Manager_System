@@ -20,7 +20,7 @@ public class KafkaAdminClient {
 	private Properties consumersProperties;
 
 	// interfaces
-	public interface ConsumerHandler {
+	public interface ConsumerHandlerInterface {
 		void handleMessage(ConsumerRecord<String, String> record);
 	}
 
@@ -104,7 +104,7 @@ public class KafkaAdminClient {
 		consumer.subscribe(Arrays.asList(topicName));
 	}
 
-	public void runPolling(KafkaConsumer<String, String> consumer, ConsumerHandler handler) {
+	public void runPolling(KafkaConsumer<String, String> consumer, ConsumerHandlerInterface handler) {
 		ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));
 
 		for (ConsumerRecord<String, String> record : records) {

@@ -15,17 +15,17 @@ public class KafkaApp {
 	}
 
 	@Bean
-	private NewTopic createTowerReportsTopic() {
+	public NewTopic createTowerReportsTopic() {
 		return new NewTopic("towerReports", 3, (short) 1);
 	}
 
 	@Bean
-	private NewTopic createFlightLogisticTopic() {
+	public NewTopic createFlightLogisticTopic() {
 		return new NewTopic("flightLogistic", 3, (short) 1);
 	}
 
 	@Bean
-	private NewTopic createFlightNotificationTopic() {
+	public NewTopic createFlightNotificationTopic() {
 		return new NewTopic("flightNotification", 3, (short) 1);
 	}
 

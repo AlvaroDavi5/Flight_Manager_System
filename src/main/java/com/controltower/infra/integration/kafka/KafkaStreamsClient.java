@@ -16,6 +16,12 @@ public class KafkaStreamsClient {
 	private String targetTopic;
 	private final StreamsBuilder builder;
 
+	public interface StreamsHandlerInterface {
+		KStream<String, String> handleStreams(KStream<String, String> sourceKStream);
+
+		KTable<String, String> handleTables(KTable<String, String> sourceKTable);
+	}
+
 	public KafkaStreamsClient(String applicationId, String sourceTopic, String targetTopic) {
 		String bootstrapServer = System.getenv("KAFKA_BOOTSTRAP_SERVER");
 		bootstrapServer = (bootstrapServer == null) ? "localhost:9092" : bootstrapServer;
@@ -43,13 +49,7 @@ public class KafkaStreamsClient {
 		return this.builder;
 	}
 
-	public interface StreamsHandler {
-		KStream<String, String> handleStreams(KStream<String, String> sourceKStream);
-
-		KTable<String, String> handleTables(KTable<String, String> sourceKTable);
-	}
-
-	public void start(StreamsHandler handler) {
+	public void start(StreamsHandlerInterface handler) {
 		final KStream<String, String> sourceKStream = this.builder.stream(this.sourceTopic); // data stream, as a log
 		final KTable<String, String> sourceKTable = this.builder.table(this.sourceTopic); // stream snapshot (last register)
 		handler.handleStreams(sourceKStream).to(this.targetTopic);
