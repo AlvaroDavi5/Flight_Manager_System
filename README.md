@@ -45,6 +45,8 @@ After installing the JDK, you can run the project by typing the following comman
 ```sh
 # load dotenv file
 $ cp ./envs/.env.development.local ./.env && source .env
+# start docker containers
+$ docker-compose up -d
 # install dependencies
 $ mvn install
 # reinstall dependencies

@@ -81,21 +81,28 @@ public class FlightManagerService {
 	}
 
 	public void updateRegisteredFlight(Flight flight) {
+		Flight findedFlight = null;
+
 		if (this.isRegisteredFlight(flight)) {
-			Flight findedFlight = this.flightService.findByCode(flight.getFlightCode());
+			findedFlight = this.flightService.findByCode(flight.getFlightCode());
+		} else {
+			findedFlight = this.getScheduledFlight(flight);
+			if (findedFlight != null) {
+				this.flightService.create(findedFlight.toModel());
+			}
+		}
+
+		if (findedFlight != null) {
+			this.logger.info("Flight founded!");
 			findedFlight.setFlightStatus(flight.getFlightStatus());
 			findedFlight.setLogisticStatus(flight.getLogisticStatus());
 			this.flightService.update(findedFlight.getId(), findedFlight.toModel());
 			flight.fromModel(findedFlight.toModel());
-		} else {
-			Flight scheduledFlight = this.getScheduledFlight(flight);
-			if (scheduledFlight != null) {
-				this.flightService.create(flight.toModel());
-			}
 		}
 	}
 
 	public Boolean isRegisteredFlight(Flight flight) {
+		this.logger.info("Checking if the flightCode: " + flight.getFlightCode() + " is already registered.");
 		Flight findedFlight = this.flightService.findByCode(flight.getFlightCode());
 		return findedFlight != null && findedFlight.getId() > 0;
 	}
@@ -104,7 +111,7 @@ public class FlightManagerService {
 		LinkedList<HashMap<String, Object>> airTraffic = this.getCurrentAirTraffic();
 
 		for (HashMap<String, Object> trafficRegister : airTraffic) {
-			if (trafficRegister.get("callsign") == flight.getFlightCode())
+			if (trafficRegister.get("callsign").toString().contains(flight.getFlightCode()))
 				return true;
 		}
 
@@ -117,15 +124,16 @@ public class FlightManagerService {
 
 		for (HashMap<String, Object> trafficRegister : airTraffic) {
 			Flight buildedFlight = this.buildFlight(trafficRegister);
-			if (trafficRegister.get("callsign") == flight.getFlightCode())
+			if (trafficRegister.get("callsign").toString().contains(flight.getFlightCode())) {
 				scheduledFlight = buildedFlight;
+			}
 		}
 
 		return scheduledFlight;
 	}
 
 	private Flight buildFlight(HashMap<String, Object> trafficRegister) {
-		Flight flight = new Flight((String) trafficRegister.get("callsign"));
+		Flight flight = new Flight((String) trafficRegister.get("callsign").toString().trim());
 
 		flight.setArrivalAirportCode((String) trafficRegister.get("estArrivalAirport"));
 		flight.setArrivalDistanceInMeters(
@@ -154,6 +162,8 @@ public class FlightManagerService {
 		calendar.set(Calendar.SECOND, 0);
 		long startDate = (calendar.getTime()).getTime() / 1000;
 
+		this.logger.info("Getting current air traffic for airport: " + this.getAirportICAO() + ". from: "
+				+ new Date(startDate * 1000) + " to: " + new Date(endDate * 1000));
 		String requestResult = this.openSkyRestClient.getArrivalsByAirport(this.getAirportICAO(), startDate, endDate)
 				.getBody();
 		return this.parser.stringfiedObjectArrayToHashMapList(requestResult);

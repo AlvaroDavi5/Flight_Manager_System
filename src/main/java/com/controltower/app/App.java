@@ -7,7 +7,7 @@ import java.util.Scanner;
 import java.util.Properties;
 import com.flightmanager.app.utils.FileUtils;
 import com.flightmanager.domain.entities.Flight;
-import com.controltower.infra.integration.kafka.KafkaAdminClient;
+import com.controltower.infra.integration.kafka.*;
 import com.controltower.infra.integration.queue.consumers.FlightLogisticConsumer;
 import com.controltower.infra.integration.queue.producers.TowerReportsProducer;
 
@@ -15,7 +15,7 @@ public class App {
 	private FileUtils utils = new FileUtils();
 	private Properties producersProps;
 	private Properties consumersProps;
-	private KafkaAdminClient kafkaClient;
+	private KafkaAdminClient kafkaAdminClient;
 	private TowerReportsProducer towerReportsProducer;
 	private FlightLogisticConsumer flightLogisticConsumer;
 
@@ -28,15 +28,12 @@ public class App {
 			exception.printStackTrace();
 			System.exit(1);
 		}
-
-		this.kafkaClient = new KafkaAdminClient(this.producersProps, this.consumersProps);
-
-		this.towerReportsProducer = new TowerReportsProducer(this.kafkaClient);
-		this.flightLogisticConsumer = new FlightLogisticConsumer(this.kafkaClient);
+		this.kafkaAdminClient = new KafkaAdminClient(this.producersProps, this.consumersProps);
+		this.towerReportsProducer = new TowerReportsProducer(this.kafkaAdminClient);
+		this.flightLogisticConsumer = new FlightLogisticConsumer(this.kafkaAdminClient);
 	}
 
 	public void start() {
-
 		Scanner input = new Scanner(System.in);
 		while (true) {
 			this.runConsumers();
