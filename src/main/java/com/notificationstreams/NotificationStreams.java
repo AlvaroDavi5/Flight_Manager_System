@@ -20,7 +20,7 @@ import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.streams.errors.StreamsUncaughtExceptionHandler;
 import com.flightmanager.app.utils.ParserUtils;
-import com.flightmanager.domain.enums.FlightStatusEnum;
+import com.flightmanager.domain.enums.LogisticStatusEnum;
 
 public class NotificationStreams {
 
@@ -43,14 +43,6 @@ public class NotificationStreams {
 		Duration windowAdvance = Duration.ofMinutes(1);
 		ParserUtils parser = new ParserUtils();
 
-		/*
-		 * implementado:
-		 * agrupar por chave
-		 * agrupar em janela temporal
-		 * filtrar por conteudo (status de voo e status logistico)
-		 * enviar para outro tópico
-		 */
-
 		KStream<String, String> logisticsKStream = builder.stream(logisticTopic); // data stream, as a log
 		logisticsKStream.peek((key, value) -> System.out.println("logisticsKStream - Key: " + key + ", Value: " + value));
 
@@ -68,10 +60,11 @@ public class NotificationStreams {
 		// filter the grouped stream based on the values in the message content
 		KStream<String, String> filteredKStream = windowedKStream.filter((String key, String value) -> {
 			HashMap<String, Object> message = parser.stringfiedJsonToHashMap(value);
-			return Arrays
-					.asList(FlightStatusEnum.CANCELLED.toString(), FlightStatusEnum.ARRIVED.toString(),
-							FlightStatusEnum.DEPARTED.toString())
-					.contains(message.get("flightStatus").toString());
+			return Arrays.asList(
+					LogisticStatusEnum.REJECTED_TO_LAND.toString(),
+					LogisticStatusEnum.DIVERTED.toString(),
+					LogisticStatusEnum.REJECTED_TO_TAKEOFF.toString())
+					.contains(message.get("logisticStatus").toString());
 		});
 		filteredKStream.peek((key, value) -> System.out.println("filteredKStream - Key: " + key + ", Value: " + value));
 

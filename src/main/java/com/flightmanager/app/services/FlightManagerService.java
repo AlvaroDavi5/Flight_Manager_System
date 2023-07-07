@@ -69,10 +69,7 @@ public class FlightManagerService {
 	}
 
 	public void dispatchFlightLogisticMessage(Flight flight) {
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(new Date());
-
-		String msgKey = flight.getFlightCode() + "#" + (calendar.getTime()).getTime();
+		String msgKey = flight.getFlightCode();
 		HashMap<String, Object> message = flight.toHashMap();
 		message.put("key", msgKey);
 
