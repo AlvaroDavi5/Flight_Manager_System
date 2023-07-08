@@ -9,6 +9,11 @@ import com.flightmanager.infra.logging.AppLogger;
 
 @Component
 public class KafkaApp {
+	String reportsTopic = System.getenv("TOWER_REPORTS_TOPIC");
+	String logisticTopic = System.getenv("FLIGHT_LOGISTIC_TOPIC");
+	String notificationsTopic = System.getenv("FLIGHT_NOTIFICATIONS_TOPIC");
+	String monitoringTopic = System.getenv("FLIGHT_MONITORING_TOPIC");
+
 	@Bean
 	public RecordMessageConverter converter() {
 		return new JsonMessageConverter();
@@ -16,17 +21,22 @@ public class KafkaApp {
 
 	@Bean
 	public NewTopic createTowerReportsTopic() {
-		return new NewTopic("towerReports", 3, (short) 1);
+		return new NewTopic(this.reportsTopic, 3, (short) 1);
 	}
 
 	@Bean
 	public NewTopic createFlightLogisticTopic() {
-		return new NewTopic("flightLogistic", 3, (short) 1);
+		return new NewTopic(this.logisticTopic, 3, (short) 1);
 	}
 
 	@Bean
 	public NewTopic createFlightNotificationTopic() {
-		return new NewTopic("flightNotification", 3, (short) 1);
+		return new NewTopic(this.notificationsTopic, 3, (short) 1);
+	}
+
+	@Bean
+	public NewTopic createFlightMonitoringTopic() {
+		return new NewTopic(this.monitoringTopic, 3, (short) 1);
 	}
 
 	public void start() {
