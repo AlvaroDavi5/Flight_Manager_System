@@ -135,14 +135,14 @@ $ kafka-consumer-groups.sh --bootstrap-server=localhost:9092 -—describe --grou
 			* [x] _KafkaProducer_
 		* Consumer
 			* [x] _KafkaConsumer_
+- **Client Subscriptions**
+	> Notifies flight status change events.  
+	* [ ] _Subscription_
+	* Consumer
+		* [ ] _KafkaConsumer_
 - **Flight-Status Panel**
 	> Displays the list of flights and their status within a time interval.  
 	* [ ] _PanelSync_
 		* [ ] _Cron_
 	* RestClient
 		* [ ] _FlightManagerRestClient_
-- **Client Subscriptions**
-	> Notifies flight status change events.  
-	* [ ] _Subscription_
-	* Consumer
-		* [ ] _KafkaConsumer_
