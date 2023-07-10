@@ -149,7 +149,7 @@ public class Flight {
 	}
 
 	public String getFlightStatusString() {
-		return "" + this.flightStatus;
+		return this.flightStatus.toString();
 	}
 
 	public void setFlightStatus(FlightStatusEnum status) {
@@ -171,7 +171,7 @@ public class Flight {
 	}
 
 	public String getLogisticStatusString() {
-		return "" + this.logisticStatus;
+		return this.logisticStatus.toString();
 	}
 
 	public void setLogisticStatus(LogisticStatusEnum status) {
