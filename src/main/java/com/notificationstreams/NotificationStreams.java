@@ -101,7 +101,9 @@ public class NotificationStreams {
 		KStream<String, Long> towerReportsCountStream = towerReportsCountTable
 				.toStream()
 				.map((key, value) -> new KeyValue<>(
-						key.key() + "@" +  + key.window().start() + "|" + key.window().end(), value)) // remap with new key
+						key.key() + "@" + value + "/"
+								+ key.window().start() + "|" + key.window().end(),
+						value)) // remap with new key
 				.peek((key, value) -> System.out.println("towerReportsCountStream - Key: " + key + ", Value: " + value));
 
 		towerReportsCountStream.to(monitoringTopic, Produced.with(Serdes.String(), Serdes.Long()));
