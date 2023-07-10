@@ -123,6 +123,7 @@ public class FlightManagerService {
 			Flight buildedFlight = this.buildFlight(trafficRegister);
 			if (trafficRegister.get("callsign").toString().contains(flight.getFlightCode())) {
 				scheduledFlight = buildedFlight;
+				break;
 			}
 		}
 
