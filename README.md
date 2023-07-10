@@ -45,6 +45,8 @@ After installing the JDK, you can run the project by typing the following comman
 ```sh
 # load dotenv file
 $ cp ./envs/.env.development.local ./.env && source .env
+# start docker containers
+$ docker-compose up -d
 # install dependencies
 $ mvn install
 # reinstall dependencies
@@ -105,45 +107,129 @@ $ kafka-consumer-groups.sh --bootstrap-server=localhost:9092 -—describe --grou
 	- `app`: operations, services, and strategies logic
 		* [x] _FlightManagerService_ [action]
 		* [x] _FlightService_ [action]
-		* [ ] _GateService_ [action]
+		* [x] _GateService_ [action]
 	- `infra`:
 		- `database`: storage of records
 			* _PostgresRepository_
-				- [ ] Gates
+				- [x] Gates
 				- [x] Flights
 		- `integration`: communication services
+			- `rest`: requesting
+				* [x] _OpenSkyRestClient_
 			- `queue`: messaging
 				* [x] _KafkaAdminClient_
 					- [x] _TowerReportsConsumer_
-					- [ ] _FlightNotificationsProducer_
+					- [x] _FlightNotificationsProducer_
 					- [x] _FlightLogisticProducer_
 	- `interface`: HTTP endpoints for record querying
 		- [x] `[GET] /flights/list` - list of all flights updated within a time interval
-		- [ ] `[POST] /flights/{flightId}` - register flight
-		- [ ] `[PUT] /flights/{flightId}` - update flight
+		- [x] `[POST] /flights/{flightId}` - register flight
+		- [x] `[PUT] /flights/{flightId}` - update flight
 - **Control Tower**
 	> Generates tower report events with information about new landings (registered or not).  
 	> Consumes flight release notification events.  
 	> Generates tower report events with takeoff response.  
 	> Generates air traffic information events.  
-	* [ ] _Reporter_
+	* [x] _Reporter_
 		* Producer
-			* [ ] _KafkaProducer_
+			* [x] _KafkaProducer_
 		* Consumer
-			* [ ] _KafkaConsumer_
-	* [ ] _FlightTracker_
-		* [ ] _Cron_
-		* RestClients
-			* [x] _OpenSkyRestClient_
-			* [ ] _FlightManagerRestClient_
+			* [x] _KafkaConsumer_
+- **Client Subscriptions**
+	> Notifies flight status change events.  
+	* [x] _Subscription_
+	* Consumer
+		* [x] _KafkaConsumer_
 - **Flight-Status Panel**
 	> Displays the list of flights and their status within a time interval.  
 	* [ ] _PanelSync_
-		* [ ] _Cron_
 	* RestClient
-		* [ ] _FlightManagerRestClient_
-- **Client Subscriptions**
-	> Notifies flight status change events.  
-	* [ ] _Subscription_
-	* Consumer
-		* [ ] _KafkaConsumer_
+		* [x] _FlightManagerRestClient_
+- **NotificationStreams**
+	> Consumes from towerReports topic.  
+	* Joins with:
+		- logística topic
+	* Group by:
+		- key
+		- time window
+	* Send to:
+		- monitoring topic
+	> Consumes from logistics topic.  
+	* Group by:
+		- key
+	* Filter by:
+		- fail events
+	* conta/agrega por:
+		- fail events
+	* Send to:
+		- notifications topic
+
+
+### Topology
+```txt
+
+Topologies:
+	Sub-topology: 0
+	Source: KSTREAM-SOURCE-0000000002 (topics: [towerReports])
+		--> KSTREAM-KEY-SELECT-0000000013, KSTREAM-WINDOWED-0000000004, KSTREAM-PEEK-0000000003
+	Source: KSTREAM-SOURCE-0000000000 (topics: [flightLogistic])
+		--> KSTREAM-WINDOWED-0000000005, KSTREAM-PEEK-0000000001
+	Processor: KSTREAM-WINDOWED-0000000004 (stores: [KSTREAM-JOINTHIS-0000000006-store])
+		--> KSTREAM-JOINTHIS-0000000006
+		<-- KSTREAM-SOURCE-0000000002
+	Processor: KSTREAM-WINDOWED-0000000005 (stores: [KSTREAM-JOINOTHER-0000000007-store])
+		--> KSTREAM-JOINOTHER-0000000007
+		<-- KSTREAM-SOURCE-0000000000
+	Processor: KSTREAM-JOINOTHER-0000000007 (stores: [KSTREAM-JOINTHIS-0000000006-store])
+		--> KSTREAM-MERGE-0000000008
+		<-- KSTREAM-WINDOWED-0000000005
+	Processor: KSTREAM-JOINTHIS-0000000006 (stores: [KSTREAM-JOINOTHER-0000000007-store])
+		--> KSTREAM-MERGE-0000000008
+		<-- KSTREAM-WINDOWED-0000000004
+	Processor: KSTREAM-MERGE-0000000008 (stores: [])
+		--> KSTREAM-PEEK-0000000009
+		<-- KSTREAM-JOINTHIS-0000000006, KSTREAM-JOINOTHER-0000000007
+	Processor: KSTREAM-PEEK-0000000009 (stores: [])
+		--> KSTREAM-FILTER-0000000010
+		<-- KSTREAM-MERGE-0000000008
+	Processor: KSTREAM-FILTER-0000000010 (stores: [])
+		--> KSTREAM-PEEK-0000000011
+		<-- KSTREAM-PEEK-0000000009
+	Processor: KSTREAM-KEY-SELECT-0000000013 (stores: [])
+		--> KSTREAM-FILTER-0000000017
+		<-- KSTREAM-SOURCE-0000000002
+	Processor: KSTREAM-FILTER-0000000017 (stores: [])
+		--> KSTREAM-SINK-0000000016
+		<-- KSTREAM-KEY-SELECT-0000000013
+	Processor: KSTREAM-PEEK-0000000011 (stores: [])
+		--> KSTREAM-SINK-0000000012
+		<-- KSTREAM-FILTER-0000000010
+	Processor: KSTREAM-PEEK-0000000001 (stores: [])
+		--> none
+		<-- KSTREAM-SOURCE-0000000000
+	Processor: KSTREAM-PEEK-0000000003 (stores: [])
+		--> none
+		<-- KSTREAM-SOURCE-0000000002
+	Sink: KSTREAM-SINK-0000000012 (topic: flightNotifications)
+		<-- KSTREAM-PEEK-0000000011
+	Sink: KSTREAM-SINK-0000000016 (topic: KSTREAM-AGGREGATE-STATE-STORE-0000000014-repartition)
+		<-- KSTREAM-FILTER-0000000017
+
+Sub-topology: 1
+	Source: KSTREAM-SOURCE-0000000018 (topics: [KSTREAM-AGGREGATE-STATE-STORE-0000000014-repartition])
+		--> KSTREAM-AGGREGATE-0000000015
+	Processor: KSTREAM-AGGREGATE-0000000015 (stores: [KSTREAM-AGGREGATE-STATE-STORE-0000000014])
+		--> KTABLE-TOSTREAM-0000000019
+		<-- KSTREAM-SOURCE-0000000018
+	Processor: KTABLE-TOSTREAM-0000000019 (stores: [])
+		--> KSTREAM-MAP-0000000020
+		<-- KSTREAM-AGGREGATE-0000000015
+	Processor: KSTREAM-MAP-0000000020 (stores: [])
+		--> KSTREAM-PEEK-0000000021
+		<-- KTABLE-TOSTREAM-0000000019
+	Processor: KSTREAM-PEEK-0000000021 (stores: [])
+		--> KSTREAM-SINK-0000000022
+		<-- KSTREAM-MAP-0000000020
+	Sink: KSTREAM-SINK-0000000022 (topic: flightMonitoring)
+		<-- KSTREAM-PEEK-0000000021
+```

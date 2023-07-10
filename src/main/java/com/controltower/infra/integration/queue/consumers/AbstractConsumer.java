@@ -3,7 +3,7 @@ package com.controltower.infra.integration.queue.consumers;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import com.controltower.infra.integration.kafka.KafkaAdminClient;
-import com.controltower.infra.integration.kafka.KafkaAdminClient.ConsumerHandler;
+import com.controltower.infra.integration.kafka.KafkaAdminClient.ConsumerHandlerInterface;
 
 public abstract class AbstractConsumer extends Thread {
 	private String topicName;
@@ -22,13 +22,13 @@ public abstract class AbstractConsumer extends Thread {
 	@Override
 	public void run() {
 		while (true) {
-			ConsumerHandler handler = (record) -> this.handleMessage(record);
+			ConsumerHandlerInterface handler = (record) -> this.handleMessage(record);
 			this.kafkaClient.runPolling(this.consumer, handler);
 		}
 	}
 
 	public void runPolling() {
-		ConsumerHandler handler = (record) -> this.handleMessage(record);
+		ConsumerHandlerInterface handler = (record) -> this.handleMessage(record);
 		this.kafkaClient.runPolling(this.consumer, handler);
 	}
 

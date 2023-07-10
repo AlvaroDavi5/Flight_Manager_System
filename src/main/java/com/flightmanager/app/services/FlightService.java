@@ -65,9 +65,7 @@ public class FlightService {
 	public Flight update(long id, FlightsModel flightData) {
 		try {
 			Flight flight = new Flight(null);
-			System.out.println("id: " + id);
 			FlightsModel flightModel = this.flightsRepository.findById(id);
-			System.out.println("code: " + flightModel.getCode());
 			if (flightData.getCode() != null)
 				flightModel.setCode(flightData.getCode());
 			if (flightData.getGateNumber() != null)

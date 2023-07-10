@@ -29,8 +29,8 @@ public class FlightManagerFluxStrategy {
 				panelStatus = PanelStatusEnum.ON_TIME;
 				if (freeGate != null) {
 					flight.setGateNumber(freeGate.getGateNumber());
-					freeGate.closeDocking();
-					freeGate.setFlightCode(flight.getFlightCode());
+					this.flightManagerService.closeGateDocking(freeGate);
+					this.flightManagerService.setGateFlightCode(freeGate, flight.getFlightCode());
 					freeGate.setFlight(flight);
 
 					if (isAirstripFreeToLand) {
@@ -55,8 +55,8 @@ public class FlightManagerFluxStrategy {
 				if (gate != null && isAirstripFreeToLand) {
 					this.flightManagerService.closeAirstrip();
 					flight.setGateNumber(gate.getGateNumber());
-					gate.closeDocking();
-					gate.setFlightCode(flight.getFlightCode());
+					this.flightManagerService.closeGateDocking(gate);
+					this.flightManagerService.setGateFlightCode(gate, flight.getFlightCode());
 					gate.setFlight(flight);
 					logisticStatus = LogisticStatusEnum.ALLOWED_TO_LAND;
 				}
@@ -71,10 +71,10 @@ public class FlightManagerFluxStrategy {
 
 			logisticStatus = LogisticStatusEnum.TAXIING;
 			if (flight.getArrivalAirportCode() == this.flightManagerService.getAirportICAO()) {
-				gate.closeBoarding();
+				this.flightManagerService.closeGateBoarding(gate);
 				flightStatus = FlightStatusEnum.CONCLUDED;
 			} else {
-				gate.openBoarding();
+				this.flightManagerService.openGateBoarding(gate);
 				flightStatus = FlightStatusEnum.ARRIVED;
 			}
 		} else if (logisticStatus == LogisticStatusEnum.REQUESTING_TAKEOFF) {
@@ -96,8 +96,8 @@ public class FlightManagerFluxStrategy {
 			}
 		} else if (logisticStatus == LogisticStatusEnum.TAKED_OFF) {
 			Gate gate = this.flightManagerService.findGateByNumber(flight.getGateNumber());
-			gate.closeBoarding();
-			gate.openDocking();
+			this.flightManagerService.closeGateBoarding(gate);
+			this.flightManagerService.openGateDocking(gate);
 
 			logisticStatus = LogisticStatusEnum.IN_TRANSIT;
 			flightStatus = FlightStatusEnum.DEPARTED;
@@ -111,18 +111,6 @@ public class FlightManagerFluxStrategy {
 			if (flightStatus == FlightStatusEnum.CLOSED)
 				panelStatus = PanelStatusEnum.CLOSED;
 		}
-
-		// TODO - add status
-		/*
-			FlightStatusEnum.LOADING
-
-			FlightStatusEnum.OPENED
-			PanelStatusEnum.DEBOARDING
-			PanelStatusEnum.BOARDING
-
-			PanelStatusEnum.SCHEDULED
-			PanelStatusEnum.DELAYED
-		*/
 
 		flight.setpanelStatus(panelStatus);
 		flight.setFlightStatus(flightStatus);
