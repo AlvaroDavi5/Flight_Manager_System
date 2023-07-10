@@ -68,7 +68,7 @@ public class App {
 		flight.setFlightStatus(data[2]);
 		flight.setLogisticStatus(data[3]);
 
-		String msgKey = flight.getFlightCode() + "#" + (calendar.getTime()).getTime();
+		String msgKey = flight.getFlightCode();
 		HashMap<String, Object> message = flight.toHashMap();
 
 		this.towerReportsProducer.sendMessage(2, msgKey, message);

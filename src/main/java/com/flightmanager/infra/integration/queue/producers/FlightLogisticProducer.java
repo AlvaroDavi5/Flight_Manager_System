@@ -10,7 +10,7 @@ public class FlightLogisticProducer {
 	@Autowired
 	private KafkaTemplate<String, String> kafkaTemplate;
 
-	public void send(String payload) {
-		kafkaTemplate.send("flightLogistic", payload);
+	public void send(String key, String value) {
+		kafkaTemplate.send("flightLogistic", key, value);
 	}
 }

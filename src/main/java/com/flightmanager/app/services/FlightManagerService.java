@@ -73,7 +73,7 @@ public class FlightManagerService {
 		HashMap<String, Object> message = flight.toHashMap();
 		message.put("key", msgKey);
 
-		this.flightLogisticProducer.send(this.parser.hashMapToStringfiedJson(message, false));
+		this.flightLogisticProducer.send(msgKey, this.parser.hashMapToStringfiedJson(message, false));
 		this.logger.info("Sended message with key: " + msgKey);
 	}
 
@@ -154,9 +154,14 @@ public class FlightManagerService {
 		calendar.set(Calendar.MINUTE, calendar.get(Calendar.MINUTE) - 10);
 		long endDate = (calendar.getTime()).getTime() / 1000;
 		calendar.setTime(new Date());
-		calendar.set(Calendar.HOUR_OF_DAY, 0);
-		calendar.set(Calendar.MINUTE, 0);
-		calendar.set(Calendar.SECOND, 0);
+		int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH) - 1;
+		if (dayOfMonth <= 0) {
+			dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+			calendar.set(Calendar.MINUTE, 0);
+			calendar.set(Calendar.SECOND, 0);
+		}
+		;
+		calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 		long startDate = (calendar.getTime()).getTime() / 1000;
 
 		this.logger.info("Getting current air traffic for airport: " + this.getAirportICAO() + ". from: "

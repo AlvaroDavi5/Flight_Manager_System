@@ -146,3 +146,21 @@ $ kafka-consumer-groups.sh --bootstrap-server=localhost:9092 -—describe --grou
 		* [ ] _Cron_
 	* RestClient
 		* [ ] _FlightManagerRestClient_
+- **NotificationStreams**
+	> Consumes from towerReports topic.  
+	* Joins with:
+		- logística topic
+	* Group by:
+		- key
+		- time window
+	* Send to:
+		- monitoring topic
+	> Consumes from logistics topic.  
+	* Group by:
+		- key
+	* Filter by:
+		- fail events
+	* conta/agrega por:
+		- fail events
+	* Send to:
+		- notifications topic
